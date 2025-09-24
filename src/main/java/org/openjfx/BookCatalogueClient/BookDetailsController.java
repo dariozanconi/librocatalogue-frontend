@@ -29,7 +29,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 
 public class BookDetailsController {
-	
+	 
 	@FXML
 	FlowPane tagPane;
 	
