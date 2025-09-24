@@ -1,0 +1,7 @@
+target/
+LibroCatalogue/
+/.project
+/.classpath
+/.LibroCatalogue-1.0.exe
+.settings/
+.idea/

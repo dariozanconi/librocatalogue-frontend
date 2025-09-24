@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="rootPane" stylesheets="@stylesheets/CollectionTabStyle.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.BookCatalogueClient.CollectionsTabController">
+   <children>
+      <BorderPane>
+         <top>
+            <AnchorPane prefHeight="46.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="headerLabel" alignment="TOP_LEFT" layoutX="127.0" layoutY="15.0" prefHeight="31.0" prefWidth="281.0" text="Collections">
+                     <font>
+                        <Font name="SansSerif Regular" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </top>
+         <center>
+            <ScrollPane fitToHeight="true" fitToWidth="true">
+               <content>
+                  <HBox fx:id="myHBox" prefHeight="1100.0" prefWidth="500.0">
+                     <children>
+                        <Region opacity="0.0" prefHeight="1100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
+                        <AnchorPane prefHeight="500.0" prefWidth="797.0">
+                           <children>
+                              <Button fx:id="addButton" layoutX="38.0" layoutY="518.0" mnemonicParsing="false" onAction="#addCollection" prefHeight="36.0" prefWidth="132.0" text="Add Collection" textFill="WHITE">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="16.0" />
+                                 </font>
+                              </Button>
+                              <ListView fx:id="collectionList" layoutX="29.0" layoutY="138.0" prefHeight="358.0" prefWidth="580.0" />
+                              <Button fx:id="deleteButton" layoutX="190.0" layoutY="518.0" mnemonicParsing="false" onAction="#deleteCollection" prefHeight="36.0" prefWidth="155.0" text="Delete Collection" textFill="WHITE">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="16.0" />
+                                 </font>
+                              </Button>
+                              <Region layoutX="47.0" layoutY="596.0" prefHeight="200.0" prefWidth="596.0" />
+                              <Label fx:id="messageLabel" layoutX="29.0" layoutY="104.0" prefHeight="34.0" prefWidth="536.0" text="Open or select a collection:">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="13.0" />
+                                 </font>
+                              </Label>
+                              <StackPane alignment="BOTTOM_RIGHT" layoutX="38.0" layoutY="39.0" prefHeight="53.0" prefWidth="344.0">
+                                 <children>
+                                    <TextField fx:id="searchField" prefHeight="43.0" prefWidth="216.0" promptText="Search Collections">
+                                       <font>
+                                          <Font name="SansSerif Regular" size="13.0" />
+                                       </font>
+                                    </TextField>
+                                    <Button fx:id="searchButton" alignment="CENTER" mnemonicParsing="false" onAction="#searchCollections" prefHeight="43.0" prefWidth="47.0" text="🔍" />
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </AnchorPane>
+                        <Region opacity="0.0" prefHeight="1100.0" prefWidth="316.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </content>
+            </ScrollPane>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>

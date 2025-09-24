@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.BookCatalogueClient.BookCardController">
+   <top>
+      <Region prefHeight="15.0" prefWidth="84.0" BorderPane.alignment="CENTER" />
+   </top>
+   <left>
+      <Region prefHeight="209.0" prefWidth="17.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Region prefHeight="209.0" prefWidth="17.0" BorderPane.alignment="CENTER" />
+   </right>
+   <center>
+      <AnchorPane fx:id="anchorPane" prefHeight="241.0" prefWidth="121.0" stylesheets="@stylesheets/BookCardStyle.css" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="coverImage" accessibleRole="BUTTON" fitHeight="185.0" fitWidth="127.0" layoutY="1.0" onMouseClicked="#onCardClicked" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/kafka.jpeg" />
+               </image>
+            </ImageView>
+            <CheckBox fx:id="selectBox" mnemonicParsing="false" onAction="#onCardSelected" prefHeight="17.0" prefWidth="16.0" />
+            <Label fx:id="titleLabel" alignment="TOP_LEFT" layoutY="193.0" prefHeight="20.0" prefWidth="121.0" text="Title">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="authorLabel" layoutY="210.0" prefHeight="22.0" prefWidth="120.0" text="Author">
+               <font>
+                  <Font name="SansSerif Regular" size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

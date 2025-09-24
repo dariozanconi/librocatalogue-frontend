@@ -1,0 +1,176 @@
+HBox {
+	-fx-background-color : grey; 
+}
+
+AnchorPane {
+	-fx-background-color : white;
+}
+
+.button {
+	-fx-background-color : #C9D6EB;
+	-fx-background-radius: 3 3 3 3;
+	-fx-background-insets: 1 1 1 1;
+	
+}
+.button:hover {
+	-fx-background-color : #D7E3FA;
+}
+.button:pressed {
+	-fx-background-color : #BFCADE;
+	
+	}
+#tagLabel {	
+	-fx-background-radius: 3 3 3 3;
+	-fx-background-insets: 1 1 1 1;
+}	
+#collectionLabel {	
+	-fx-background-radius: 3 3 3 3;
+	-fx-background-insets: 1 1 1 1;
+}
+#removeButton {
+	-fx-background-color : #93A7C9;
+	-fx-background-radius: 18 18 18 18;
+}
+#removeButton:hover {
+	-fx-background-color : #7787A3;
+}
+#removeButton:pressed {
+	-fx-background-color : #66748C;
+}
+#removeButton:disabled {
+	-fx-opacity: 0.5;
+}
+
+#addToCollectionButton {
+	-fx-background-color : #93A7C9;
+	-fx-background-radius: 18 18 18 18;
+}
+#addToCollectionButton:hover {
+	-fx-background-color : #7787A3;
+}
+#addToCollectionButton:pressed {
+	-fx-background-color : #66748C;
+}
+#addToCollectionButton:disabled {
+	-fx-opacity: 0.5;
+}
+
+#updateButton {
+	-fx-background-color : #93A7C9;
+	-fx-background-radius: 18 18 18 18;
+}
+#updateButton:hover {
+	-fx-background-color : #7787A3;
+}
+#updateButton:pressed {
+	-fx-background-color : #66748C;
+}
+#updateButton:disabled {
+	-fx-opacity: 0.5;
+}
+
+#backButton {
+	-fx-background-color : #FFFFFF;
+	-fx-background-radius: 1 1 1 1;
+}
+#backButton:hover {
+	-fx-background-color : #EBEBEB;
+}
+#backButton:pressed {
+	-fx-background-color : #DEDEDE;
+}
+
+#refreshButton {
+	-fx-background-color : #FFFFFF;
+	-fx-background-radius: 1 1 1 1;
+}
+#refreshButton:hover {
+	-fx-background-color : #EBEBEB;
+}
+#refreshButton:pressed {
+	-fx-background-color : #DEDEDE;
+}
+
+.menu-button {
+	-fx-background-color : #93A7C9;
+	-fx-background-radius: 18 18 18 18;
+}
+.menu-button:hover {
+	-fx-background-color : #7787A3;
+}
+.menu-button:pressed {
+	-fx-background-color : #66748C;
+}
+
+.context-menu {
+    -fx-background-color: white;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; 
+}
+
+.text-field{
+	-fx-background-color : #E9EDED;
+	-fx-background-radius : 30 30 30 30;
+	 -fx-background-insets: 2, 0, 0, 0;
+	-fx-font-family: "SansSerif";
+    -fx-font-size: 14;
+     
+}
+
+.date-picker {
+	-fx-background-color : #E9EDED;
+	-fx-background-radius : 30 30 30 30;
+	 -fx-background-insets: 2, 0, 0, 0;
+	-fx-font-family: "SansSerif";
+    -fx-font-size: 14;
+     
+}
+
+.date-picker .arrow-button{
+	-fx-background-color : #E9EDED;
+	-fx-background-radius : 30 30 30 30;
+	-fx-background-insets: 2, 0, 0, 0;
+	-fx-font-family: "SansSerif";
+    -fx-font-size: 14;
+     
+}
+
+.check-box .box {
+	-fx-background-radius : 30 30 30 30;
+	-fx-background-insets: 2, 0, 0, 0;
+}
+
+.scroll-pane .scroll-bar {
+	-fx-background-radius: 6 6 6 6;
+	-fx-background-color: white;
+}
+
+.scroll-pane .scroll-bar .thumb{
+	-fx-background-radius: 6 6 6 6;
+	-fx-background-color: #CCCCCC;
+}
+
+.scroll-pane .scroll-bar .thumb{
+	-fx-background-radius: 6 6 6 6;
+	-fx-background-color: #A8A8A8;
+}
+
+.scroll-pane .scroll-bar .increment-button {
+	-fx-background-color: white;
+	-fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+
+.scroll-pane .scroll-bar .decrement-button {
+	-fx-background-color: white;
+	-fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+
+
+
+
+
+
+

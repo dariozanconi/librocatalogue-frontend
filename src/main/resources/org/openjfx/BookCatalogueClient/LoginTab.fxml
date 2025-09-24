@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.BookCatalogueClient.LoginController">
+   <center>
+      <StackPane prefHeight="532.0" prefWidth="1100.0" stylesheets="@stylesheets/LoginTabStyle.css">
+         <children>
+            <HBox fx:id="loginBox" maxHeight="425.0" maxWidth="364.0" prefHeight="425.0" prefWidth="364.0">
+               <children>
+                  <Region opacity="0.0" prefHeight="425.0" prefWidth="78.0" />
+                  <VBox alignment="TOP_CENTER" prefHeight="425.0" prefWidth="214.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="99.0" prefWidth="375.0" text="Login">
+                           <font>
+                              <Font name="SansSerif Regular" size="35.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="usernameField" prefHeight="42.0" prefWidth="241.0" promptText="Username">
+                           <font>
+                              <Font name="SansSerif Regular" size="15.0" />
+                           </font>
+                        </TextField>
+                        <Region opacity="0.0" prefHeight="12.0" prefWidth="214.0" />
+                        <PasswordField fx:id="passwordField" prefHeight="41.0" prefWidth="214.0" promptText="Password">
+                           <font>
+                              <Font name="SansSerif Regular" size="15.0" />
+                           </font>
+                        </PasswordField>
+                        <Label fx:id="errorLabel" prefHeight="22.0" prefWidth="214.0" textFill="RED" />
+                        <Region opacity="0.0" prefHeight="33.0" prefWidth="214.0" />
+                        <Button fx:id="signinButton" mnemonicParsing="false" onAction="#signIn" prefHeight="30.0" prefWidth="214.0" text="Sign in" textFill="#fffafa">
+                           <font>
+                              <Font name="SansSerif Bold" size="15.0" />
+                           </font>
+                        </Button>
+                        <Region opacity="0.0" prefHeight="63.0" prefWidth="214.0" />
+                        <HBox fx:id="registerBox" prefHeight="24.0" prefWidth="214.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="24.0" prefWidth="144.0" text="Don't have an account?">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Region prefHeight="24.0" prefWidth="1.0" />
+                              <Button fx:id="registerButton" mnemonicParsing="false" onAction="#openRegister" prefHeight="25.0" prefWidth="67.0" text="Register" textFill="WHITE">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </StackPane>
+   </center>
+   <top>
+      <AnchorPane prefHeight="46.0" prefWidth="1100.0" stylesheets="@stylesheets/HomeStyle.css" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="headerLabel" alignment="TOP_LEFT" layoutX="136.0" layoutY="18.0" prefHeight="29.0" prefWidth="281.0" text="Login">
+               <font>
+                  <Font name="SansSerif Regular" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </top>
+</BorderPane>
