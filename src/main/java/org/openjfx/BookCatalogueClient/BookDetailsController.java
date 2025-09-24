@@ -1,21 +1,15 @@
 package org.openjfx.BookCatalogueClient;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.function.Consumer;
-import javax.imageio.ImageIO;
-
 import org.openjfx.BookCatalogueClient.model.ApiResponse;
 import org.openjfx.BookCatalogueClient.model.Book;
 import org.openjfx.BookCatalogueClient.model.Collection;
 import org.openjfx.BookCatalogueClient.service.JwtUtils;
 import org.openjfx.BookCatalogueClient.task.ApiTask;
-
 import javafx.concurrent.Task;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,11 +23,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 
 public class BookDetailsController {
-	 
+ 
 	@FXML
 	FlowPane tagPane;
 	
-	@FXML
+	@FXML   
 	FlowPane collectionPane;
 	
 	@FXML
