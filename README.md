@@ -12,6 +12,7 @@ This is the JavaFX frontend for **LibroCatalogue**, a full-stack project to mana
 - Apache HttpClient
 - Jackson (JSON)
 - JWT Authentication
+- Open Library / Google Books API (for retrieving books metadata)
 - Multi-tab UI (Books, Search, Collections, Login/Register)
 
 ## Project Structure
