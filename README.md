@@ -49,7 +49,7 @@ public class DomainConstant {
 	public static final String DOMAIN_PUBLIC = System.getProperty("DOMAIN_PUBLIC");
 }
 ```
-The Property Variables should be also set als VM Arguments.
+The Property Variables should be also set als VM Arguments, when running the application.
 ```env
 -DGOOGLE_APIKEY=<your-key>
 -DDOMAIN_PUBLIC=https://yourcloudserver.com/api
