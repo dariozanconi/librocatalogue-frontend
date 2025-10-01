@@ -20,15 +20,17 @@ This is the JavaFX frontend for **LibroCatalogue**, a full-stack project to mana
 - `model/` → Data models (Book, Collection, Tag, User, …)
 - 
 ## Screenshots
-<img width="1365" height="716" alt="Screenshot 2025-09-22 095545" src="https://github.com/user-attachments/assets/8536ebcb-b059-4f16-8c6b-289e6b086267" />
+<img width="1176" height="717" alt="Screenshot 2025-10-01 115053" src="https://github.com/user-attachments/assets/a1301e93-1376-417f-b40e-66614b303d28" />
+
 
 #
 
-<img width="1365" height="717" alt="Screenshot 2025-09-22 095523" src="https://github.com/user-attachments/assets/55b8dc8f-01a9-4dd3-83c3-aff3571b39e4" />
+<img width="1178" height="718" alt="Screenshot 2025-10-01 115127" src="https://github.com/user-attachments/assets/61e2deec-df68-4c5f-aa5e-6883f520606b" />
 
 #
 
-<img width="851" height="567" alt="Screenshot 2025-09-22 095240" src="https://github.com/user-attachments/assets/f5fd7dd1-d55f-4727-a18a-2744dba33d3f" />
+<img width="717" height="455" alt="Screenshot 2025-10-01 114246" src="https://github.com/user-attachments/assets/38bbe601-6e73-4b12-9cc4-72a91213eee2" />
+
 
 #
 
