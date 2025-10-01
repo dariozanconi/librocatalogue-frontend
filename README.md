@@ -47,10 +47,10 @@ In `DomainConstant.java`, you can switch between local and public API:
 ```java
 public class DomainConstant {
     public static final String DOMAIN_LOCAL= "http://localhost:8080/api";
-	  public static final String DOMAIN_PUBLIC = System.getProperty("DOMAIN_PUBLIC");
+	public static final String DOMAIN_PUBLIC = System.getProperty("DOMAIN_PUBLIC");
 }
 ```
-And set the Property Variables als VM Arguments
+And set the Property Variables as VM Arguments
 ```env
 -DGOOGLE_APIKEY=<your-key>
 -DDOMAIN_PUBLIC=https://youserver.com/api
