@@ -7,10 +7,13 @@ import org.openjfx.BookCatalogueClient.model.Users;
 import org.openjfx.BookCatalogueClient.task.ApiTask;
 
 import javafx.concurrent.Task;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class LoginController {
 	
@@ -35,6 +38,31 @@ public class LoginController {
 	
 	Consumer<String> onLoginClicked;
 	Runnable onRegisterClicked;
+	
+	@FXML
+	public void initialize() {
+		passwordField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)) {
+					signIn();
+				}			
+			}
+			
+		});
+		
+		usernameField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)) {
+					signIn();
+				}			
+			}
+			
+		});
+	}
 	
 	@FXML
 	public void signIn() {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootNode" stylesheets="@stylesheets/BookDetailsTabStyle.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.BookCatalogueClient.UpdateBookController">
+<BorderPane fx:id="rootNode" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.BookCatalogueClient.UpdateBookController">
    <top>
       <AnchorPane prefHeight="46.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
          <children>
@@ -36,20 +37,20 @@
                   <AnchorPane prefHeight="500.0" prefWidth="797.0">
                      <children>
                         <Region layoutX="4.0" layoutY="481.0" opacity="0.0" prefHeight="91.0" prefWidth="751.0" />
-                        <FlowPane layoutX="79.0" layoutY="237.0" prefHeight="504.0" prefWidth="589.0">
+                        <FlowPane layoutX="84.0" layoutY="275.0" prefHeight="504.0" prefWidth="589.0">
                            <children>
                               <TextField fx:id="isbnField" prefHeight="37.0" prefWidth="149.0" promptText="ISBN" />
                               <Region prefHeight="37.0" prefWidth="14.0" />
                               <TextField fx:id="titleField" prefHeight="37.0" prefWidth="192.0" promptText="Title" />
                               <Region prefHeight="37.0" prefWidth="15.0" />
                               <TextField fx:id="authorField" prefHeight="37.0" prefWidth="191.0" promptText="Author" />
-                              <Region prefHeight="24.0" prefWidth="593.0" />
+                              <Region prefHeight="13.0" prefWidth="593.0" />
                               <TextField fx:id="publisherField" prefHeight="37.0" prefWidth="148.0" promptText="Publisher" />
                               <Region prefHeight="37.0" prefWidth="14.0" />
                               <TextField fx:id="publishPlaceField" prefHeight="37.0" prefWidth="152.0" promptText="Publish Place" />
                               <Region prefHeight="37.0" prefWidth="15.0" />
                               <DatePicker fx:id="publishDateField" prefHeight="37.0" prefWidth="188.0" promptText="dd-mm-yyyy" />
-                              <Region prefHeight="24.0" prefWidth="581.0" />
+                              <Region prefHeight="13.0" prefWidth="607.0" />
                               <Region prefHeight="34.0" prefWidth="9.0" />
                               <Button fx:id="addCoverButton" mnemonicParsing="false" onAction="#loadImage" prefHeight="27.0" prefWidth="98.0" text="Add cover" textFill="WHITE">
                                  <font>
@@ -62,9 +63,9 @@
                                     <Font name="SansSerif Regular" size="13.0" />
                                  </font>
                               </Label>
-                              <Region prefHeight="25.0" prefWidth="602.0" />
+                              <Region prefHeight="13.0" prefWidth="602.0" />
                               <TextField fx:id="tagsField" prefHeight="37.0" prefWidth="563.0" promptText="Insert Tags separated with ','" />
-                              <Region prefHeight="19.0" prefWidth="591.0" />
+                              <Region prefHeight="14.0" prefWidth="613.0" />
                               <Region prefHeight="37.0" prefWidth="14.0" />
                               <CheckBox fx:id="availableCheckBox" mnemonicParsing="false" text="Available">
                                  <font>
@@ -73,7 +74,7 @@
                               </CheckBox>
                               <Region prefHeight="37.0" prefWidth="14.0" />
                               <TextField fx:id="numberPagesField" prefHeight="37.0" prefWidth="160.0" promptText="Number of pages" />
-                              <Region prefHeight="43.0" prefWidth="591.0" />
+                              <Region prefHeight="33.0" prefWidth="591.0" />
                               <Button fx:id="updateButton" mnemonicParsing="false" onAction="#update" prefHeight="32.0" prefWidth="94.0" text="Update" textFill="WHITE">
                                  <font>
                                     <Font name="SansSerif Regular" size="16.0" />
@@ -88,19 +89,19 @@
                               <Region prefHeight="41.0" prefWidth="602.0" />
                            </children>
                         </FlowPane>
-                        <ImageView fx:id="coverImageView" fitHeight="173.0" fitWidth="136.0" layoutX="565.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="coverImageView" fitHeight="192.0" fitWidth="140.0" layoutX="333.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" />
                         <Label layoutX="84.0" layoutY="50.0" prefHeight="63.0" prefWidth="260.0" text="Update Book">
                            <font>
                               <Font name="SansSerif Regular" size="20.0" />
                            </font>
                         </Label>
                         <Line endX="137.0" layoutX="185.0" layoutY="50.0" startX="-100.0" stroke="#868484" strokeLineCap="ROUND" strokeLineJoin="BEVEL" />
-                        <Label fx:id="titleLabel" layoutX="312.0" layoutY="92.0" prefHeight="29.0" prefWidth="250.0" text="Title">
+                        <Label fx:id="titleLabel" layoutX="483.0" layoutY="82.0" prefHeight="29.0" prefWidth="272.0" text="Title">
                            <font>
                               <Font name="SansSerif Regular" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="authorLabel" layoutX="312.0" layoutY="117.0" prefHeight="31.0" prefWidth="246.0" text="Author">
+                        <Label fx:id="authorLabel" layoutX="483.0" layoutY="111.0" prefHeight="31.0" prefWidth="273.0" text="Author">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -113,4 +114,8 @@
          </content>
       </ScrollPane>
    </center>
+   <stylesheets>
+      <URL value="@stylesheets/BookDetailsTabStyle.css" />
+      <URL value="@stylesheets/AddBookTabStyle.css" />
+   </stylesheets>
 </BorderPane>

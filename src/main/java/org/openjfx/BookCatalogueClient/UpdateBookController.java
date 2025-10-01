@@ -108,7 +108,6 @@ public class UpdateBookController {
 		BufferedImage image;
 		try {
 			url = new URL(book.getImageUrl());
-			System.out.println(book.getImageUrl());
 			image = ImageIO.read(url);
 			coverImageView.setImage(SwingFXUtils.toFXImage(image, null));
 			

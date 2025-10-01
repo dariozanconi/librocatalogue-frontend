@@ -1,5 +1,6 @@
 package org.openjfx.BookCatalogueClient;
 
+import java.awt.Event;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +17,7 @@ import org.openjfx.BookCatalogueClient.task.ApiTask;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -25,6 +27,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -107,6 +111,17 @@ public class AddBookController {
 
 	public void init(String token) {
 		this.token = token;	
+		isbnField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)) {
+					loadFromOpenBook();
+				}			
+			}
+			
+		});
+		
 		Task<ApiResponse<List<Collection>>> task = collectionTasks.loadCollectionsTask();
 		task.setOnSucceeded(e -> {
 			collectionResponse = task.getValue();
@@ -133,12 +148,17 @@ public class AddBookController {
 		book.setPublisher(publisherField.getText());
 		book.setPublishPlace(publishPlaceField.getText());
 		book.setPublishDate(publishDateField.getValue());
-		book.setPages(Integer.parseInt(numberPagesField.getText()));
+		if (!numberPagesField.getText().isEmpty())
+			book.setPages(Integer.parseInt(numberPagesField.getText()));
+		else book.setPages(0);		
 		book.setAvailable(availableCheckBox.isSelected());
 		book.setTags(readTags(tagsField.getText()));
 		
 		if(!book.getTitle().isBlank() && !book.getAuthor().isBlank() && !book.getIsbn().isBlank()) {
-			books.add(new BookDto(book, selectedFile));
+			if (selectedFile!=null)
+				books.add(new BookDto(book, selectedFile));
+			else 
+				books.add(new BookDto(book));
 			titles.add(book.getTitle());
 			bookListView.setItems(titles);
 		}
@@ -146,40 +166,50 @@ public class AddBookController {
 	
 	@FXML
 	public void loadFromOpenBook() {
-
 		bookDto = new BookDto();
-		Task<BookDto> task = bookTasks.parseBookTask(isbnField.getText());
-		task.setOnSucceeded(e -> {
-			 bookDto = task.getValue();	
-			 if (bookDto != null) {
-				 books.add(bookDto);
-				 titles.add(bookDto.getBook().getTitle());
-				 System.out.println(bookDto.getBook().getTitle());
-				 bookListView.setItems(titles);
-			 } else {
-				 Alert alert = new Alert(AlertType.ERROR);
-				 alert.getDialogPane().getStylesheets().add(
-						    getClass().getResource("AlertStyle.css").toExternalForm()
-						);
-				 alert.setTitle("Warning");
-				 alert.setHeaderText("Book not found! \nPlease insert it manually");
-				 alert.showAndWait();
-			 }
-			 
-		});	 
-		task.setOnFailed(e -> {
-			Throwable ex = task.getException();
-            ex.printStackTrace();
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.getDialogPane().getStylesheets().add(
-				    getClass().getResource("AlertStyle.css").toExternalForm()
-				);
-			alert.setTitle("Warning");
-			alert.setHeaderText("Insert a correct ISBN!");
-			alert.showAndWait();
-		});
-		new Thread(task).start();
 		
+		if (!isbnField.getText().isEmpty()) {
+			Task<BookDto> task = bookTasks.parseBookTask(isbnField.getText());
+			task.setOnSucceeded(e -> {
+				 bookDto = task.getValue();	
+				 if (bookDto != null) {
+					 books.add(bookDto);
+					 titles.add(bookDto.getBook().getTitle());
+					 System.out.println(bookDto.getBook().getTitle());
+					 bookListView.setItems(titles);
+				 } else {
+					 Alert alert = new Alert(AlertType.ERROR);
+					 alert.getDialogPane().getStylesheets().add(
+							    getClass().getResource("AlertStyle.css").toExternalForm()
+							);
+					 alert.setTitle("Warning");
+					 alert.setHeaderText("Book not found! \nPlease insert it manually");
+					 alert.showAndWait();
+				 }
+				 
+			});	 
+			task.setOnFailed(e -> {
+				Throwable ex = task.getException();
+	            ex.printStackTrace();
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.getDialogPane().getStylesheets().add(
+					    getClass().getResource("AlertStyle.css").toExternalForm()
+					);
+				alert.setTitle("Warning");
+				alert.setHeaderText("Insert a correct ISBN!");
+				alert.showAndWait();
+			});
+			new Thread(task).start();
+			
+		}
+		
+	}
+	
+	@FXML
+	public void clear() {
+		books.clear();
+		titles.clear();
+		bookListView.getItems().clear();
 	}
 	
 	@FXML

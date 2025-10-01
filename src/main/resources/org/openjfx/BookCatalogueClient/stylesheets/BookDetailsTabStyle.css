@@ -27,43 +27,44 @@ AnchorPane {
 	-fx-background-radius: 3 3 3 3;
 	-fx-background-insets: 1 1 1 1;
 }
+
 #removeButton {
-	-fx-background-color : #93A7C9;
-	-fx-background-radius: 18 18 18 18;
+	-fx-background-color : #0465E0;
+	-fx-background-radius: 7 7 7 7;
 }
 #removeButton:hover {
-	-fx-background-color : #7787A3;
+	-fx-background-color : #128FEB;
 }
 #removeButton:pressed {
-	-fx-background-color : #66748C;
+	-fx-background-color : #135EF0;
 }
 #removeButton:disabled {
 	-fx-opacity: 0.5;
 }
 
 #addToCollectionButton {
-	-fx-background-color : #93A7C9;
-	-fx-background-radius: 18 18 18 18;
+	-fx-background-color : #0465E0;
+	-fx-background-radius: 7 7 7 7;
 }
 #addToCollectionButton:hover {
-	-fx-background-color : #7787A3;
+	-fx-background-color : #128FEB;
 }
 #addToCollectionButton:pressed {
-	-fx-background-color : #66748C;
+	-fx-background-color : #135EF0;
 }
 #addToCollectionButton:disabled {
 	-fx-opacity: 0.5;
 }
 
 #updateButton {
-	-fx-background-color : #93A7C9;
-	-fx-background-radius: 18 18 18 18;
+	-fx-background-color : #0465E0;
+	-fx-background-radius: 7 7 7 7;
 }
 #updateButton:hover {
-	-fx-background-color : #7787A3;
+	-fx-background-color : #128FEB;
 }
 #updateButton:pressed {
-	-fx-background-color : #66748C;
+	-fx-background-color : #135EF0;
 }
 #updateButton:disabled {
 	-fx-opacity: 0.5;

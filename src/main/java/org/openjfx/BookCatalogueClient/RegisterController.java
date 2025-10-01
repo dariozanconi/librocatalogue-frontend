@@ -7,10 +7,13 @@ import org.openjfx.BookCatalogueClient.model.RegisterRequest;
 import org.openjfx.BookCatalogueClient.model.Users;
 import org.openjfx.BookCatalogueClient.task.ApiTask;
 import javafx.concurrent.Task;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 
 public class RegisterController {
@@ -43,6 +46,43 @@ public class RegisterController {
 	private final ApiTask loginTasks = new ApiTask();
 	Consumer<String> onRegisterClicked;
 	Runnable onLoginClicked;
+	
+	@FXML
+	public void initialize() {
+		
+		passwordField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)) {
+					register();
+				}			
+			}
+			
+		});
+		
+		passwordField2.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)) {
+					register();
+				}			
+			}
+			
+		});
+		
+		codeField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)) {
+					register();
+				}			
+			}
+			
+		});
+	}
 	
 	@FXML
 	public void register() {

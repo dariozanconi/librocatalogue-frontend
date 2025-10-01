@@ -12,6 +12,10 @@ public class BookDto {
 		this.cover = cover;
 	}
 	
+	public BookDto(Book book) {
+		this.book = book;
+	}
+	
 	public BookDto() {
 		
 	}

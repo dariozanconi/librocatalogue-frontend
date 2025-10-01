@@ -25,16 +25,23 @@ ImageView:pressed {
 	-fx-opacity:0.5;
 }
 
+
 .check-box .box {
-	-fx-background-color : white;
-	-fx-background-radius: 1 1 1 1;
-	-fx-background-insets: 1, 0, 0, 1;
+	-fx-background-color: transparent;
 }
 
-.check-box .box:selected {
-	-fx-background-color : blue;
-	-fx-background-radius: 1 1 1 1;
-	-fx-background-insets: 1, 0, 0, 1;
+.check-box>.box>.mark {
+  -fx-background-position: center;
+  -fx-background-image: url("unmarked.png");  
+  -fx-background-repeat: stretch;
+  -fx-shape: none;
+  -fx-padding: 8px;
+}
+
+.check-box:selected>.box>.mark{
+  -fx-background-color: transparent;
+  -fx-background-image: url("marked.png");
+  -fx-padding: 8px;
 }
 
 .StackPane {

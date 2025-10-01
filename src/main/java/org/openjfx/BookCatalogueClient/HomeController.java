@@ -2,6 +2,7 @@ package org.openjfx.BookCatalogueClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -13,6 +14,7 @@ import org.openjfx.BookCatalogueClient.service.JwtUtils;
 import org.openjfx.BookCatalogueClient.task.ApiTask;
 import org.openjfx.BookCatalogueClient.task.TaskTracker;
 import javafx.concurrent.Task;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,6 +27,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class HomeController {
 	
@@ -99,6 +103,17 @@ public class HomeController {
 			}		    
 		});
 		openBooksTabGeneric("All Books", BooksTabController::initNormal);
+		searchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)) {
+					showSearchResult();
+				}			
+			}
+			
+		});
+		
 	    disableButtons();
 	}
 	
@@ -175,12 +190,20 @@ public class HomeController {
 	}
 	
 	@FXML
-	public void updateSelectedBooks() {			
-		for (Book book : selectedBooks) {
-			openUpdateBookTab(book);
-		}
-		deselectAllBooks();
-		removeBooksCollectionItem.setDisable(true);
+	public void updateSelectedBooks() {
+		
+		if (selectedBooks!=null) {
+			List<Book> booksToUpdate = new ArrayList<Book>();
+			for (Book book : selectedBooks) {
+				booksToUpdate.add(book);
+			}
+			
+			for (Book book : booksToUpdate) {
+				openUpdateBookTab(book);
+			}
+			deselectAllBooks();
+			removeBooksCollectionItem.setDisable(true);
+		}		
 	}
 	
 	public void openUpdateBookTab(Book book) {
@@ -200,6 +223,7 @@ public class HomeController {
 		        tabPane.getTabs().add(updateBookTab);
 		        tabPane.getSelectionModel().select(updateBookTab);
 		        removeBooksCollectionItem.setDisable(true);
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -339,7 +363,7 @@ public class HomeController {
 			controller.setOnCollectionOpened( collection -> {
 				Collection selectedCollection = collection;
 				tabPane.getTabs().remove(collectionsTab);
-				openBooksCollection(selectedCollection);								
+				openBooksCollection(selectedCollection);	
 			});
 						
 			tabPane.getTabs().add(collectionsTab);
@@ -354,6 +378,13 @@ public class HomeController {
 	@FXML
 	public void addBooksToCollection() {
 		
+		List<Book> booksToAdd = new ArrayList<Book>();
+		if (selectedBooks!=null) {
+			for (Book book : selectedBooks) {
+				booksToAdd.add(book);
+			}
+		}
+		
 		try {
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("CollectionsTab.fxml"));
@@ -364,7 +395,7 @@ public class HomeController {
 			controller.setHeader("Select the collection where you want to add the books:");			
 			controller.setOnCollectionClicked( collection -> {
 				
-				TaskTracker tracker = new TaskTracker(selectedBooks.size(), 
+				TaskTracker tracker = new TaskTracker(booksToAdd.size(), 
 						() -> {
 							Alert alert = new Alert(AlertType.INFORMATION);
 							alert.getDialogPane().getStylesheets().add(
@@ -377,6 +408,7 @@ public class HomeController {
 							deselectAllBooks();
 							tabPane.getTabs().remove(collectionsTab);
 							openBooksCollection(collection);
+					
 						},
 			
 						() -> { 
@@ -393,7 +425,7 @@ public class HomeController {
 							openBooksCollection(collection);
 						}
 						);	
-				for (Book book : selectedBooks) {
+				for (Book book : booksToAdd) {
 					Task<ApiResponse<Book>> task = collectionsTasks.addBookCollectionTask(collection.getId(), book, token);
 					task.setOnSucceeded(e -> {
 						collectionResponse = task.getValue();			
@@ -444,7 +476,7 @@ public class HomeController {
 		            removeBooksCollectionItem.setDisable(true);
 					Tab selected = tabPane.getSelectionModel().getSelectedItem();
 					tabPane.getTabs().remove(selected);
-					openBooksCollection(actualCollection); 
+					//openBooksCollection(actualCollection); 
 		            
 		        },
 		        () -> { 
@@ -491,14 +523,14 @@ public class HomeController {
 	}
 
 	public void openBooksCollection(Collection collection) {
-		deselectAllBooks();		
-		this.actualCollection = collection;		
+		deselectAllBooks();				
 		openBooksTabGeneric(collection.getName(), c -> c.initCollection(collection));
 		if (!jwtUtils.isTokenExpired(token) && token!=null) {
 			removeBooksCollectionItem.setDisable(false);
 		}
 		Tab currentTab = tabPane.getTabs().get(tabPane.getTabs().size() - 1);
 		currentTab.setUserData(collection);
+		this.actualCollection = collection;		
 	}
 	
 	@FXML
@@ -577,6 +609,7 @@ public class HomeController {
 				controller.setWelcomeUsername(header, jwtUtils.getUsernameToken(token));
 				Tab loggedTab = new Tab("Login", loggedRoot);
 				
+				tabPane.getTabs().clear();
 				tabPane.getTabs().add(loggedTab);
 				tabPane.getSelectionModel().select(loggedTab);
 			

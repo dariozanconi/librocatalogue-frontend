@@ -10,15 +10,52 @@ AnchorPane {
 	-fx-background-color : white;
 }
 
+.list-view {
+	-fx-background-radius : 13;
+	-fx-background-color :  #F3F7F7;
+}
+
+.list-view .list-cell:even { 
+    -fx-background-color: transparent;
+}
+
+.list-view .list-cell:odd { 
+    -fx-background-color: transparent;
+}
+
+.list-view .list-cell:filled:hover {
+    -fx-background-color: #EBF6FF;
+    -fx-text-fill: black;
+}
+
+.check-box .box {
+	-fx-background-color: transparent;
+}
+
+.check-box>.box>.mark {
+  -fx-background-position: center;
+  -fx-background-image: url("unmarked.png");  
+  -fx-background-repeat: stretch;
+  -fx-shape: none;
+  -fx-padding: 8px;
+}
+
+.check-box:selected>.box>.mark{
+  -fx-background-color: transparent;
+  -fx-background-image: url("marked.png");
+  -fx-padding: 8px;
+}
+
+
 .button {
-	-fx-background-color : #93A7C9;
-	-fx-background-radius: 18 18 18 18;
+	-fx-background-color : #0465E0;
+	-fx-background-radius: 7 7 7 7;
 }
 .button:hover {
-	-fx-background-color : #7787A3;
+	-fx-background-color : #128FEB;
 }
 .button:pressed {
-	-fx-background-color : #66748C;
+	-fx-background-color : #135EF0;
 }
 .button:disabled {
 	-fx-opacity: 0.5;

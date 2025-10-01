@@ -317,14 +317,14 @@ public class BooksTabController {
 	public void nextPage() {
 	    currentPage++;
 	    loadBooks(currentPage, pageSize, currentSort);
-	    homeController.deselectAllBooks();
+
 	}
 			
 	@FXML
 	public void previousPage() {
 		currentPage--;
 		loadBooks(currentPage, pageSize, currentSort);
-		homeController.deselectAllBooks();
+
 	}
 	
 	public void backToBooks() {

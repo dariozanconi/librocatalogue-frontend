@@ -13,14 +13,14 @@ AnchorPane {
 }
 
 .button {
-	-fx-background-color : #93A7C9;
-	-fx-background-radius: 15 15 15 15;
+	-fx-background-color : #0465E0;
+	-fx-background-radius: 7 7 7 7;
 }
 .button:hover {
-	-fx-background-color : #7787A3;
+	-fx-background-color : #128FEB;
 }
 .button:pressed {
-	-fx-background-color : #66748C;
+	-fx-background-color : #135EF0;
 }
 .button:disabled {
 	-fx-opacity: 0.5;

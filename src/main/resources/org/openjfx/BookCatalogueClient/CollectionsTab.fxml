@@ -34,24 +34,24 @@
                         <Region opacity="0.0" prefHeight="1100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
                         <AnchorPane prefHeight="500.0" prefWidth="797.0">
                            <children>
-                              <Button fx:id="addButton" layoutX="38.0" layoutY="518.0" mnemonicParsing="false" onAction="#addCollection" prefHeight="36.0" prefWidth="132.0" text="Add Collection" textFill="WHITE">
+                              <Button fx:id="addButton" layoutX="35.0" layoutY="411.0" mnemonicParsing="false" onAction="#addCollection" prefHeight="36.0" prefWidth="132.0" text="Add Collection" textFill="WHITE">
                                  <font>
-                                    <Font name="SansSerif Regular" size="16.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </Button>
-                              <ListView fx:id="collectionList" layoutX="29.0" layoutY="138.0" prefHeight="358.0" prefWidth="580.0" />
-                              <Button fx:id="deleteButton" layoutX="190.0" layoutY="518.0" mnemonicParsing="false" onAction="#deleteCollection" prefHeight="36.0" prefWidth="155.0" text="Delete Collection" textFill="WHITE">
+                              <ListView fx:id="collectionList" layoutX="29.0" layoutY="138.0" prefHeight="260.0" prefWidth="580.0" />
+                              <Button fx:id="deleteButton" layoutX="178.0" layoutY="411.0" mnemonicParsing="false" onAction="#deleteCollection" prefHeight="36.0" prefWidth="155.0" text="Delete Collection" textFill="WHITE">
                                  <font>
-                                    <Font name="SansSerif Regular" size="16.0" />
+                                    <Font name="SansSerif Regular" size="14.0" />
                                  </font>
                               </Button>
                               <Region layoutX="47.0" layoutY="596.0" prefHeight="200.0" prefWidth="596.0" />
-                              <Label fx:id="messageLabel" layoutX="29.0" layoutY="104.0" prefHeight="34.0" prefWidth="536.0" text="Open or select a collection:">
+                              <Label fx:id="messageLabel" layoutX="29.0" layoutY="104.0" prefHeight="34.0" prefWidth="536.0" text=" Open or select a collection:">
                                  <font>
                                     <Font name="SansSerif Regular" size="13.0" />
                                  </font>
                               </Label>
-                              <StackPane alignment="BOTTOM_RIGHT" layoutX="38.0" layoutY="39.0" prefHeight="53.0" prefWidth="344.0">
+                              <StackPane alignment="BOTTOM_RIGHT" layoutX="29.0" layoutY="37.0" prefHeight="53.0" prefWidth="344.0">
                                  <children>
                                     <TextField fx:id="searchField" prefHeight="43.0" prefWidth="216.0" promptText="Search Collections">
                                        <font>

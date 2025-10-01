@@ -9,20 +9,39 @@ AnchorPane {
 .combo-box {
 	-fx-background-color : #E9EDED;
 	-fx-background-radius: 18 18 18 18;	
+	-fx-background-insets: 0, 1, 2;
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; 
+}
+
+.list-view {
+	-fx-background-radius : 13;
+	-fx-background-color :  #E9EDED;
+}
+
+.list-view .list-cell:even { 
+    -fx-background-color: transparent;
+}
+
+.list-view .list-cell:odd { 
+    -fx-background-color: transparent;
+}
+
+.list-view .list-cell:filled:hover {
+    -fx-background-color: #EBF6FF;
+    -fx-text-fill: black;
 }
 
 .button {
-	-fx-background-color : #93A7C9;
-	-fx-background-radius: 18 18 18 18;	
+	-fx-background-color : #0465E0;
+	-fx-background-radius: 7 7 7 7;
 }
 .button:hover {
-	-fx-background-color : #7787A3;
+	-fx-background-color : #128FEB;
 }
 .button:pressed {
-	-fx-background-color : #66748C;
+	-fx-background-color : #135EF0;
 	
 	}
-	
 
 .menu-button {
 	-fx-background-color : #93A7C9;
@@ -44,7 +63,7 @@ AnchorPane {
 
 .text-field{
 	-fx-background-color : #E9EDED;
-	-fx-background-radius : 30 30 30 30;
+	-fx-background-radius : 15 15 15 15;
 	 -fx-background-insets: 2, 0, 0, 0;
 	-fx-font-family: "SansSerif";
     -fx-font-size: 14;
@@ -69,9 +88,23 @@ AnchorPane {
      
 }
 
-.check-box .box {
-	-fx-background-radius : 30 30 30 30;
-	-fx-background-insets: 2, 0, 0, 0;
+
+
+.check-box>.box {
+  -fx-background-insets: 0;
+  -fx-background-radius: 0;
+  -fx-background-color: transparent;
+}
+
+.check-box>.box>.mark {
+  -fx-background-position: center;
+  -fx-background-image: url("unmarked.png");  
+  -fx-shape: none;
+}
+
+.check-box:selected>.box>.mark{
+  -fx-background-color: transparent;
+  -fx-background-image: url("marked.png");
 }
 
 .scroll-pane .scroll-bar {
