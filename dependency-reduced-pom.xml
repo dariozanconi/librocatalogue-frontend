@@ -48,7 +48,7 @@
     </plugins>
   </build>
   <properties>
-    <google.apikey>AIzaSyBuAvpipCUN_PBMf6dZeJB93pV_qZ3xBiI</google.apikey>
+    <google.apikey>dummy_key</google.apikey>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>11</maven.compiler.target>
     <domain.public>https://librocatalogue-server1.onrender.com/api</domain.public>

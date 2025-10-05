@@ -1,5 +1,8 @@
 package org.openjfx.BookCatalogueClient;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +15,7 @@ import javafx.stage.Stage;
  * JavaFX App
  */
 public class App extends Application {
+	
 		
 	@Override
 	public void init() throws Exception {
@@ -27,9 +31,11 @@ public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
+			
+			ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"), bundle);
 			Parent root = loader.load();
-			Scene scene = new Scene(root,1200,650);		
+			Scene scene = new Scene(root,1350,650);		
 			
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("LibroCatalogue");
@@ -46,5 +52,7 @@ public class App extends Application {
 		System.setProperty("javafx.preloader", MyPreloader.class.getCanonicalName());
 		launch(args);
 	}
+	
+	
 	
 }

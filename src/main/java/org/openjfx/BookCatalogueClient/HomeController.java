@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import org.openjfx.BookCatalogueClient.model.ApiResponse;
@@ -18,9 +20,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
@@ -29,8 +33,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 public class HomeController {
+	
+	@FXML 
+	private ResourceBundle resources;
+	
+	@FXML
+	private BorderPane rootPane;
 	
 	@FXML
 	private TabPane tabPane;
@@ -74,6 +86,8 @@ public class HomeController {
 	@FXML
 	private MenuItem removeBooksCollectionItem;
 	
+	@FXML
+	private Hyperlink switchLanguage;
 	
 	private String token;
 	private JwtUtils jwtUtils = new JwtUtils();
@@ -102,7 +116,7 @@ public class HomeController {
 				removeBooksCollectionItem.setDisable(false);
 			}		    
 		});
-		openBooksTabGeneric("All Books", BooksTabController::initNormal);
+		openBooksTabGeneric(resources.getString("label.header2"), BooksTabController::initNormal);
 		searchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
 			@Override
@@ -119,7 +133,8 @@ public class HomeController {
 	
 	public void openBooksTabGeneric(String header, Consumer<BooksTabController> initializer) {
 		try {
-			FXMLLoader booksLoader = new FXMLLoader(getClass().getResource("BooksTab.fxml"));
+			ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+			FXMLLoader booksLoader = new FXMLLoader(getClass().getResource("BooksTab.fxml"), bundle);
 			Parent content = booksLoader.load();
 	    	
 			BooksTabController booksTabController = booksLoader.getController();
@@ -150,7 +165,7 @@ public class HomeController {
 	public void showAll() {
 		deselectAllBooks();
 		removeBooksCollectionItem.setDisable(true);
-		openBooksTabGeneric("Show All", BooksTabController::initNormal);
+		openBooksTabGeneric(resources.getString("label.header2"), BooksTabController::initNormal);
 	}
 
 	@FXML
@@ -159,7 +174,7 @@ public class HomeController {
 		removeBooksCollectionItem.setDisable(true);
 	    String keyword = searchField.getText();
 	    if (keyword != null && !keyword.isBlank()) {
-	        openBooksTabGeneric("Search results '"+ keyword + "'", controller -> controller.initSearch(keyword));	   
+	        openBooksTabGeneric(resources.getString("label.header3")+ keyword + "'", controller -> controller.initSearch(keyword));	   
 	    }
 	}
 	
@@ -169,12 +184,13 @@ public class HomeController {
 		if (token!=null && !jwtUtils.isTokenExpired(token)) {
 			
 			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("AddBookTab.fxml"));
+				ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("AddBookTab.fxml"), bundle);
 				Parent addBookRoot = loader.load();
 				
 				AddBookController controller = loader.getController();
 				controller.init(token);
-				Tab addBookTab = new Tab("Add Books", addBookRoot);
+				Tab addBookTab = new Tab(resources.getString("label.header5"), addBookRoot);
 				
 		        tabPane.getTabs().add(addBookTab);
 		        tabPane.getSelectionModel().select(addBookTab);
@@ -211,14 +227,15 @@ public class HomeController {
 		if (token!=null && !jwtUtils.isTokenExpired(token)) {
 			
 			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("UpdateBookTab.fxml"));
+				ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("UpdateBookTab.fxml"),bundle);
 				Parent updateBookRoot = loader.load();
 				
 				UpdateBookController controller = loader.getController();
 				controller.setBookToUpdate(book, token);				
 				controller.setHomeController(this);
 				
-				Tab updateBookTab = new Tab("Update "+ book.getTitle(), updateBookRoot);
+				Tab updateBookTab = new Tab(resources.getString("tab.update")+ book.getTitle(), updateBookRoot);
 				
 		        tabPane.getTabs().add(updateBookTab);
 		        tabPane.getSelectionModel().select(updateBookTab);
@@ -244,33 +261,33 @@ public class HomeController {
 					alert2.getDialogPane().getStylesheets().add(
 						    getClass().getResource("AlertStyle.css").toExternalForm()
 						);
-					alert2.setTitle("Books deleted");
-					alert2.setHeaderText("Books deleted successfully");
+					alert2.setTitle(resources.getString("alert.booksdeleted"));
+					alert2.setHeaderText(resources.getString("alert.deletesuccesses"));
 					alert2.showAndWait();
 					
 					tabPane.getTabs().clear();
-					openBooksTab("All books");
+					openBooksTab(resources.getString("label.header2"));
 				},
 				() -> { 
 			        Alert alert = new Alert(Alert.AlertType.ERROR);
 			        alert.getDialogPane().getStylesheets().add(
 						    getClass().getResource("AlertStyle.css").toExternalForm()
 						);
-			        alert.setTitle("Error");
-			        alert.setHeaderText("Some books could not be deleted.");
+			        alert.setTitle(resources.getString("alert.error"));
+			        alert.setHeaderText(resources.getString("alert.deletefail"));
 			        alert.showAndWait();
 			        
 			        tabPane.getTabs().clear();
-					openBooksTab("All books");
+					openBooksTab("label.header2");
 			        }
 				);
 		if (!selectedBooks.isEmpty()) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("Confirm");
+			alert.setTitle(resources.getString("alert.confirm"));
 			alert.getDialogPane().getStylesheets().add(
 				    getClass().getResource("AlertStyle.css").toExternalForm()
 				);
-			alert.setHeaderText("Are you sure you want to delete the selected books?");
+			alert.setHeaderText(resources.getString("alert.deleteconfirm"));
 			Optional<ButtonType> result = alert.showAndWait();
 			ButtonType button = result.orElse(ButtonType.CANCEL);
 		
@@ -285,7 +302,7 @@ public class HomeController {
 						alert2.getDialogPane().getStylesheets().add(
 							    getClass().getResource("AlertStyle.css").toExternalForm()
 							);
-						alert2.setTitle("Book not found");
+						alert2.setTitle(resources.getString("alert.booknotfound"));
 						alert2.setHeaderText(response.getData());
 						alert2.showAndWait();
 						tracker.taskFailed();
@@ -309,8 +326,8 @@ public class HomeController {
 		alert.getDialogPane().getStylesheets().add(
 			    getClass().getResource("AlertStyle.css").toExternalForm()
 			);
-		alert.setTitle("Confirm");
-		alert.setHeaderText("Are you sure you want to delete this book?");
+		alert.setTitle(resources.getString("alert.confirm"));
+		alert.setHeaderText(resources.getString("alert.deleteconfirm"));
 		Optional<ButtonType> result = alert.showAndWait();
 		ButtonType button = result.orElse(ButtonType.CANCEL);
 	
@@ -324,7 +341,7 @@ public class HomeController {
 					alert2.getDialogPane().getStylesheets().add(
 						    getClass().getResource("AlertStyle.css").toExternalForm()
 						);
-					alert2.setTitle("Book not found");
+					alert2.setTitle(resources.getString("alert.booknotfound"));
 					alert2.setHeaderText(response.getData());
 					alert2.showAndWait();
 				} else {
@@ -332,8 +349,8 @@ public class HomeController {
 					alert3.getDialogPane().getStylesheets().add(
 						    getClass().getResource("AlertStyle.css").toExternalForm()
 						);
-					alert3.setTitle("Books deleted");
-					alert3.setHeaderText("Book deleted successfully");
+					alert3.setTitle(resources.getString("alert.bookdeleted"));
+					alert3.setHeaderText(resources.getString("alert.deletesuccess"));
 					alert3.showAndWait();
 				}
 			});
@@ -350,12 +367,12 @@ public class HomeController {
 	public void openCollectionsTab() {
 		deselectAllBooks();
 		try {
-			
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("CollectionsTab.fxml"));
+			ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("CollectionsTab.fxml"), bundle);
 			Parent collectionsRoot = loader.load();
 			
 			CollectionsTabController controller = loader.getController();
-			Tab collectionsTab = new Tab("Collections", collectionsRoot);
+			Tab collectionsTab = new Tab(resources.getString("label.header4"), collectionsRoot);
 			if (token!=null && !jwtUtils.isTokenExpired(token))
 				controller.setToken(token);
 			controller.setHomeController(this);
@@ -379,85 +396,86 @@ public class HomeController {
 	public void addBooksToCollection() {
 		
 		List<Book> booksToAdd = new ArrayList<Book>();
-		if (selectedBooks!=null) {
+		if (!selectedBooks.isEmpty()) {
 			for (Book book : selectedBooks) {
 				booksToAdd.add(book);
 			}
-		}
-		
-		try {
-			
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("CollectionsTab.fxml"));
-			Parent collectionsRoot = loader.load();
-			
-			CollectionsTabController controller = loader.getController();
-			Tab collectionsTab = new Tab("Collections", collectionsRoot);
-			controller.setHeader("Select the collection where you want to add the books:");			
-			controller.setOnCollectionClicked( collection -> {
+			try {
+				ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("CollectionsTab.fxml"), bundle);
+				Parent collectionsRoot = loader.load();
 				
-				TaskTracker tracker = new TaskTracker(booksToAdd.size(), 
-						() -> {
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.getDialogPane().getStylesheets().add(
-								    getClass().getResource("AlertStyle.css").toExternalForm()
-								);
-							alert.setTitle("Books added");
-							alert.setHeaderText("Book added successfully to the collection");
-							alert.showAndWait();
-				
-							deselectAllBooks();
-							tabPane.getTabs().remove(collectionsTab);
-							openBooksCollection(collection);
+				CollectionsTabController controller = loader.getController();
+				Tab collectionsTab = new Tab(resources.getString("label.header4"), collectionsRoot);
+				controller.setHeader(resources.getString("label.selectcollection"));			
+				controller.setOnCollectionClicked( collection -> {
 					
-						},
-			
-						() -> { 
-							Alert alert = new Alert(Alert.AlertType.ERROR);
-							alert.getDialogPane().getStylesheets().add(
-								    getClass().getResource("AlertStyle.css").toExternalForm()
-								);
-							alert.setTitle("Error");
-							alert.setHeaderText("Some books could not be added.");
-							alert.showAndWait();
-							
-							deselectAllBooks();
-							tabPane.getTabs().remove(collectionsTab);
-							openBooksCollection(collection);
-						}
-						);	
-				for (Book book : booksToAdd) {
-					Task<ApiResponse<Book>> task = collectionsTasks.addBookCollectionTask(collection.getId(), book, token);
-					task.setOnSucceeded(e -> {
-						collectionResponse = task.getValue();			
-							if (!collectionResponse.isSuccess()) {														
+					TaskTracker tracker = new TaskTracker(booksToAdd.size(), 
+							() -> {
 								Alert alert = new Alert(AlertType.INFORMATION);
 								alert.getDialogPane().getStylesheets().add(
 									    getClass().getResource("AlertStyle.css").toExternalForm()
 									);
-								alert.setTitle("Book not found");
-								alert.setHeaderText(collectionResponse.getError().getMessage());
+								alert.setTitle(resources.getString("alert.booksadd"));
+								alert.setHeaderText(resources.getString("alert.addedbookstocollection"));
 								alert.showAndWait();
-								tracker.taskFailed();
-							} else
-							tracker.taskSucceeded();
-						});
-						task.setOnFailed(e -> {
-							Throwable ex = task.getException();
-				            ex.printStackTrace();
-						});
-						new Thread(task).start();
-												
-				}
-							
-			});
-			
-			tabPane.getTabs().add(collectionsTab);
-			tabPane.getSelectionModel().select(collectionsTab);
-			
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}	
+					
+								deselectAllBooks();
+								tabPane.getTabs().remove(collectionsTab);
+								openBooksCollection(collection);
+						
+							},
+				
+							() -> { 
+								Alert alert = new Alert(Alert.AlertType.ERROR);
+								alert.getDialogPane().getStylesheets().add(
+									    getClass().getResource("AlertStyle.css").toExternalForm()
+									);
+								alert.setTitle(resources.getString("alert.error"));
+								alert.setHeaderText(resources.getString("alert.addtocollectionfail"));
+								alert.showAndWait();
+								
+								deselectAllBooks();
+								tabPane.getTabs().remove(collectionsTab);
+								openBooksCollection(collection);
+							}
+							);	
+					for (Book book : booksToAdd) {
+						Task<ApiResponse<Book>> task = collectionsTasks.addBookCollectionTask(collection.getId(), book, token);
+						task.setOnSucceeded(e -> {
+							collectionResponse = task.getValue();			
+								if (!collectionResponse.isSuccess()) {														
+									Alert alert = new Alert(AlertType.INFORMATION);
+									alert.getDialogPane().getStylesheets().add(
+										    getClass().getResource("AlertStyle.css").toExternalForm()
+										);
+									alert.setTitle(resources.getString("alert.booknotfound"));
+									alert.setHeaderText(collectionResponse.getError().getMessage());
+									alert.showAndWait();
+									tracker.taskFailed();
+								} else
+								tracker.taskSucceeded();
+							});
+							task.setOnFailed(e -> {
+								Throwable ex = task.getException();
+					            ex.printStackTrace();
+							});
+							new Thread(task).start();
+													
+					}
+								
+				});
+				
+				tabPane.getTabs().add(collectionsTab);
+				tabPane.getSelectionModel().select(collectionsTab);
+				
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}	
+		}
+		
+		
 	}
 	
 	@FXML
@@ -468,15 +486,14 @@ public class HomeController {
 		            alert.getDialogPane().getStylesheets().add(
 						    getClass().getResource("AlertStyle.css").toExternalForm()
 						);
-		            alert.setTitle("Books removed");
-		            alert.setHeaderText("All books removed successfully from " + actualCollection.getName());
+		            alert.setTitle(resources.getString("alert.booksremove"));
+		            alert.setHeaderText(resources.getString("alert.booksremovefrom") + actualCollection.getName());
 		            alert.showAndWait();
 		            
 		            deselectAllBooks();
 		            removeBooksCollectionItem.setDisable(true);
 					Tab selected = tabPane.getSelectionModel().getSelectedItem();
 					tabPane.getTabs().remove(selected);
-					//openBooksCollection(actualCollection); 
 		            
 		        },
 		        () -> { 
@@ -484,8 +501,8 @@ public class HomeController {
 		            alert.getDialogPane().getStylesheets().add(
 						    getClass().getResource("AlertStyle.css").toExternalForm()
 						);
-		            alert.setTitle("Error");
-		            alert.setHeaderText("Some books could not be removed.");
+		            alert.setTitle(resources.getString("alert.error"));
+		            alert.setHeaderText(resources.getString("alert.booksremovefail"));
 		            alert.showAndWait();
 		            
 		            deselectAllBooks();
@@ -506,7 +523,7 @@ public class HomeController {
 							alert.getDialogPane().getStylesheets().add(
 								    getClass().getResource("AlertStyle.css").toExternalForm()
 								);
-							alert.setTitle("Book not found");
+							alert.setTitle(resources.getString("alert.booknotfound"));
 							alert.setHeaderText(collectionResponse.getError().getMessage());
 							alert.showAndWait();
 							tracker.taskFailed();
@@ -538,17 +555,18 @@ public class HomeController {
 		deselectAllBooks();
 		if (jwtUtils.isTokenExpired(token) || token==null) {
 			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginTab.fxml"));
+				ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginTab.fxml"),bundle);
 				Parent loginRoot = loader.load();
 			
 				LoginController controller = loader.getController();
-				Tab loginTab = new Tab("Login", loginRoot);
+				Tab loginTab = new Tab(resources.getString("label.header8"), loginRoot);
 				controller.setOnLoginClicked(token -> {
 					this.token = token;
 					if (!jwtUtils.isTokenExpired(token)) {
 						enableButtons();
-						openLoggedTab("Logged in!");
-						tabPane.getTabs().remove(loginTab);
+						tabPane.getTabs().clear();
+						openLoggedTab(resources.getString("label.header9"));
 						profileMenu.setText(controller.getUsername().substring(0, 1).toUpperCase() + controller.getUsername().substring(1));
 					}
 				});	
@@ -573,16 +591,17 @@ public class HomeController {
 	public void openRegisterTab() {
 		deselectAllBooks();
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("RegisterTab.fxml"));
+			ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("RegisterTab.fxml"), bundle);
 			Parent registerRoot = loader.load();
 			
 			RegisterController controller = loader.getController();
-			Tab registerTab = new Tab("Register", registerRoot);
+			Tab registerTab = new Tab(resources.getString("label.header7"), registerRoot);
 			controller.setOnRegisterClicked(token -> {
 				this.token = token;
 				if (!jwtUtils.isTokenExpired(token)) {
 					enableButtons();
-					openLoggedTab("Registered");
+					openLoggedTab(resources.getString("label.header10"));
 					tabPane.getTabs().remove(registerTab);
 				}
 			});	
@@ -602,20 +621,20 @@ public class HomeController {
 	
 	public void openLoggedTab(String header) {
 		try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("LoggedTab.fxml"));
-				Parent loggedRoot = loader.load();
+			ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("LoggedTab.fxml"),bundle);
+			Parent loggedRoot = loader.load();
 			
-				LoggedController controller = loader.getController();
-				controller.setWelcomeUsername(header, jwtUtils.getUsernameToken(token));
-				Tab loggedTab = new Tab("Login", loggedRoot);
-				
-				tabPane.getTabs().clear();
-				tabPane.getTabs().add(loggedTab);
-				tabPane.getSelectionModel().select(loggedTab);
+			LoggedController controller = loader.getController();
+			controller.setWelcomeUsername(header, jwtUtils.getUsernameToken(token));
+			Tab loggedTab = new Tab(resources.getString("label.header9"), loggedRoot);
+							
+			tabPane.getTabs().add(loggedTab);
+			tabPane.getSelectionModel().select(loggedTab);
 			
-				} catch (IOException e) {
-					e.printStackTrace();
-				}	
+			} catch (IOException e) {
+				e.printStackTrace();
+			}	
 	}
 	
 	
@@ -635,8 +654,8 @@ public class HomeController {
 		alert.getDialogPane().getStylesheets().add(
 			    getClass().getResource("AlertStyle.css").toExternalForm()
 			);
-		alert.setTitle("Confirm");
-		alert.setHeaderText("Are you sure you want to delete your account?");
+		alert.setTitle(resources.getString("alert.confirm"));
+		alert.setHeaderText(resources.getString("alert.confirmdeleteaccount"));
 		Optional<ButtonType> result = alert.showAndWait();
 		ButtonType button = result.orElse(ButtonType.CANCEL);
 		
@@ -649,7 +668,7 @@ public class HomeController {
 					alert2.getDialogPane().getStylesheets().add(
 						    getClass().getResource("AlertStyle.css").toExternalForm()
 						);
-					alert2.setTitle("Account deleted");
+					alert2.setTitle(resources.getString("alert.deletedaccount"));
 					alert2.setHeaderText(response.getData());
 					alert2.showAndWait();
 					logout();					
@@ -701,5 +720,34 @@ public class HomeController {
 	
 	public String getToken() {
 		return token;
+	}
+	
+	public void setToken(String token) {
+		this.token=token;
+	}
+	
+	@FXML
+	public void switchLanguage () {
+		if (Language.getLocale().equals(Locale.GERMAN)) 
+			Language.setLocale(Locale.ENGLISH);
+		 else Language.setLocale(Locale.GERMAN);
+		
+		Stage stage = (Stage) rootPane.getScene().getWindow();
+		controllerList.clear();
+		ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"),bundle);
+	    	   	    
+	    try {
+	    	Parent root = loader.load();
+		    HomeController controller = loader.getController();
+		    if (token!=null && !jwtUtils.isTokenExpired(token)) {
+		    	controller.setToken(this.token);
+		    	controller.enableButtons();
+		    }
+	        stage.setScene(new Scene(root));
+	        
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 }

@@ -20,7 +20,7 @@
    <top>
       <AnchorPane prefHeight="46.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="headerLabel" alignment="TOP_LEFT" layoutX="140.0" layoutY="18.0" prefHeight="28.0" prefWidth="281.0" text="Update Book">
+            <Label fx:id="headerLabel" alignment="TOP_LEFT" layoutX="140.0" layoutY="18.0" prefHeight="28.0" prefWidth="281.0" text="%label.header6">
                <font>
                   <Font name="SansSerif Regular" size="18.0" />
                </font>
@@ -41,18 +41,18 @@
                            <children>
                               <TextField fx:id="isbnField" prefHeight="37.0" prefWidth="149.0" promptText="ISBN" />
                               <Region prefHeight="37.0" prefWidth="14.0" />
-                              <TextField fx:id="titleField" prefHeight="37.0" prefWidth="192.0" promptText="Title" />
+                              <TextField fx:id="titleField" prefHeight="37.0" prefWidth="192.0" promptText="%field.title" />
                               <Region prefHeight="37.0" prefWidth="15.0" />
-                              <TextField fx:id="authorField" prefHeight="37.0" prefWidth="191.0" promptText="Author" />
+                              <TextField fx:id="authorField" prefHeight="37.0" prefWidth="191.0" promptText="%field.author" />
                               <Region prefHeight="13.0" prefWidth="593.0" />
-                              <TextField fx:id="publisherField" prefHeight="37.0" prefWidth="148.0" promptText="Publisher" />
+                              <TextField fx:id="publisherField" prefHeight="37.0" prefWidth="148.0" promptText="%field.publisher" />
                               <Region prefHeight="37.0" prefWidth="14.0" />
-                              <TextField fx:id="publishPlaceField" prefHeight="37.0" prefWidth="152.0" promptText="Publish Place" />
+                              <TextField fx:id="publishPlaceField" prefHeight="37.0" prefWidth="152.0" promptText="%field.place" />
                               <Region prefHeight="37.0" prefWidth="15.0" />
                               <DatePicker fx:id="publishDateField" prefHeight="37.0" prefWidth="188.0" promptText="dd-mm-yyyy" />
                               <Region prefHeight="13.0" prefWidth="607.0" />
                               <Region prefHeight="34.0" prefWidth="9.0" />
-                              <Button fx:id="addCoverButton" mnemonicParsing="false" onAction="#loadImage" prefHeight="27.0" prefWidth="98.0" text="Add cover" textFill="WHITE">
+                              <Button fx:id="addCoverButton" mnemonicParsing="false" onAction="#loadImage" prefHeight="27.0" prefWidth="119.0" text="%button.cover" textFill="WHITE">
                                  <font>
                                     <Font name="SansSerif Regular" size="15.0" />
                                  </font>
@@ -64,18 +64,18 @@
                                  </font>
                               </Label>
                               <Region prefHeight="13.0" prefWidth="602.0" />
-                              <TextField fx:id="tagsField" prefHeight="37.0" prefWidth="563.0" promptText="Insert Tags separated with ','" />
+                              <TextField fx:id="tagsField" prefHeight="37.0" prefWidth="563.0" promptText="%field.tags" />
                               <Region prefHeight="14.0" prefWidth="613.0" />
                               <Region prefHeight="37.0" prefWidth="14.0" />
-                              <CheckBox fx:id="availableCheckBox" mnemonicParsing="false" text="Available">
+                              <CheckBox fx:id="availableCheckBox" mnemonicParsing="false" text="%check.available">
                                  <font>
                                     <Font name="SansSerif Regular" size="15.0" />
                                  </font>
                               </CheckBox>
                               <Region prefHeight="37.0" prefWidth="14.0" />
-                              <TextField fx:id="numberPagesField" prefHeight="37.0" prefWidth="160.0" promptText="Number of pages" />
+                              <TextField fx:id="numberPagesField" prefHeight="37.0" prefWidth="160.0" promptText="%field.pages" />
                               <Region prefHeight="33.0" prefWidth="591.0" />
-                              <Button fx:id="updateButton" mnemonicParsing="false" onAction="#update" prefHeight="32.0" prefWidth="94.0" text="Update" textFill="WHITE">
+                              <Button fx:id="updateButton" mnemonicParsing="false" onAction="#update" prefHeight="32.0" prefWidth="142.0" text="%button.update" textFill="WHITE">
                                  <font>
                                     <Font name="SansSerif Regular" size="16.0" />
                                  </font>
@@ -90,7 +90,7 @@
                            </children>
                         </FlowPane>
                         <ImageView fx:id="coverImageView" fitHeight="192.0" fitWidth="140.0" layoutX="333.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label layoutX="84.0" layoutY="50.0" prefHeight="63.0" prefWidth="260.0" text="Update Book">
+                        <Label layoutX="84.0" layoutY="50.0" prefHeight="63.0" prefWidth="260.0" text="%label.update">
                            <font>
                               <Font name="SansSerif Regular" size="20.0" />
                            </font>

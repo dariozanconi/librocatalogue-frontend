@@ -40,20 +40,20 @@
                            </graphic>
                         </Button>
                         <Region prefHeight="49.0" prefWidth="8.0" />
-                        <Label fx:id="headerLabel" prefHeight="35.0" prefWidth="406.0" text=" All Books">
+                        <Label fx:id="headerLabel" prefHeight="35.0" prefWidth="406.0" text="%label.header2">
                            <font>
                               <Font name="SansSerif Regular" size="18.0" />
                            </font>
                         </Label>
                         <Region opacity="0.0" prefHeight="49.0" prefWidth="226.0" HBox.hgrow="ALWAYS" />
-                        <MenuButton fx:id="sortMenu" mnemonicParsing="false" prefHeight="35.0" prefWidth="75.0" text=" Sort by">
+                        <MenuButton fx:id="sortMenu" mnemonicParsing="false" prefHeight="35.0" text="%menu.sort">
                            <font>
                               <Font name="SansSerif Regular" size="12.0" />
                            </font>
                            <items>
-                              <MenuItem fx:id="titleItem" mnemonicParsing="false" onAction="#setTitleAsSort" text="title" />
-                              <MenuItem fx:id="authorItem" mnemonicParsing="false" onAction="#setAuthorAsSort" text="author" />
-                              <MenuItem fx:id="publisherItem" mnemonicParsing="false" onAction="#setPublisherAsSort" text="publisher" />
+                              <MenuItem fx:id="titleItem" mnemonicParsing="false" onAction="#setTitleAsSort" text="%item.title" />
+                              <MenuItem fx:id="authorItem" mnemonicParsing="false" onAction="#setAuthorAsSort" text="%item.author" />
+                              <MenuItem fx:id="publisherItem" mnemonicParsing="false" onAction="#setPublisherAsSort" text="%item.publisher" />
                            </items>
                         </MenuButton>
                         <Label fx:id="pageLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="78.0" text="1-20">

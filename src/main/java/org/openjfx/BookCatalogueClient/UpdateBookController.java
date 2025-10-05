@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
@@ -35,6 +36,9 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.StringConverter;
 
 public class UpdateBookController {
+	
+	@FXML 
+	private ResourceBundle resources;
 	
 	@FXML
 	BorderPane rootNode;
@@ -155,39 +159,39 @@ public class UpdateBookController {
 		updatedBook.setAvailable(availableCheckBox.isSelected());
 		updatedBook.setTags(readTags(tagsField.getText()));
 		
-		if(!updatedBook.getTitle().isBlank() && !updatedBook.getAuthor().isBlank() && !updatedBook.getIsbn().isBlank()) {
-			Task<ApiResponse<String>> task = bookTasks.updateBookTask(updatedBook.getId(), updatedBook, selectedFile, token);
+		
+		Task<ApiResponse<String>> task = bookTasks.updateBookTask(updatedBook.getId(), updatedBook, selectedFile, token);
 			
-			task.setOnSucceeded(e -> {
-				response = task.getValue();			
-					if (response.isSuccess()) {														
-						Alert alert = new Alert(AlertType.INFORMATION);
-						alert.getDialogPane().getStylesheets().add(
-							    getClass().getResource("AlertStyle.css").toExternalForm()
-							);
-						alert.setTitle("Book updated!");
-						alert.setHeaderText(response.getData());
-						alert.showAndWait();
-						Tab selected = homeController.getTabPane().getSelectionModel().getSelectedItem();
-						homeController.getTabPane().getTabs().remove(selected);
+		task.setOnSucceeded(e -> {
+			response = task.getValue();			
+				if (response.isSuccess()) {														
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.getDialogPane().getStylesheets().add(
+							   getClass().getResource("AlertStyle.css").toExternalForm()
+						);
+					alert.setTitle(resources.getString("alert.updated"));
+					alert.setHeaderText(resources.getString("alert.updated"));
+					alert.showAndWait();
+					Tab selected = homeController.getTabPane().getSelectionModel().getSelectedItem();
+					homeController.getTabPane().getTabs().remove(selected);
 						
-					} else {
-						Alert alert = new Alert(AlertType.ERROR);
-						alert.getDialogPane().getStylesheets().add(
-							    getClass().getResource("AlertStyle.css").toExternalForm()
-							);
-						alert.setTitle("Failed to update!");
-						alert.setHeaderText(response.getData());
-						alert.showAndWait();
-					}
+				} else {
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.getDialogPane().getStylesheets().add(
+							   getClass().getResource("AlertStyle.css").toExternalForm()
+						);
+					alert.setTitle(resources.getString("alert.updatefail"));
+					alert.setHeaderText(response.getData());
+					alert.showAndWait();
+				}
 				
-				});
-				task.setOnFailed(e -> {
-					Throwable ex = task.getException();
-		            ex.printStackTrace();
-				});
-				new Thread(task).start();
-		}
+			});
+			task.setOnFailed(e -> {
+				Throwable ex = task.getException();
+		        ex.printStackTrace();
+			});
+		new Thread(task).start();
+		
 		
 	}
 	
@@ -212,7 +216,7 @@ public class UpdateBookController {
 	@FXML
 	public void loadImage() {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Resource File");
+		fileChooser.setTitle(resources.getString("chooser.title"));
 		fileChooser.getExtensionFilters().addAll(
 		         new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
 		selectedFile = fileChooser.showOpenDialog(rootNode.getScene().getWindow());

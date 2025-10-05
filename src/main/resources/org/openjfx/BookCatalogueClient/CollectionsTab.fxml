@@ -18,7 +18,7 @@
          <top>
             <AnchorPane prefHeight="46.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="headerLabel" alignment="TOP_LEFT" layoutX="127.0" layoutY="15.0" prefHeight="31.0" prefWidth="281.0" text="Collections">
+                  <Label fx:id="headerLabel" alignment="TOP_LEFT" layoutX="127.0" layoutY="15.0" prefHeight="31.0" prefWidth="281.0" text="%label.header4">
                      <font>
                         <Font name="SansSerif Regular" size="18.0" />
                      </font>
@@ -34,26 +34,16 @@
                         <Region opacity="0.0" prefHeight="1100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
                         <AnchorPane prefHeight="500.0" prefWidth="797.0">
                            <children>
-                              <Button fx:id="addButton" layoutX="35.0" layoutY="411.0" mnemonicParsing="false" onAction="#addCollection" prefHeight="36.0" prefWidth="132.0" text="Add Collection" textFill="WHITE">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Button>
                               <ListView fx:id="collectionList" layoutX="29.0" layoutY="138.0" prefHeight="260.0" prefWidth="580.0" />
-                              <Button fx:id="deleteButton" layoutX="178.0" layoutY="411.0" mnemonicParsing="false" onAction="#deleteCollection" prefHeight="36.0" prefWidth="155.0" text="Delete Collection" textFill="WHITE">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="14.0" />
-                                 </font>
-                              </Button>
                               <Region layoutX="47.0" layoutY="596.0" prefHeight="200.0" prefWidth="596.0" />
-                              <Label fx:id="messageLabel" layoutX="29.0" layoutY="104.0" prefHeight="34.0" prefWidth="536.0" text=" Open or select a collection:">
+                              <Label fx:id="messageLabel" layoutX="29.0" layoutY="104.0" prefHeight="34.0" prefWidth="536.0" text="%label.open">
                                  <font>
                                     <Font name="SansSerif Regular" size="13.0" />
                                  </font>
                               </Label>
                               <StackPane alignment="BOTTOM_RIGHT" layoutX="29.0" layoutY="37.0" prefHeight="53.0" prefWidth="344.0">
                                  <children>
-                                    <TextField fx:id="searchField" prefHeight="43.0" prefWidth="216.0" promptText="Search Collections">
+                                    <TextField fx:id="searchField" prefHeight="43.0" prefWidth="216.0" promptText="%field.searchcollections">
                                        <font>
                                           <Font name="SansSerif Regular" size="13.0" />
                                        </font>
@@ -61,6 +51,21 @@
                                     <Button fx:id="searchButton" alignment="CENTER" mnemonicParsing="false" onAction="#searchCollections" prefHeight="43.0" prefWidth="47.0" text="🔍" />
                                  </children>
                               </StackPane>
+                              <HBox layoutX="35.0" layoutY="411.0" prefHeight="89.0" prefWidth="494.0">
+                                 <children>
+                                    <Button fx:id="addButton" mnemonicParsing="false" onAction="#addCollection" prefHeight="36.0" text="%button.addcollection" textFill="WHITE">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                    <Region prefHeight="50.0" prefWidth="14.0" />
+                                    <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteCollection" prefHeight="36.0" text="%button.deletecollection" textFill="WHITE">
+                                       <font>
+                                          <Font name="SansSerif Regular" size="14.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </HBox>
                            </children>
                         </AnchorPane>
                         <Region opacity="0.0" prefHeight="1100.0" prefWidth="316.0" HBox.hgrow="ALWAYS" />

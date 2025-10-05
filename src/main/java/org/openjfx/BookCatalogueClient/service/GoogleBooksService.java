@@ -47,11 +47,13 @@ public class GoogleBooksService {
 		        ObjectMapper mapper = new ObjectMapper();
 
 		        JsonNode root = mapper.readTree(body);		 
-		        JsonNode bookData = root.path("items").get(0).path("volumeInfo");
+		        JsonNode bookRoot = root.path("items").get(0);
 		        
-		        if (bookData.isMissingNode() || bookData.isEmpty()) {
+		        if (bookRoot == null) {
 		            return null;
 		        }
+		        
+		        JsonNode bookData = root.path("items").get(0).path("volumeInfo");
 		        book.setIsbn(isbn);	        
 		        book.setTitle(bookData.has("title") ? bookData.path("title").asText() : null);
 		        book.setPages(bookData.has("pageCount") ? bookData.get("pageCount").asInt() : 0);

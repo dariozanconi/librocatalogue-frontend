@@ -3,6 +3,7 @@ package org.openjfx.BookCatalogueClient;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import org.openjfx.BookCatalogueClient.model.ApiResponse;
 import org.openjfx.BookCatalogueClient.model.Book;
@@ -23,7 +24,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 
 public class BookDetailsController {
- 
+	
+	@FXML 
+	private ResourceBundle resources;
+	
 	@FXML
 	FlowPane tagPane;
 	
@@ -99,15 +103,15 @@ public class BookDetailsController {
 		titleLabel.setText(book.getTitle());
 		authorLabel.setText(book.getAuthor());
 		if (book.getPublisher()!=null)
-			publisherLabel.setText("Publisher: " + book.getPublisher());
+			publisherLabel.setText(book.getPublisher());
 		if (book.getPublishPlace()!=null)
-			publishPlaceLabel.setText("Place of publication: " + book.getPublishPlace());
+			publishPlaceLabel.setText(book.getPublishPlace());
 		
 		DateTimeFormatter uiFormatter = DateTimeFormatter.ofPattern("yyyy");
 		if (book.getPublishDate()!=null)
-			publishDateLabel.setText("Publication date: " + book.getPublishDate().format(uiFormatter));
-		isbnLabel.setText("ISBN: " + book.getIsbn());
-		pagesLabel.setText("Pages: " + String.valueOf(book.getPages()));
+			publishDateLabel.setText(book.getPublishDate().format(uiFormatter));
+		isbnLabel.setText(book.getIsbn());
+		pagesLabel.setText(String.valueOf(book.getPages()));
 		if (book.isAvailable()) {
 			availableLabel.setText("Available ");
 			availableImage.setImage(new Image(getClass().getResource("icons/ready-stock.png").toExternalForm()));
@@ -213,14 +217,14 @@ public class BookDetailsController {
 	public void addToCollection() {
 	
 		try {
-		
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("CollectionsTab.fxml"));
+			ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("CollectionsTab.fxml"),bundle);
 			Parent collectionsRoot = loader.load();
 		
 			CollectionsTabController controller = loader.getController();
-			Tab collectionsTab = new Tab("Collections", collectionsRoot);
+			Tab collectionsTab = new Tab(resources.getString("label.header4"), collectionsRoot);
 			
-			controller.setHeader("Select the collection where you want to add the book:");
+			controller.setHeader(resources.getString("label.selectcollection"));
 			controller.setOnCollectionClicked( collection -> {	
 				Task<ApiResponse<Book>> task = collectionsTasks.addBookCollectionTask(collection.getId(), book, token);
 				task.setOnSucceeded(e -> {
@@ -230,7 +234,7 @@ public class BookDetailsController {
 							alert.getDialogPane().getStylesheets().add(
 								    getClass().getResource("AlertStyle.css").toExternalForm()
 								);
-							alert.setTitle("Book not found");
+							alert.setTitle(resources.getString("alert.booknotfound"));
 							alert.setHeaderText(collectionResponse.getError().getMessage());
 							alert.showAndWait();					
 						} else {
@@ -238,8 +242,8 @@ public class BookDetailsController {
 							alert.getDialogPane().getStylesheets().add(
 								    getClass().getResource("AlertStyle.css").toExternalForm()
 								);
-							alert.setTitle("Book added");
-							alert.setHeaderText("Book added successfully to "+collection.getName());
+							alert.setTitle(resources.getString("alert.bookadd"));
+							alert.setHeaderText(resources.getString("alert.addedtocollection")+collection.getName());
 							alert.showAndWait();
 						}
 						homeController.getTabPane().getTabs().remove(collectionsTab);

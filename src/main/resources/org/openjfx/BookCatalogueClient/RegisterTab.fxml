@@ -21,7 +21,7 @@
                   <Region opacity="0.0" prefHeight="425.0" prefWidth="78.0" />
                   <VBox alignment="TOP_CENTER" prefHeight="425.0" prefWidth="214.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="85.0" prefWidth="214.0" text="Register">
+                        <Label alignment="CENTER" prefHeight="85.0" prefWidth="214.0" text="%label.register">
                            <font>
                               <Font name="SansSerif Regular" size="35.0" />
                            </font>
@@ -43,7 +43,7 @@
                         <TextField fx:id="codeField" prefHeight="41.0" prefWidth="214.0" promptText="Code" />
                         <Label fx:id="errorLabel" prefHeight="22.0" prefWidth="214.0" textFill="RED" />
                         <Region opacity="0.0" prefHeight="12.0" prefWidth="214.0" />
-                        <Button fx:id="registerButton" mnemonicParsing="false" onAction="#register" prefHeight="30.0" prefWidth="214.0" text="Register" textFill="#fffafa">
+                        <Button fx:id="registerButton" mnemonicParsing="false" onAction="#register" prefHeight="30.0" prefWidth="214.0" text="%button.register" textFill="#fffafa">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -51,12 +51,12 @@
                         <Region opacity="0.0" prefHeight="41.0" prefWidth="214.0" />
                         <HBox fx:id="registerBox" prefHeight="24.0" prefWidth="214.0">
                            <children>
-                              <Label alignment="CENTER" prefHeight="24.0" prefWidth="153.0" text="Have already an account?  ">
+                              <Label alignment="CENTER" prefHeight="24.0" text="%label.already">
                                  <font>
                                     <Font name="SansSerif Regular" size="12.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="loginButton" mnemonicParsing="false" onAction="#openLogin" prefHeight="24.0" prefWidth="56.0" text="Login" textFill="WHITE">
+                              <Button fx:id="loginButton" mnemonicParsing="false" onAction="#openLogin" prefHeight="24.0" text="%button.login" textFill="WHITE">
                                  <font>
                                     <Font name="SansSerif Bold" size="12.0" />
                                  </font>
@@ -73,7 +73,7 @@
    <top>
       <AnchorPane prefHeight="46.0" prefWidth="1100.0" stylesheets="@stylesheets/HomeStyle.css" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="headerLabel" alignment="TOP_LEFT" layoutX="127.0" layoutY="18.0" prefHeight="29.0" prefWidth="281.0" text="Register">
+            <Label fx:id="headerLabel" alignment="TOP_LEFT" layoutX="127.0" layoutY="18.0" prefHeight="29.0" prefWidth="281.0" text="%label.header7">
                <font>
                   <Font name="SansSerif Regular" size="18.0" />
                </font>

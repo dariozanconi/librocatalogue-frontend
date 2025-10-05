@@ -4,6 +4,7 @@ package org.openjfx.BookCatalogueClient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import org.openjfx.BookCatalogueClient.model.ApiResponse;
@@ -35,6 +36,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class CollectionsTabController {
+	
+	@FXML 
+	private ResourceBundle resources;
 	
 	@FXML
 	private ListView<Collection> collectionList;
@@ -184,8 +188,8 @@ public class CollectionsTabController {
 		alert.getDialogPane().getStylesheets().add(
 			    getClass().getResource("AlertStyle.css").toExternalForm()
 			);
-		alert.setTitle("Insert a name");
-		alert.setHeaderText("Please insert a name for the new Collection:");
+		alert.setTitle(resources.getString("alert.collectionname"));
+		alert.setHeaderText(resources.getString("alert.insertname"));
 		alert.getDialogPane().setContent(inputField);
 
 		ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
@@ -211,8 +215,8 @@ public class CollectionsTabController {
 					alert.getDialogPane().getStylesheets().add(
 						    getClass().getResource("AlertStyle.css").toExternalForm()
 						);
-					alert2.setTitle("Cannot add the collections");
-					alert2.setHeaderText("Collection with this name already exists");
+					alert2.setTitle(resources.getString("alert.addcollectionfail"));
+					alert2.setHeaderText(resources.getString("alert.collectionexists"));
 					System.out.println(responseCollection.getError().getMessage());
 					alert2.showAndWait();
 				}
@@ -233,8 +237,8 @@ public class CollectionsTabController {
 		alert.getDialogPane().getStylesheets().add(
 			    getClass().getResource("AlertStyle.css").toExternalForm()
 			);
-		alert.setTitle("Confirm");
-		alert.setHeaderText("Are you sure you want to delete the selected collections?");
+		alert.setTitle(resources.getString("alert.confirm"));
+		alert.setHeaderText(resources.getString("alert.deletecollectionconfirm"));
 		Optional<ButtonType> result = alert.showAndWait();
 		ButtonType button = result.orElse(ButtonType.CANCEL);
 	
@@ -245,8 +249,8 @@ public class CollectionsTabController {
 						alert2.getDialogPane().getStylesheets().add(
 							    getClass().getResource("AlertStyle.css").toExternalForm()
 							);
-						alert2.setTitle("Collections deleted");
-						alert2.setHeaderText("Collections deleted successfully");
+						alert2.setTitle(resources.getString("alert.deletedcollection"));
+						alert2.setHeaderText(resources.getString("alert.deletedcollectionsuccess"));
 						alert2.showAndWait();
 						
 						Tab selected = homeController.getTabPane().getSelectionModel().getSelectedItem();
@@ -258,8 +262,8 @@ public class CollectionsTabController {
 				        alert3.getDialogPane().getStylesheets().add(
 							    getClass().getResource("AlertStyle.css").toExternalForm()
 							);
-				        alert3.setTitle("Error");
-				        alert3.setHeaderText("Some collections could not be deleted.");
+				        alert3.setTitle(resources.getString("alert.error"));
+				        alert3.setHeaderText(resources.getString("alert.deletecollectionfail"));
 				        alert3.showAndWait();
 				        
 				        Tab selected = homeController.getTabPane().getSelectionModel().getSelectedItem();
@@ -276,7 +280,8 @@ public class CollectionsTabController {
 						alert2.getDialogPane().getStylesheets().add(
 							    getClass().getResource("AlertStyle.css").toExternalForm()
 							);
-						alert2.setTitle("Collection not found");
+						alert2.setTitle(resources.getString("alert.error"));
+						alert2.setHeaderText(resources.getString("alert.collectionnotfound"));
 						alert2.showAndWait();
 						tracker.taskFailed();
 					} else {

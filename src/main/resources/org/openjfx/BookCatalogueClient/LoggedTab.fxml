@@ -19,7 +19,7 @@
                   <VBox alignment="TOP_CENTER" prefHeight="425.0" prefWidth="294.0">
                      <children>
                         <Region opacity="0.0" prefHeight="56.0" prefWidth="214.0" />
-                        <Label fx:id="headerLabel" alignment="BOTTOM_CENTER" prefHeight="76.0" prefWidth="260.0" text="Logged!">
+                        <Label fx:id="headerLabel" alignment="BOTTOM_CENTER" prefHeight="76.0" prefWidth="260.0" text="%label.logged">
                            <font>
                               <Font name="SansSerif Regular" size="35.0" />
                            </font>
@@ -39,7 +39,7 @@
    <top>
       <AnchorPane prefHeight="46.0" prefWidth="1100.0" stylesheets="@stylesheets/HomeStyle.css" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="TOP_LEFT" layoutX="136.0" layoutY="18.0" prefHeight="29.0" prefWidth="281.0" text="Login">
+            <Label alignment="TOP_LEFT" layoutX="136.0" layoutY="18.0" prefHeight="29.0" prefWidth="281.0" text="%label.header9">
                <font>
                   <Font name="SansSerif Regular" size="18.0" />
                </font>

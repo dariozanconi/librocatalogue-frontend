@@ -17,6 +17,8 @@ import javafx.scene.layout.StackPane;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import org.openjfx.BookCatalogueClient.model.ApiResponse;
 import org.openjfx.BookCatalogueClient.model.Book;
@@ -25,6 +27,9 @@ import org.openjfx.BookCatalogueClient.model.PageResponse;
 import org.openjfx.BookCatalogueClient.task.ApiTask;
 
 public class BooksTabController {
+	
+	@FXML 
+	private ResourceBundle resources;
 	
 	@FXML
 	private StackPane rootPane;
@@ -82,7 +87,7 @@ public class BooksTabController {
 	
 	
 	public void initNormal() {	
-		sortMenu = new MenuButton("Sort By");    		
+		sortMenu = new MenuButton(resources.getString("menu.sort"));    		
 	    loadBooks(currentPage, pageSize, "title");
 	    	    		
 	}
@@ -99,7 +104,7 @@ public class BooksTabController {
 	
 	@FXML
 	public void refresh() {
-		sortMenu = new MenuButton("Sort By");    		
+		sortMenu = new MenuButton(resources.getString("menu.sort"));    		
 	    loadBooks(currentPage, pageSize, "title");
 	}
 	
@@ -131,8 +136,8 @@ public class BooksTabController {
 				alert.getDialogPane().getStylesheets().add(
 					    getClass().getResource("AlertStyle.css").toExternalForm()
 					);
-				alert.setTitle("Error loading");
-				alert.setHeaderText(String.valueOf(response.getStatus()) + " Connection Failed");
+				alert.setTitle(resources.getString("alert.errorload"));
+				alert.setHeaderText(resources.getString("alert.connection"));
 				alert.showAndWait();
 				System.out.println(response.getStatus());
 			}
@@ -183,7 +188,8 @@ public class BooksTabController {
 	
 	public void showBookDetails(Book book) {
 	        try {
-	            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetailsTab.fxml"));
+	        	ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetailsTab.fxml"), bundle);
 	            Node detailsRoot = loader.load();
 
 	            BookDetailsController controller = loader.getController();
@@ -241,8 +247,8 @@ public class BooksTabController {
 				alert.getDialogPane().getStylesheets().add(
 					    getClass().getResource("AlertStyle.css").toExternalForm()
 					);
-				alert.setTitle("Error loading");
-				alert.setHeaderText(String.valueOf(response.getStatus()) + " Connection Failed");
+				alert.setTitle(resources.getString("alert.errorload"));
+				alert.setHeaderText(resources.getString("alert.connection"));
 				alert.showAndWait();
 				System.out.println(response.getStatus());
 			}
@@ -298,8 +304,8 @@ public class BooksTabController {
 				alert.getDialogPane().getStylesheets().add(
 					    getClass().getResource("AlertStyle.css").toExternalForm()
 					);
-				alert.setTitle("Error loading");
-				alert.setHeaderText(String.valueOf(response.getStatus()) + " Connection Failed");
+				alert.setTitle(resources.getString("alert.errorload"));
+				alert.setHeaderText(resources.getString("alert.connection"));
 				alert.showAndWait();
 				System.out.println(response.getStatus());
 			}
@@ -330,7 +336,8 @@ public class BooksTabController {
 	public void backToBooks() {
 				
 		try {
-			FXMLLoader booksLoader = new FXMLLoader(getClass().getResource("BooksTab.fxml"));
+			ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+			FXMLLoader booksLoader = new FXMLLoader(getClass().getResource("BooksTab.fxml"), bundle);
 			Parent content = booksLoader.load();
 			BooksTabController controller = booksLoader.getController();	
 			

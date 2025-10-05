@@ -1,11 +1,11 @@
 package org.openjfx.BookCatalogueClient;
 
-import java.awt.Event;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.openjfx.BookCatalogueClient.model.BookDto;
 import org.openjfx.BookCatalogueClient.model.Collection;
@@ -36,6 +36,9 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.StringConverter;
 
 public class AddBookController {
+	
+	@FXML 
+	private ResourceBundle resources;
 	
 	@FXML
 	BorderPane rootNode;
@@ -140,7 +143,7 @@ public class AddBookController {
 	
 	@FXML
 	public void loadManual() {
-		
+		messageLabel.setText("");
 		book = new Book();
 		book.setTitle(titleField.getText());
 		book.setAuthor(authorField.getText());
@@ -161,29 +164,48 @@ public class AddBookController {
 				books.add(new BookDto(book));
 			titles.add(book.getTitle());
 			bookListView.setItems(titles);
+		} else {
+			 Alert alert = new Alert(AlertType.ERROR);
+			 alert.getDialogPane().getStylesheets().add(
+					    getClass().getResource("AlertStyle.css").toExternalForm()
+					);
+			 alert.setTitle(resources.getString("alert.warning"));
+			 alert.setContentText(resources.getString("alert.manualadderror"));
+			 alert.showAndWait();
 		}
 	}
 	
 	@FXML
 	public void loadFromOpenBook() {
+		messageLabel.setText("");		
 		bookDto = new BookDto();
 		
 		if (!isbnField.getText().isEmpty()) {
 			Task<BookDto> task = bookTasks.parseBookTask(isbnField.getText());
 			task.setOnSucceeded(e -> {
 				 bookDto = task.getValue();	
-				 if (bookDto != null) {
+				 if (bookDto != null && !titles.stream().anyMatch(title -> title.equalsIgnoreCase(bookDto.getBook().getTitle()))) {
 					 books.add(bookDto);
 					 titles.add(bookDto.getBook().getTitle());
-					 System.out.println(bookDto.getBook().getTitle());
 					 bookListView.setItems(titles);
-				 } else {
+					 isbnField.setText("");
+					 isbnField.requestFocus();
+				 } else if (titles.stream().anyMatch(title -> title.equalsIgnoreCase(bookDto.getBook().getTitle()))){
 					 Alert alert = new Alert(AlertType.ERROR);
 					 alert.getDialogPane().getStylesheets().add(
 							    getClass().getResource("AlertStyle.css").toExternalForm()
 							);
-					 alert.setTitle("Warning");
-					 alert.setHeaderText("Book not found! \nPlease insert it manually");
+					 alert.setTitle(resources.getString("alert.warning"));
+					 alert.setHeaderText(resources.getString("alert.alreadyinqueue"));
+					 alert.showAndWait();					 
+				 } else {
+					 
+					 Alert alert = new Alert(AlertType.ERROR);
+					 alert.getDialogPane().getStylesheets().add(
+							    getClass().getResource("AlertStyle.css").toExternalForm()
+							);
+					 alert.setTitle(resources.getString("alert.warning"));
+					 alert.setHeaderText(resources.getString("alert.booknotloaded"));
 					 alert.showAndWait();
 				 }
 				 
@@ -195,8 +217,8 @@ public class AddBookController {
 				alert.getDialogPane().getStylesheets().add(
 					    getClass().getResource("AlertStyle.css").toExternalForm()
 					);
-				alert.setTitle("Warning");
-				alert.setHeaderText("Insert a correct ISBN!");
+				alert.setTitle(resources.getString("alert.warning"));
+				alert.setHeaderText(resources.getString("alert.booknotloaded"));
 				alert.showAndWait();
 			});
 			new Thread(task).start();
@@ -210,6 +232,8 @@ public class AddBookController {
 		books.clear();
 		titles.clear();
 		bookListView.getItems().clear();
+		messageLabel.setText("");
+		isbnField.requestFocus();
 	}
 	
 	@FXML
@@ -224,15 +248,16 @@ public class AddBookController {
 						if (response.isSuccess()) {	
 							if (!collectionsBox.getValue().getName().equals("none")) {
 								addBookToCollection(collectionsBox.getValue(), response.getData());
+								messageLabel.setText(resources.getString("alert.booksaddtodatabase"));
 							}							
 						} else {
 							Alert alert = new Alert(AlertType.ERROR);
 							alert.getDialogPane().getStylesheets().add(
 								    getClass().getResource("AlertStyle.css").toExternalForm()
 								);
-							alert.setTitle("Cannot add the book");
-							alert.setHeaderText("Cannot add the book" + bookToAdd.getBook().getTitle());
-							System.out.println(response.getStatus() + " "+ response.getError().getMessage());
+							alert.setTitle(resources.getString("alert.bookaddfail"));
+							alert.setHeaderText(resources.getString("alert.bookaddfail")+ bookToAdd.getBook().getTitle());
+							alert.setContentText(resources.getString("alert.bookexists"));
 							alert.showAndWait();
 						}
 					});
@@ -243,8 +268,7 @@ public class AddBookController {
 					new Thread(task).start();
 				}				
 			}
-			
-			messageLabel.setText("Books added in the database");
+		
 			books.clear();
 			titles.clear();
 			bookListView.setItems(titles);
@@ -286,7 +310,7 @@ public class AddBookController {
 	@FXML
 	public void loadImage() {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Resource File");
+		fileChooser.setTitle(resources.getString("chooser.title"));
 		fileChooser.getExtensionFilters().addAll(
 		         new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
 		selectedFile = fileChooser.showOpenDialog(rootNode.getScene().getWindow());
