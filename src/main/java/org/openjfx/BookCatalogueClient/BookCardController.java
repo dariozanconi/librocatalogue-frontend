@@ -33,7 +33,7 @@ public class BookCardController {
 		
 		this.book = book;
 		titleLabel.setText(book.getTitle());
-		authorLabel.setText(book.getAuthor());
+		authorLabel.setText(book.getAuthorSort());
 		
 		Task<Image> loadImageTask = new Task<>() {
 	        @Override

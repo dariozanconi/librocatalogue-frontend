@@ -10,6 +10,7 @@ public class Book {
     private String isbn;
     private String title;
     private String author;
+    private String authorSort;
     private boolean available;
     
     private LocalDate publishDate;
@@ -70,6 +71,14 @@ public class Book {
 
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+	
+	public String getAuthorSort() {
+		return authorSort;
+	}
+
+	public void setAuthorSort(String authorSort) {
+		this.authorSort = authorSort;
 	}
 
 	public boolean isAvailable() {

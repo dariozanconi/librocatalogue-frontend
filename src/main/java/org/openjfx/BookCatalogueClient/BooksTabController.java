@@ -378,7 +378,7 @@ public class BooksTabController {
 	
 	@FXML
 	public void setAuthorAsSort() {
-		currentSort = "author";
+		currentSort = "authorSort";
 		loadBooks(currentPage, pageSize, currentSort);
 	}
 	

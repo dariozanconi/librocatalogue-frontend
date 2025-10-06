@@ -25,7 +25,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class CollectionServiceClient {
 	
-	String urlDomain = DomainConstant.DOMAIN_PUBLIC;
+	String urlDomain = DomainConstant.DOMAIN_LOCAL;
 	
 	public ApiResponse<List<Collection>> getAllCollections() {
 		
