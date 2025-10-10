@@ -56,9 +56,9 @@
                   </Button>
                   <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveBooks" prefHeight="44.0" text="%button.save" HBox.hgrow="SOMETIMES">
                      <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="31.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@icons/save.png" />
+                              <Image url="@icons/cloud.png" />
                            </image>
                         </ImageView>
                      </graphic>
