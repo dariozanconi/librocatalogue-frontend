@@ -54,7 +54,7 @@
                         <Font name="SansSerif Regular" size="13.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="44.0" text="%button.save" HBox.hgrow="SOMETIMES">
+                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveBooks" prefHeight="44.0" text="%button.save" HBox.hgrow="SOMETIMES">
                      <graphic>
                         <ImageView fitHeight="28.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                            <image>

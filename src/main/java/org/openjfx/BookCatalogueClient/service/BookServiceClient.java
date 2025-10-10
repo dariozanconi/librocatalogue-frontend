@@ -38,7 +38,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 public class BookServiceClient {
 	
 	private final File defaultImage;
-	String urlDomain = DomainConstant.DOMAIN_LOCAL;
+	String urlDomain = DomainConstant.DOMAIN_PUBLIC;
 
     public BookServiceClient() {
 

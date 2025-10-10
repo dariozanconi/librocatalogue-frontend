@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserServiceClient {
 	
-	String urlDomain = DomainConstant.DOMAIN_LOCAL;
+	String urlDomain = DomainConstant.DOMAIN_PUBLIC;
 	
 	public ApiResponse<String> login(Users user) throws JsonProcessingException {
 		

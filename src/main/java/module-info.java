@@ -14,6 +14,7 @@ module org.openjfx.BookCatalogueClient {
 	requires com.fasterxml.jackson.datatype.jsr310;
 
 	requires com.fasterxml.jackson.annotation;
+	requires org.apache.poi.ooxml;
 
 	
     opens org.openjfx.BookCatalogueClient to javafx.fxml;

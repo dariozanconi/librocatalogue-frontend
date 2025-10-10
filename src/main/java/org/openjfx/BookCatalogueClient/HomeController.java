@@ -57,6 +57,9 @@ public class HomeController {
 	private Button searchButton;
 	
 	@FXML
+	private Button saveButton;
+	
+	@FXML
 	private Button addButton;
 	
 	@FXML
@@ -88,6 +91,8 @@ public class HomeController {
 	
 	@FXML
 	private Hyperlink switchLanguage;
+	
+	
 	
 	private String token;
 	private JwtUtils jwtUtils = new JwtUtils();
@@ -681,6 +686,25 @@ public class HomeController {
 			new Thread(task).start();
 		}
 		
+	}
+	
+	@FXML
+	public void saveBooks() {
+		
+		try {
+			ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("SaveTab.fxml"),bundle);
+			Parent saveRoot = loader.load();
+			
+			SaveTabController controller = loader.getController();			
+			Tab saveTab = new Tab(resources.getString("label.header10"), saveRoot);
+							
+			tabPane.getTabs().add(saveTab);
+			tabPane.getSelectionModel().select(saveTab);
+			
+			} catch (IOException e) {
+				e.printStackTrace();
+			}	
 	}
 	
 	
