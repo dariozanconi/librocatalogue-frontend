@@ -1,0 +1,59 @@
+/*AnchorPane {
+	-fx-background-color : #CCDBFA;
+	-fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 15 15 15 15;
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em;
+    /*-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 5.0);
+}
+
+AnchorPane:hover {
+	-fx-background-color : #DEF2FA;
+	
+}
+
+AnchorPane:pressed {
+	-fx-background-color : #CBDEE6;
+	-fx-padding: 0,5,5,5;
+	
+}*/
+
+ImageView:hover {
+	-fx-opacity:0.7;
+}
+
+ImageView:pressed {
+	-fx-opacity:0.5;
+}
+
+BorderPane:hover {
+	-fx-background-color : #EBEBEB
+}
+
+BorderPane:pressed{
+	-fx-background-color : #DEDEDE;
+}
+
+.check-box .box {
+	-fx-background-color: transparent;
+}
+
+.check-box>.box>.mark {
+  -fx-background-position: center;
+  -fx-background-image: url("unmarked.png");  
+  -fx-background-repeat: stretch;
+  -fx-shape: none;
+  -fx-padding: 8px;
+}
+
+.check-box:selected>.box>.mark{
+  -fx-background-color: transparent;
+  -fx-background-image: url("marked.png");
+  -fx-padding: 8px;
+}
+
+.StackPane {
+	-fx-background-color : transparent;
+}
+
+
+

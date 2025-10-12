@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="34.0" prefWidth="223.0" stylesheets="@stylesheets/BookCardSmallStyle.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.BookCatalogueClient.BookCardController">
+   <top>
+      <Region prefHeight="7.0" prefWidth="223.0" BorderPane.alignment="CENTER" />
+   </top>
+   <left>
+      <Region prefHeight="31.0" prefWidth="5.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Region prefHeight="72.0" prefWidth="6.0" BorderPane.alignment="CENTER" />
+   </right>
+   <center>
+      <AnchorPane fx:id="anchorPane" maxHeight="192.0" maxWidth="212.0" prefHeight="40.0" prefWidth="208.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="titleLabel" layoutX="27.0" onMouseClicked="#onCardClicked" prefHeight="23.0" prefWidth="185.0" text="Title">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <CheckBox fx:id="selectBox" layoutX="2.0" layoutY="-2.0" mnemonicParsing="false" onAction="#onCardSelected" prefHeight="26.0" prefWidth="25.0" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

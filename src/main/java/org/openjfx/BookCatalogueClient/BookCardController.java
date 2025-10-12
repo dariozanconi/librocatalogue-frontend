@@ -33,7 +33,8 @@ public class BookCardController {
 		
 		this.book = book;
 		titleLabel.setText(book.getTitle());
-		authorLabel.setText(book.getAuthorSort());
+		if (authorLabel!=null)
+			authorLabel.setText(book.getAuthorSort());
 		
 		Task<Image> loadImageTask = new Task<>() {
 	        @Override
@@ -46,8 +47,8 @@ public class BookCardController {
 				
 	        }
 	    };
-
-	    loadImageTask.setOnSucceeded(e -> coverImage.setImage(loadImageTask.getValue()));
+	    
+	    loadImageTask.setOnSucceeded(e -> { if (coverImage!=null) coverImage.setImage(loadImageTask.getValue()); });
 	    loadImageTask.setOnFailed(e -> {
 	        System.out.println("Failed to load image");
 	    });
