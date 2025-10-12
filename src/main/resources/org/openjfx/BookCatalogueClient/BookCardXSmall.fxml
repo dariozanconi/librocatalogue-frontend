@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="34.0" prefWidth="223.0" stylesheets="@stylesheets/BookCardSmallStyle.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.BookCatalogueClient.BookCardController">
+<BorderPane onMouseClicked="#onCardClicked" prefHeight="34.0" prefWidth="223.0" stylesheets="@stylesheets/BookCardSmallStyle.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.BookCatalogueClient.BookCardController">
    <top>
       <Region prefHeight="7.0" prefWidth="223.0" BorderPane.alignment="CENTER" />
    </top>
@@ -20,7 +20,7 @@
    <center>
       <AnchorPane fx:id="anchorPane" maxHeight="192.0" maxWidth="212.0" prefHeight="40.0" prefWidth="208.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="titleLabel" layoutX="27.0" onMouseClicked="#onCardClicked" prefHeight="23.0" prefWidth="185.0" text="Title">
+            <Label fx:id="titleLabel" layoutX="27.0" prefHeight="23.0" prefWidth="185.0" text="Title">
                <font>
                   <Font size="13.0" />
                </font>

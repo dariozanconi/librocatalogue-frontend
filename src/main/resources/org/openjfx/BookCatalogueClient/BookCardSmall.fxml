@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="67.0" prefWidth="210.0" stylesheets="@stylesheets/BookCardSmallStyle.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.BookCatalogueClient.BookCardController">
+<BorderPane onMouseClicked="#onCardClicked" prefHeight="67.0" prefWidth="210.0" stylesheets="@stylesheets/BookCardSmallStyle.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.BookCatalogueClient.BookCardController">
    <top>
       <Region prefHeight="10.0" prefWidth="222.0" BorderPane.alignment="CENTER" />
    </top>
@@ -21,13 +21,13 @@
    <center>
       <AnchorPane fx:id="anchorPane" maxHeight="192.0" maxWidth="212.0" prefHeight="39.0" prefWidth="208.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="coverImage" accessibleRole="BUTTON" fitHeight="55.0" fitWidth="41.0" layoutX="13.0" layoutY="-1.0" onMouseClicked="#onCardClicked" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="titleLabel" alignment="TOP_LEFT" layoutX="64.0" layoutY="4.0" onMouseClicked="#onCardClicked" prefHeight="20.0" prefWidth="139.0" text="Title">
+            <ImageView fx:id="coverImage" accessibleRole="BUTTON" fitHeight="55.0" fitWidth="41.0" layoutX="13.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="titleLabel" alignment="TOP_LEFT" layoutX="64.0" layoutY="4.0" prefHeight="20.0" prefWidth="139.0" text="Title">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label fx:id="authorLabel" layoutX="65.0" layoutY="24.0" onMouseClicked="#onCardClicked" prefHeight="22.0" prefWidth="137.0" text="Author" />
+            <Label fx:id="authorLabel" layoutX="65.0" layoutY="24.0" prefHeight="22.0" prefWidth="137.0" text="Author" />
             <CheckBox fx:id="selectBox" layoutX="-12.0" layoutY="11.0" mnemonicParsing="false" onAction="#onCardSelected" prefHeight="26.0" prefWidth="25.0" />
          </children>
       </AnchorPane>
