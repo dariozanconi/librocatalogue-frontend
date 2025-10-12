@@ -81,7 +81,13 @@ public class BooksTabController {
 	private HomeController homeController;
 	private String token;
 	private List<BookCardController> controllerList;
-	private Integer iconStatus = 1;
+	private enum IconMode { NORMAL, SMALL, XSMALL }
+	private IconMode iconStatus = IconMode.NORMAL;
+	
+	private enum Mode { NORMAL, COLLECTION, SEARCH }
+	private Mode currentMode = Mode.NORMAL;
+	private Collection currentCollection;
+	private String currentSearchKeyword;
 	List<Book> books;
 	
     public void setHomeController(HomeController homeController) {
@@ -93,11 +99,14 @@ public class BooksTabController {
 	
 	
 	public void initNormal() {	
+		currentMode = Mode.NORMAL;
 		sortMenu = new MenuButton(resources.getString("menu.sort"));    		
 	    loadBooks(currentPage, pageSize, "title");	    	    		
 	}
 	
 	public void initSearch(String keyword) {
+		currentMode = Mode.SEARCH;
+		currentSearchKeyword = keyword;
 		searchBooks(keyword, 0, 20);
 		refreshButton.setDisable(true);
 		iconButton.setDisable(true);
@@ -105,6 +114,8 @@ public class BooksTabController {
     }
 	
 	public void initCollection(Collection collection) {
+		currentMode = Mode.COLLECTION;
+	    currentCollection = collection;
 		loadCollection(collection.getId(), 0, 20);
 		refreshButton.setDisable(true);
 		iconButton.setDisable(true);
@@ -170,16 +181,16 @@ public class BooksTabController {
 	
 	@FXML
 	public void changeIcon() {
-		if (iconStatus==1) {
-			iconStatus=2;
+		if (iconStatus==IconMode.NORMAL) {
+			iconStatus=IconMode.SMALL;
 			pageSize=40;
 			loadBooks(currentPage, pageSize, currentSort);
-		} else if (iconStatus==2) {
-			iconStatus=3;
+		} else if (iconStatus==IconMode.SMALL) {
+			iconStatus=IconMode.XSMALL;
 			pageSize=100;
 			loadBooks(currentPage, pageSize, currentSort);
-		} else if (iconStatus==3) {
-			iconStatus=1;
+		} else if (iconStatus==IconMode.XSMALL) {
+			iconStatus=IconMode.NORMAL;
 			pageSize=20;
 			loadBooks(currentPage, pageSize, currentSort);
 		}
@@ -240,11 +251,11 @@ public class BooksTabController {
 	            loadingLabel.setText("");
 	            PageResponse<Book> page = result.getData();
 	            updatePagination(page);
-	            if (iconStatus==1)  
+	            if (iconStatus==IconMode.NORMAL)  
 	            	showBooks(page.getContent(), "BookCard.fxml");
-	            else if (iconStatus==2)
+	            else if (iconStatus==IconMode.SMALL)
 	            	showBooks(page.getContent(), "BookCardSmall.fxml");
-	            else 
+	            else if (iconStatus==IconMode.XSMALL)
 	            	showBooks(page.getContent(), "BookCardXSmall.fxml");
 	        } else {
 	            showErrorAlert(resources.getString("alert.errorload"), resources.getString("alert.connection"));
@@ -256,7 +267,7 @@ public class BooksTabController {
 	}
 	
 	private void updatePagination(PageResponse<Book> page) {
-		if (page.getNumberOfElements()==0) {
+		if (page.getNumberOfElements()==0 && page.getTotalElements()>0) {
 			pageLabel.setText("0-0 of "+ page.getTotalElements());
 			previousButton.setDisable(false); 
 			nextButton.setDisable(true);
@@ -264,11 +275,13 @@ public class BooksTabController {
 			pageLabel.setText((page.getNumber()*20+1) +
 					"-" + ((page.getNumber()*20)+page.getNumberOfElements()) +
 					" of "+ page.getTotalElements()); 
-			if (page.getNumber()==0) previousButton.setDisable(true); 
-			else previousButton.setDisable(false); 
-			if ((page.getTotalPages()-page.getNumber()==1)) { 
+			if (page.getNumber()==0) 
+				previousButton.setDisable(true); 
+			else 
+				previousButton.setDisable(false); 
+			if ((page.getTotalPages()-page.getNumber()<=1)) 
 				nextButton.setDisable(true); 
-			} else 
+			else 
 				nextButton.setDisable(false);
 		}						
 	}
@@ -284,15 +297,33 @@ public class BooksTabController {
 	@FXML
 	public void nextPage() {
 	    currentPage++;
-	    loadBooks(currentPage, pageSize, currentSort);
+	    loadCurrentModePage();
 
 	}
 			
 	@FXML
 	public void previousPage() {
 		currentPage--;
-		loadBooks(currentPage, pageSize, currentSort);
+		loadCurrentModePage();
 
+	}
+	
+	private void loadCurrentModePage() {
+		switch (currentMode) {
+        case NORMAL:
+            loadBooks(currentPage, pageSize, currentSort);
+            break;
+
+        case COLLECTION:
+            if (currentCollection != null)
+                loadCollection(currentCollection.getId(), currentPage, pageSize);
+            break;
+
+        case SEARCH:
+            if (currentSearchKeyword != null)
+                searchBooks(currentSearchKeyword, currentPage, pageSize);
+            break;
+		}
 	}
 	
 	public void backToBooks() {
