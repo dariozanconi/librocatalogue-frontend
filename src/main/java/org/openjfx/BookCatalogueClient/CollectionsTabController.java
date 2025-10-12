@@ -146,8 +146,7 @@ public class CollectionsTabController {
 			task.setOnSucceeded(e -> {
 				response = task.getValue();
 				if (response.isSuccess()) {										
-					onSuccess.accept(response.getData());
-				
+					onSuccess.accept(response.getData());				
 				} 			
 			});
 			task.setOnFailed(e -> {
@@ -160,14 +159,12 @@ public class CollectionsTabController {
 			task.setOnSucceeded(e -> {
 				response = task.getValue();
 				if (response.isSuccess()) {										
-					onSuccess.accept(response.getData());
-				
+					onSuccess.accept(response.getData());				
 				} 			
 			});
 			task.setOnFailed(e -> {
 				onError.accept(task.getException());
-			});
-		
+			});		
 			new Thread(task).start();
 		}
 				
@@ -181,25 +178,18 @@ public class CollectionsTabController {
 	@FXML
 	public void addCollection() {
 		
-		TextField inputField = new TextField();
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		alert.getDialogPane().getStylesheets().add(
-			    getClass().getResource("AlertStyle.css").toExternalForm()
-			);
-		alert.setTitle(resources.getString("alert.collectionname"));
-		alert.setHeaderText(resources.getString("alert.insertname"));
+		TextField inputField = new TextField();		
+		Alert alert = createAlert(AlertType.CONFIRMATION, "alert.collectionname", "alert.insertname");
 		alert.getDialogPane().setContent(inputField);
-
 		ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
 		ButtonType cancelButton = new ButtonType("CANCEL", ButtonBar.ButtonData.CANCEL_CLOSE);
 		alert.getButtonTypes().setAll(okButton, cancelButton);
-
 		Optional<ButtonType> result = alert.showAndWait();
 		String userInput = null;
+		
 		if (result.isPresent() && result.get() == okButton) {
 		    userInput = inputField.getText();
 		    Collection collection = new Collection(userInput);
-		    System.out.println(collection.getName());
 		    
 		    Task<ApiResponse<Collection>> task = collectionTasks.addCollectionTask(collection, token);
 		    task.setOnSucceeded(e -> {
@@ -209,19 +199,11 @@ public class CollectionsTabController {
 					homeController.getTabPane().getTabs().remove(selected);
 					homeController.openCollectionsTab();				
 				} else {
-					Alert alert2 = new Alert(AlertType.ERROR);
-					alert.getDialogPane().getStylesheets().add(
-						    getClass().getResource("AlertStyle.css").toExternalForm()
-						);
-					alert2.setTitle(resources.getString("alert.addcollectionfail"));
-					alert2.setHeaderText(resources.getString("alert.collectionexists"));
-					System.out.println(responseCollection.getError().getMessage());
-					alert2.showAndWait();
+					createAlert(AlertType.ERROR, "alert.addcollectionfail", "alert.collectionexists").showAndWait();
 				}
 			});
 			task.setOnFailed(e -> {
-				Throwable ex = task.getException();
-	            ex.printStackTrace();
+				createAlert(AlertType.ERROR, "alert.addcollectionfail", "alert.addcollectionfail").showAndWait();
 			});
 			
 			new Thread(task).start();
@@ -231,39 +213,20 @@ public class CollectionsTabController {
 	@FXML
 	public void deleteCollection() {
 			
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.getDialogPane().getStylesheets().add(
-			    getClass().getResource("AlertStyle.css").toExternalForm()
-			);
-		alert.setTitle(resources.getString("alert.confirm"));
-		alert.setHeaderText(resources.getString("alert.deletecollectionconfirm"));
+		Alert alert = createAlert(AlertType.CONFIRMATION, "alert.confirm", "alert.deletecollectionconfirm");
 		Optional<ButtonType> result = alert.showAndWait();
 		ButtonType button = result.orElse(ButtonType.CANCEL);
 	
 		if (button==ButtonType.OK) {
 			TaskTracker tracker = new TaskTracker(selectedCollections.size(), 
 					() -> {
-						Alert alert2 = new Alert(AlertType.INFORMATION);
-						alert2.getDialogPane().getStylesheets().add(
-							    getClass().getResource("AlertStyle.css").toExternalForm()
-							);
-						alert2.setTitle(resources.getString("alert.deletedcollection"));
-						alert2.setHeaderText(resources.getString("alert.deletedcollectionsuccess"));
-						alert2.showAndWait();
-						
+						createAlert(AlertType.INFORMATION, "alert.deletedcollection", "alert.deletedcollectionsuccess").showAndWait();
 						Tab selected = homeController.getTabPane().getSelectionModel().getSelectedItem();
 						homeController.getTabPane().getTabs().remove(selected);
 						homeController.openCollectionsTab();						
 					},
 					() -> { 
-				        Alert alert3 = new Alert(Alert.AlertType.ERROR);
-				        alert3.getDialogPane().getStylesheets().add(
-							    getClass().getResource("AlertStyle.css").toExternalForm()
-							);
-				        alert3.setTitle(resources.getString("alert.error"));
-				        alert3.setHeaderText(resources.getString("alert.deletecollectionfail"));
-				        alert3.showAndWait();
-				        
+						createAlert(AlertType.ERROR, "alert.error", "alert.deletecollectionfail").showAndWait();
 				        Tab selected = homeController.getTabPane().getSelectionModel().getSelectedItem();
 						homeController.getTabPane().getTabs().remove(selected);
 						homeController.openCollectionsTab();				       
@@ -273,27 +236,29 @@ public class CollectionsTabController {
 				Task<ApiResponse<String>> task = collectionTasks.removeCollectionTask(collection.getId(), token);
 				task.setOnSucceeded(e -> {
 					responseRemoveCollection = task.getValue();
-					if (!responseRemoveCollection.isSuccess()) {										
-						Alert alert2 = new Alert(AlertType.INFORMATION);
-						alert2.getDialogPane().getStylesheets().add(
-							    getClass().getResource("AlertStyle.css").toExternalForm()
-							);
-						alert2.setTitle(resources.getString("alert.error"));
-						alert2.setHeaderText(resources.getString("alert.collectionnotfound"));
-						alert2.showAndWait();
+					if (!responseRemoveCollection.isSuccess()) {	
+						createAlert(AlertType.ERROR, "alert.error", "alert.collectionnotfound").showAndWait();
 						tracker.taskFailed();
 					} else {
 						tracker.taskSucceeded();
 					}
 				});
 				task.setOnFailed(e -> {
-					Throwable ex = task.getException();
-		            ex.printStackTrace();
-				});
-				
+					createAlert(AlertType.ERROR, "alert.error", "alert.error").showAndWait();
+				});				
 				new Thread(task).start();
 			}
 		}
+	}
+	
+	private Alert createAlert(AlertType type, String titleKey, String headerKey) {
+	    Alert alert = new Alert(type);
+	    alert.getDialogPane().getStylesheets().add(
+	        getClass().getResource("AlertStyle.css").toExternalForm()
+	    );
+	    alert.setTitle(resources.getString(titleKey));
+	    alert.setHeaderText(resources.getString(headerKey));
+	    return alert;
 	}
 	
 	public void setOnCollectionOpened(Consumer<Collection> callback) {

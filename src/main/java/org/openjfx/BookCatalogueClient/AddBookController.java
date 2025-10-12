@@ -4,8 +4,11 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.openjfx.BookCatalogueClient.model.BookDto;
 import org.openjfx.BookCatalogueClient.model.Collection;
@@ -101,15 +104,12 @@ public class AddBookController {
 	private final ApiTask bookTasks = new ApiTask();
 	private final ApiTask collectionTasks = new ApiTask();
 	private BookDto bookDto;
-	private ApiResponse<Book> response;
 	private ApiResponse<List<Collection>> collectionResponse;
-	
 	private List<Collection> collectionList;
-	
-	ObservableList<String> titles = FXCollections.observableArrayList();
-	File selectedFile = null;
-	Book book;
-	String token;
+	private ObservableList<String> titles = FXCollections.observableArrayList();
+	private File selectedFile = null;
+	private Book book;
+	private String token;
 	
 
 	public void init(String token) {
@@ -181,6 +181,7 @@ public class AddBookController {
 		bookDto = new BookDto();
 		
 		if (!isbnField.getText().isEmpty()) {
+			
 			Task<BookDto> task = bookTasks.parseBookTask(isbnField.getText());
 			task.setOnSucceeded(e -> {
 				 bookDto = task.getValue();	
@@ -191,40 +192,16 @@ public class AddBookController {
 					 isbnField.setText("");
 					 isbnField.requestFocus();
 				 } else if (titles.stream().anyMatch(title -> title.equalsIgnoreCase(bookDto.getBook().getTitle()))){
-					 Alert alert = new Alert(AlertType.ERROR);
-					 alert.getDialogPane().getStylesheets().add(
-							    getClass().getResource("AlertStyle.css").toExternalForm()
-							);
-					 alert.setTitle(resources.getString("alert.warning"));
-					 alert.setHeaderText(resources.getString("alert.alreadyinqueue"));
-					 alert.showAndWait();					 
+					 showError(resources.getString("alert.warning"), resources.getString("alert.alreadyinqueue"));					 
 				 } else {
-					 
-					 Alert alert = new Alert(AlertType.ERROR);
-					 alert.getDialogPane().getStylesheets().add(
-							    getClass().getResource("AlertStyle.css").toExternalForm()
-							);
-					 alert.setTitle(resources.getString("alert.warning"));
-					 alert.setHeaderText(resources.getString("alert.booknotloaded"));
-					 alert.showAndWait();
-				 }
-				 
+					 showError(resources.getString("alert.warning"), resources.getString("alert.booknotloaded"));
+				 }			 
 			});	 
 			task.setOnFailed(e -> {
-				Throwable ex = task.getException();
-	            ex.printStackTrace();
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.getDialogPane().getStylesheets().add(
-					    getClass().getResource("AlertStyle.css").toExternalForm()
-					);
-				alert.setTitle(resources.getString("alert.warning"));
-				alert.setHeaderText(resources.getString("alert.booknotloaded"));
-				alert.showAndWait();
+				showError(resources.getString("alert.warning"), resources.getString("alert.booknotloaded"));
 			});
-			new Thread(task).start();
-			
-		}
-		
+			new Thread(task).start();			
+		}		
 	}
 	
 	@FXML
@@ -242,30 +219,20 @@ public class AddBookController {
 		if (!books.isEmpty()) {
 			for (BookDto bookToAdd : books) {
 				if (bookToAdd!=null ) {
-					Task<ApiResponse<Book>> task = bookTasks.addBookTask(bookToAdd.getBook(), bookToAdd.getCover(), token);
-					task.setOnSucceeded(e -> {
-						response = task.getValue();
-						if (response.isSuccess()) {	
-							if (!collectionsBox.getValue().getName().equals("none")) {
-								addBookToCollection(collectionsBox.getValue(), response.getData());
-								messageLabel.setText(resources.getString("alert.booksaddtodatabase"));
-							}							
-						} else {
-							Alert alert = new Alert(AlertType.ERROR);
-							alert.getDialogPane().getStylesheets().add(
-								    getClass().getResource("AlertStyle.css").toExternalForm()
-								);
-							alert.setTitle(resources.getString("alert.bookaddfail"));
-							alert.setHeaderText(resources.getString("alert.bookaddfail")+ bookToAdd.getBook().getTitle());
-							alert.setContentText(resources.getString("alert.bookexists"));
-							alert.showAndWait();
+					runApiTask(
+						bookTasks.addBookTask(bookToAdd.getBook(), bookToAdd.getCover(), token),
+						result -> {
+							if (result.isSuccess()) {
+						        if (!collectionsBox.getValue().getName().equals("none")) {
+						            addBookToCollection(collectionsBox.getValue(), result.getData());
+						        }
+						            messageLabel.setText(resources.getString("alert.booksaddtodatabase"));
+						        } else {
+						            showError(resources.getString("alert.bookaddfail"), 
+						            		resources.getString("alert.bookaddfail")+ bookToAdd.getBook().getTitle());
+						        }
 						}
-					});
-					task.setOnFailed(e -> {
-						Throwable ex = task.getException();
-						ex.printStackTrace();
-					});
-					new Thread(task).start();
+					);			
 				}				
 			}
 		
@@ -276,35 +243,44 @@ public class AddBookController {
 	}
 	
 	public void addBookToCollection(Collection collection, Book book) {
-		
-		Task<ApiResponse<Book>> task = collectionTasks.addBookCollectionTask(collection.getId(), book, token);
-		task.setOnSucceeded(e -> {
-			response = task.getValue();			
-				
-			});
-			task.setOnFailed(e -> {
-				Throwable ex = task.getException();
-	            ex.printStackTrace();
-			});
-			new Thread(task).start();
+		runApiTask(
+			collectionTasks.addBookCollectionTask(collection.getId(), book, token),
+			   result -> {
+			   if (!result.isSuccess()) {
+			    	showError(resources.getString("alert.bookaddfail"), 
+			            	resources.getString("alert.bookaddfail"));
+			   }
+			   }
+		);
+	}
+	
+	private <T> void runApiTask(Task<ApiResponse<T>> task, Consumer<ApiResponse<T>> onSuccess) {
+	    task.setOnSucceeded(e -> {
+	        ApiResponse<T> result = task.getValue();
+	        onSuccess.accept(result);
+	    });
+	    task.setOnFailed(e -> {
+	       
+	    });
+	    new Thread(task).start();
+	}
+	
+	private void showError(String title, String header) {
+	    Alert alert = new Alert(AlertType.ERROR);
+	    alert.getDialogPane().getStylesheets().add(
+	        getClass().getResource("AlertStyle.css").toExternalForm()
+	    );
+	    alert.setTitle(title);
+	    alert.setHeaderText(header);
+	    alert.showAndWait();
 	}
 	
 	public List<Tag> readTags(String tags) {
-		List<Tag> tagList = new ArrayList<>();
-		String tag = "";
-		
-		for (int i=0; i<tags.length(); i++) {
-			if (tags.charAt(i)==' ' && i>0) {	
-				if (tags.charAt(i-1)==',') {} else { tag = tag.concat(String.valueOf(tags.charAt(i))); }}
-			else if (tags.charAt(i)!=',')
-				tag = tag.concat(String.valueOf(tags.charAt(i)));
-			else if (tags.charAt(i)==',' && i!=tags.length()-1) {
-				tagList.add(new Tag(tag));
-				tag="";
-			} 
-		}
-		tagList.add(new Tag(tag));
-		return tagList;
+	    return Arrays.stream(tags.split(","))
+	            .map(String::trim)
+	            .filter(s -> !s.isEmpty())
+	            .map(Tag::new)
+	            .collect(Collectors.toList());
 	}
 	
 	@FXML

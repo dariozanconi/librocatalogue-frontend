@@ -13,6 +13,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ public class BooksTabController {
 	@FXML 
 	private ResourceBundle resources;
 	
+	private Node booksViewContent;
+	
 	@FXML
 	private StackPane rootPane;
 	
@@ -42,6 +45,9 @@ public class BooksTabController {
 	
 	@FXML
 	private Button previousButton;
+	
+	@FXML
+	private Button iconButton;
 	
 	@FXML
 	private MenuButton sortMenu;
@@ -57,17 +63,7 @@ public class BooksTabController {
 	
 	@FXML
 	private Label headerLabel;
-	
-	private final ApiTask bookTasks = new ApiTask();
-	private ApiResponse<PageResponse<Book>> response;	
-	private int currentPage = 0;
-	private int pageSize = 20;
-	private String currentSort = "title";
-	private HomeController homeController;
-	private String token;
-	private List<BookCardController> controllerList;
-	List<Book> books;
-	
+		
 	@FXML
 	private MenuItem titleItem;
 	
@@ -77,6 +73,16 @@ public class BooksTabController {
 	@FXML
 	private MenuItem publisherItem;
 
+	private final ApiTask bookTasks = new ApiTask();
+	private ApiResponse<PageResponse<Book>> response;	
+	private int currentPage = 0;
+	private int pageSize = 20;
+	private String currentSort = "title";
+	private HomeController homeController;
+	private String token;
+	private List<BookCardController> controllerList;
+	private Integer iconStatus = 1;
+	List<Book> books;
 	
     public void setHomeController(HomeController homeController) {
         this.homeController = homeController;
@@ -88,70 +94,47 @@ public class BooksTabController {
 	
 	public void initNormal() {	
 		sortMenu = new MenuButton(resources.getString("menu.sort"));    		
-	    loadBooks(currentPage, pageSize, "title");
-	    	    		
+	    loadBooks(currentPage, pageSize, "title");	    	    		
 	}
 	
 	public void initSearch(String keyword) {
 		searchBooks(keyword, 0, 20);
+		refreshButton.setDisable(true);
+		iconButton.setDisable(true);
 		sortMenu.setDisable(true);
     }
 	
 	public void initCollection(Collection collection) {
 		loadCollection(collection.getId(), 0, 20);
+		refreshButton.setDisable(true);
+		iconButton.setDisable(true);
 		sortMenu.setDisable(true);
     }
 	
 	@FXML
 	public void refresh() {
-		sortMenu = new MenuButton(resources.getString("menu.sort"));    		
+		sortMenu = new MenuButton(resources.getString("menu.sort")); 		
 	    loadBooks(currentPage, pageSize, "title");
 	}
 	
 	public void loadBooks(int page, int size, String sort) {
 		
 		Task<ApiResponse<PageResponse<Book>>> task = bookTasks.loadBooksTask(page, size, sort);
-		loadingLabel.setText("Loading...");	
-		pageLabel.setText("");
-		previousButton.setDisable(true);
-		nextButton.setDisable(true);
-		task.setOnSucceeded(e -> {
-			
-			response = task.getValue();
-			if (response.isSuccess()) {	
-				loadingLabel.setText("");														
-				pageLabel.setText(((currentPage*20)+1)
-						+ "-" + ((currentPage*20)+response.getData().getNumberOfElements())
-						+ " of "+ response.getData().getTotalElements());
-				if (currentPage==0)
-					previousButton.setDisable(true);		        
-				else previousButton.setDisable(false);	        
-		        if ((response.getData().getTotalPages()-currentPage==1)) {
-	        		nextButton.setDisable(true);
-	        	} else nextButton.setDisable(false);
-		        showBooks(response.getData().getContent());	
-		        
-			} else {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.getDialogPane().getStylesheets().add(
-					    getClass().getResource("AlertStyle.css").toExternalForm()
-					);
-				alert.setTitle(resources.getString("alert.errorload"));
-				alert.setHeaderText(resources.getString("alert.connection"));
-				alert.showAndWait();
-				System.out.println(response.getStatus());
-			}
-		});
-		
-		task.setOnFailed(e -> {
-			Throwable ex = task.getException();
-            ex.printStackTrace();
-		});
-		
-		new Thread(task).start();
+		runBookLoadingTask(task);
+	}
+	
+	public void loadCollection(int id, int page, int size) {		
+		Task<ApiResponse<PageResponse<Book>>> task = bookTasks.loadCollectionBooksTask(id, page, size);
+		runBookLoadingTask(task);
+	}
+	
+	public void searchBooks(String input, int page, int size) {
+		String keyword = parse(input);
+		Task<ApiResponse<PageResponse<Book>>> task = bookTasks.searchBooksTask(keyword, page, size);
+		runBookLoadingTask(task);
 	}
 
-	private void showBooks(List<Book> books) {
+	private void showBooks(List<Book> books, String fxml) {
 		
 		flowPane.getChildren().clear();
 		controllerList = new ArrayList<>();
@@ -160,7 +143,7 @@ public class BooksTabController {
 			
 			try {
 				
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("BookCard.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
 				Node cardNode = loader.load();				
 				BookCardController controller = loader.getController();
 				controllerList.add(controller);
@@ -182,12 +165,29 @@ public class BooksTabController {
 				
 				e.printStackTrace();
 			}						
+		}						
+	}
+	
+	@FXML
+	public void changeIcon() {
+		if (iconStatus==1) {
+			iconStatus=2;
+			pageSize=40;
+			loadBooks(currentPage, pageSize, currentSort);
+		} else if (iconStatus==2) {
+			iconStatus=3;
+			pageSize=100;
+			loadBooks(currentPage, pageSize, currentSort);
+		} else if (iconStatus==3) {
+			iconStatus=1;
+			pageSize=20;
+			loadBooks(currentPage, pageSize, currentSort);
 		}
-		
 	}
 	
 	public void showBookDetails(Book book) {
 	        try {
+	        	booksViewContent = rootPane.getChildren().get(0);
 	        	ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
 	            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetailsTab.fxml"), bundle);
 	            Node detailsRoot = loader.load();
@@ -215,53 +215,7 @@ public class BooksTabController {
 	            e.printStackTrace();
 	        }
 	}
-	
-	
-	public void searchBooks(String input, int page, int size) {
-		String keyword = parse(input);
-		Task<ApiResponse<PageResponse<Book>>> task = bookTasks.searchBooksTask(keyword, page, size);
-		loadingLabel.setText("Loading...");	
-		pageLabel.setText("");
-		previousButton.setDisable(true);
-		nextButton.setDisable(true);
-		refreshButton.setDisable(true);
 		
-		task.setOnSucceeded(e -> {
-			
-			response = task.getValue();
-			if (response.isSuccess()) {	
-				loadingLabel.setText("");														
-				pageLabel.setText((response.getData().getNumber()*20)
-						+ "-" + (response.getData().getTotalElements()-(response.getData().getNumber()) 
-						+ " of "+ response.getData().getTotalElements()));
-				if (response.getData().getNumber()==0)
-					previousButton.setDisable(true);		        
-				else previousButton.setDisable(false);	        
-		        if ((response.getData().getTotalPages()-response.getData().getNumber()==1)) {
-	        		nextButton.setDisable(true);
-	        	} else nextButton.setDisable(false);
-		        showBooks(response.getData().getContent());	
-		        
-			} else {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.getDialogPane().getStylesheets().add(
-					    getClass().getResource("AlertStyle.css").toExternalForm()
-					);
-				alert.setTitle(resources.getString("alert.errorload"));
-				alert.setHeaderText(resources.getString("alert.connection"));
-				alert.showAndWait();
-				System.out.println(response.getStatus());
-			}
-		});
-		
-		task.setOnFailed(e -> {
-			Throwable ex = task.getException();
-            ex.printStackTrace();
-		});
-		
-		new Thread(task).start();
-	}
-	
 	private String parse(String input) {
 		String output = "";
 		if (input!=null) {
@@ -272,51 +226,59 @@ public class BooksTabController {
 			}
 			return output;
 		} else return null;		
-	}
+	}	
+	
+	private void runBookLoadingTask(Task<ApiResponse<PageResponse<Book>>> task) {
+	    loadingLabel.setText("Loading...");
+	    pageLabel.setText("");
+	    previousButton.setDisable(true);
+	    nextButton.setDisable(true);
 
-	public void loadCollection(int id, int page, int size) {
-		
-		Task<ApiResponse<PageResponse<Book>>> task = bookTasks.loadCollectionBooksTask(id, page, size);
-		
-		loadingLabel.setText("Loading...");	
-		pageLabel.setText("");
-		previousButton.setDisable(true);
-		nextButton.setDisable(true);
-		refreshButton.setDisable(true);
-		task.setOnSucceeded(e -> {
-			
-			response = task.getValue();
-			if (response.isSuccess()) {	
-				loadingLabel.setText("");														
-				pageLabel.setText(((currentPage*20)+1)
-						+ "-" + ((currentPage*20)+response.getData().getNumberOfElements())
-						+ " of "+ response.getData().getTotalElements());
-				if (currentPage==0)
-					previousButton.setDisable(true);		        
-				else previousButton.setDisable(false);	        
-		        if ((response.getData().getTotalPages()-currentPage==1)) {
-	        		nextButton.setDisable(true);
-	        	} else nextButton.setDisable(false);
-		        showBooks(response.getData().getContent());	
-		        
-			} else {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.getDialogPane().getStylesheets().add(
-					    getClass().getResource("AlertStyle.css").toExternalForm()
-					);
-				alert.setTitle(resources.getString("alert.errorload"));
-				alert.setHeaderText(resources.getString("alert.connection"));
-				alert.showAndWait();
-				System.out.println(response.getStatus());
-			}
-		});
-		
-		task.setOnFailed(e -> {
-			Throwable ex = task.getException();
-            ex.printStackTrace();
-		});
-		
-		new Thread(task).start();
+	    task.setOnSucceeded(e -> {
+	        ApiResponse<PageResponse<Book>> result = task.getValue();
+	        if (result.isSuccess()) {
+	            loadingLabel.setText("");
+	            PageResponse<Book> page = result.getData();
+	            updatePagination(page);
+	            if (iconStatus==1)  
+	            	showBooks(page.getContent(), "BookCard.fxml");
+	            else if (iconStatus==2)
+	            	showBooks(page.getContent(), "BookCardSmall.fxml");
+	            else 
+	            	showBooks(page.getContent(), "BookCardXSmall.fxml");
+	        } else {
+	            showErrorAlert(resources.getString("alert.errorload"), resources.getString("alert.connection"));
+	        }
+	    });
+
+	    task.setOnFailed(e -> task.getException().printStackTrace());
+	    new Thread(task).start();
+	}
+	
+	private void updatePagination(PageResponse<Book> page) {
+		if (page.getNumberOfElements()==0) {
+			pageLabel.setText("0-0 of "+ page.getTotalElements());
+			previousButton.setDisable(false); 
+			nextButton.setDisable(true);
+		} else {
+			pageLabel.setText((page.getNumber()*20+1) +
+					"-" + ((page.getNumber()*20)+page.getNumberOfElements()) +
+					" of "+ page.getTotalElements()); 
+			if (page.getNumber()==0) previousButton.setDisable(true); 
+			else previousButton.setDisable(false); 
+			if ((page.getTotalPages()-page.getNumber()==1)) { 
+				nextButton.setDisable(true); 
+			} else 
+				nextButton.setDisable(false);
+		}						
+	}
+	
+	private void showErrorAlert(String title, String header) {
+	    Alert alert = new Alert(AlertType.ERROR);
+	    alert.getDialogPane().getStylesheets().add(getClass().getResource("AlertStyle.css").toExternalForm());
+	    alert.setTitle(title);
+	    alert.setHeaderText(header);
+	    alert.showAndWait();
 	}
 	
 	@FXML
@@ -335,23 +297,11 @@ public class BooksTabController {
 	
 	public void backToBooks() {
 				
-		try {
-			ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
-			FXMLLoader booksLoader = new FXMLLoader(getClass().getResource("BooksTab.fxml"), bundle);
-			Parent content = booksLoader.load();
-			BooksTabController controller = booksLoader.getController();	
-			
-			controller.setHomeController(homeController);
-			token = homeController.getToken();
-			controller.initNormal();			
-			controller.setToken(token);
-            controller.loadBooks(0, 20, "title");
-            			
-			rootPane.getChildren().setAll(content);
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+		if (booksViewContent != null) {
+			rootPane.getChildren().setAll(booksViewContent);
+	    } else {
+	        loadBooks(currentPage, pageSize, currentSort);
+	    }
 	}
 	
 	public void deselectAllBooks() {

@@ -7,6 +7,8 @@ HBox {
 .button:hover {
 	-fx-background-color : #EBEBEB;
 }
+
+
 .button:pressed {
 	-fx-background-color : #DEDEDE;
 }
@@ -21,6 +23,11 @@ HBox {
 .menu-button:hover {
 	-fx-background-color : #EBEBEB;
 }
+
+.menu-button:focused {
+	-fx-background-color : #EBEBEB;
+}
+
 .menu-button:pressed {
 	-fx-background-color : #DEDEDE;
 }
@@ -49,6 +56,12 @@ HBox {
 	
 }
 #searchButton:hover{
+	-fx-background-color : #FFFFFF;
+	-fx-background-radius : 30 30 30 30;
+	-fx-background-insets: 2, 0, 0, 0;
+}
+
+#searchButton:focused{
 	-fx-background-color : #FFFFFF;
 	-fx-background-radius : 30 30 30 30;
 	-fx-background-insets: 2, 0, 0, 0;

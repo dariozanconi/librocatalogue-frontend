@@ -43,10 +43,15 @@ AnchorPane {
 .button:hover {
 	-fx-background-color : #128FEB;
 }
+
+.button:focused {
+	-fx-background-color : #128FEB;
+}
 .button:pressed {
 	-fx-background-color : #135EF0;
 	
 	}
+	
 
 .menu-button {
 	-fx-background-color : #93A7C9;

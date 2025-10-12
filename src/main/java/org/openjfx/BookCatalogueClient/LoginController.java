@@ -41,18 +41,9 @@ public class LoginController {
 	
 	@FXML
 	public void initialize() {
+		signinButton.setFocusTraversable(true);
+				
 		passwordField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-			@Override
-			public void handle(KeyEvent event) {
-				if (event.getCode().equals(KeyCode.ENTER)) {
-					signIn();
-				}			
-			}
-			
-		});
-		
-		usernameField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
 			@Override
 			public void handle(KeyEvent event) {

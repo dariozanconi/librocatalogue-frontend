@@ -64,7 +64,7 @@
                                   <TableColumn id="index-column" fx:id="column0" prefWidth="26.0" sortable="false" />
                                 </columns>
                               </TableView>
-                              <Label layoutX="32.0" layoutY="345.0" prefHeight="36.0" prefWidth="203.0" style="-fx-background-color: linear-gradient(from 45% 15% to 90% 80%,  #217346, white);; -fx-background-radius: 0 10 10 0;" text="%label.preview" textFill="WHITE">
+                              <Label alignment="CENTER" layoutX="32.0" layoutY="345.0" prefHeight="36.0" prefWidth="175.0" style="-fx-background-color: #217346; -fx-background-radius: 10 10 10 10;" text="%label.preview" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>

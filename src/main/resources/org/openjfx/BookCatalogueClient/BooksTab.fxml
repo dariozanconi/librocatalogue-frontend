@@ -46,6 +46,19 @@
                            </font>
                         </Label>
                         <Region opacity="0.0" prefHeight="49.0" prefWidth="226.0" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="iconButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#changeIcon" prefHeight="37.0" prefWidth="40.0">
+                           <font>
+                              <Font name="SansSerif Regular" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@icons/menu%20(1).png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Label opacity="0.0" prefHeight="17.0" prefWidth="5.0" />
                         <MenuButton fx:id="sortMenu" mnemonicParsing="false" prefHeight="35.0" text="%menu.sort">
                            <font>
                               <Font name="SansSerif Regular" size="12.0" />
