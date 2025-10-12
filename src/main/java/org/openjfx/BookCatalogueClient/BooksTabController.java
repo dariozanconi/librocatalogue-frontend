@@ -3,6 +3,7 @@ package org.openjfx.BookCatalogueClient;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
@@ -11,10 +12,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +44,9 @@ public class BooksTabController {
 	private StackPane rootPane;
 	
 	@FXML
+	private HBox hBox;
+	
+	@FXML
 	private FlowPane flowPane;
 		
 	@FXML
@@ -48,6 +57,12 @@ public class BooksTabController {
 	
 	@FXML
 	private Button iconButton;
+	
+	@FXML
+	private Button selectAllButton;
+	
+	@FXML
+	private Button allBooksButton;
 	
 	@FXML
 	private MenuButton sortMenu;
@@ -81,13 +96,14 @@ public class BooksTabController {
 	private HomeController homeController;
 	private String token;
 	private List<BookCardController> controllerList;
-	private enum IconMode { NORMAL, SMALL, XSMALL }
+	private enum IconMode { NORMAL, SMALL, XSMALL}
 	private IconMode iconStatus = IconMode.NORMAL;
-	
+	private int totElement;
 	private enum Mode { NORMAL, COLLECTION, SEARCH }
 	private Mode currentMode = Mode.NORMAL;
 	private Collection currentCollection;
 	private String currentSearchKeyword;
+	private Boolean allSelected = false;
 	List<Book> books;
 	
     public void setHomeController(HomeController homeController) {
@@ -108,18 +124,14 @@ public class BooksTabController {
 		currentMode = Mode.SEARCH;
 		currentSearchKeyword = keyword;
 		searchBooks(keyword, 0, 20);
-		refreshButton.setDisable(true);
-		iconButton.setDisable(true);
-		sortMenu.setDisable(true);
+		disableButtons();
     }
 	
 	public void initCollection(Collection collection) {
 		currentMode = Mode.COLLECTION;
 	    currentCollection = collection;
 		loadCollection(collection.getId(), 0, 20);
-		refreshButton.setDisable(true);
-		iconButton.setDisable(true);
-		sortMenu.setDisable(true);
+		disableButtons();
     }
 	
 	@FXML
@@ -140,9 +152,12 @@ public class BooksTabController {
 	}
 	
 	public void searchBooks(String input, int page, int size) {
+		currentMode = Mode.SEARCH;
 		String keyword = parse(input);
+		currentSearchKeyword = keyword;
 		Task<ApiResponse<PageResponse<Book>>> task = bookTasks.searchBooksTask(keyword, page, size);
 		runBookLoadingTask(task);
+		disableButtons();
 	}
 
 	private void showBooks(List<Book> books, String fxml) {
@@ -177,6 +192,12 @@ public class BooksTabController {
 				e.printStackTrace();
 			}						
 		}						
+	}
+	
+	@FXML
+	public void showAllElements() {
+		pageSize=totElement;
+		loadBooks(currentPage, pageSize, currentSort);
 	}
 	
 	@FXML
@@ -250,6 +271,7 @@ public class BooksTabController {
 	        if (result.isSuccess()) {
 	            loadingLabel.setText("");
 	            PageResponse<Book> page = result.getData();
+	            totElement = (int) result.getData().getTotalElements();
 	            updatePagination(page);
 	            if (iconStatus==IconMode.NORMAL)  
 	            	showBooks(page.getContent(), "BookCard.fxml");
@@ -335,6 +357,19 @@ public class BooksTabController {
 	    }
 	}
 	
+	public void selectAllBooks() {
+		if (allSelected) {
+			deselectAllBooks();
+			allSelected=false;
+		} else if (controllerList!=null) {
+			for (int i=0; i<controllerList.size(); i++) {			
+			homeController.addSelectedBooks(controllerList.get(i).selectBook());			
+			}
+			allSelected=true;
+		}
+		
+	}
+	
 	public void deselectAllBooks() {
 		if (controllerList!=null)
 		for (int i=0; i<controllerList.size(); i++) {
@@ -367,5 +402,16 @@ public class BooksTabController {
 	public void setPublisherAsSort() {
 		currentSort = "publisher";
 		loadBooks(currentPage, pageSize, currentSort);
+	}
+	
+	public void disableButtons() {
+		iconButton.setDisable(true);
+		iconButton.setVisible(false);
+		allBooksButton.setDisable(true);
+		allBooksButton.setVisible(false);
+		refreshButton.setDisable(true);
+		refreshButton.setVisible(false);
+		hBox.getChildren().remove(sortMenu);
+
 	}
 }

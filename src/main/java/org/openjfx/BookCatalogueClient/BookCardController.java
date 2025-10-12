@@ -61,6 +61,11 @@ public class BookCardController {
 		selectBox.setSelected(false);
 	}
 	
+	public Book selectBook() {
+		selectBox.setSelected(true);
+		return book;
+	}
+	
 	public void setOnBookClicked(Consumer<Book> callback) {
 		this.onBookClicked = callback;
 	}

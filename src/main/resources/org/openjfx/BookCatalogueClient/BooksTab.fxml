@@ -22,7 +22,7 @@
          <top>
             <AnchorPane prefHeight="43.0" prefWidth="1100.0" stylesheets="@stylesheets/HomeStyle.css" BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="BOTTOM_LEFT" prefHeight="49.0" prefWidth="1100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <HBox fx:id="hBox" alignment="BOTTOM_LEFT" prefHeight="49.0" prefWidth="1100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
                         <Region prefHeight="49.0" prefWidth="11.0" />
                         <Label fx:id="loadingLabel" prefHeight="35.0" prefWidth="64.0" text="Loading...">
@@ -45,7 +45,7 @@
                               <Font name="SansSerif Regular" size="18.0" />
                            </font>
                         </Label>
-                        <Region opacity="0.0" prefHeight="49.0" prefWidth="226.0" HBox.hgrow="ALWAYS" />
+                        <Region opacity="0.0" prefHeight="49.0" prefWidth="132.0" HBox.hgrow="ALWAYS" />
                         <Button fx:id="iconButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#changeIcon" prefHeight="37.0" prefWidth="40.0">
                            <font>
                               <Font name="SansSerif Regular" size="12.0" />
@@ -58,7 +58,31 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Label opacity="0.0" prefHeight="17.0" prefWidth="5.0" />
+                        <Button fx:id="allBooksButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#showAllElements" prefHeight="37.0" prefWidth="40.0">
+                           <font>
+                              <Font name="SansSerif Regular" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@icons/all.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="selectAllButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#selectAllBooks" prefHeight="37.0" prefWidth="40.0">
+                           <font>
+                              <Font name="SansSerif Regular" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="21.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@icons/checkbox.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Label opacity="0.0" prefHeight="17.0" prefWidth="17.0" />
                         <MenuButton fx:id="sortMenu" mnemonicParsing="false" prefHeight="35.0" text="%menu.sort">
                            <font>
                               <Font name="SansSerif Regular" size="12.0" />
@@ -68,6 +92,13 @@
                               <MenuItem fx:id="authorItem" mnemonicParsing="false" onAction="#setAuthorAsSort" text="%item.author" />
                               <MenuItem fx:id="publisherItem" mnemonicParsing="false" onAction="#setPublisherAsSort" text="%item.publisher" />
                            </items>
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@icons/sort.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </MenuButton>
                         <Label fx:id="pageLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="78.0" text="1-20">
                            <font>
@@ -98,7 +129,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Label opacity="0.0" prefHeight="17.0" prefWidth="48.0" HBox.hgrow="ALWAYS" />
+                        <Label opacity="0.0" prefHeight="17.0" prefWidth="10.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>
