@@ -10,28 +10,35 @@ This is the JavaFX frontend for **LibroCatalogue**, a full-stack project to mana
 ## Tech Stack
 - JavaFX
 - Apache HttpClient
+- Apache POI
 - Jackson (JSON)
 - JWT Authentication
-- Multi-tab UI (Books, Search, Collections, Login/Register)
+- Multi-tab UI (Books, Search, Collections, Login/Register, Exports, ...)
 
 ## Project Structure
 - `controller/` → UI controllers (HomeController, BooksTabController, …)
-- `service/` → API calls (BookTasks, CollectionTasks, AuthTasks, …)
+-  `task/` → JavaFX Tasks (Retrieve Books Task, Retrieve User Task, …)
+- `service/` → Internal Logic (Http calls, GoogleBooks API, Apache POI, …)
 - `model/` → Data models (Book, Collection, Tag, User, …)
-- 
+
+  
 ## Screenshots
 
-<img width="1353" height="722" alt="Screenshot 2025-10-06 105132" src="https://github.com/user-attachments/assets/fac436fc-ed59-4a93-9bbf-70d5e0abfa8a" />
+
+<img width="1350" height="717" alt="Screenshot 2025-10-16 104948" src="https://github.com/user-attachments/assets/d9760fe8-351d-40d7-bfee-128aaaf8ff54" />
 
 #
 
-<img width="1352" height="715" alt="Screenshot 2025-10-06 105234" src="https://github.com/user-attachments/assets/5751a418-c0a6-4659-afa0-8c1cc31c8ddf" />
-
+<img width="1348" height="718" alt="Screenshot 2025-10-16 105249" src="https://github.com/user-attachments/assets/cd42ca53-e2ca-4ea1-8d96-ea204d792bf7" />
 
 #
+
+<img width="1351" height="718" alt="Screenshot 2025-10-16 105040" src="https://github.com/user-attachments/assets/f9321782-6f6e-47cb-92e7-26afca45b9e6" />
+
+#
+
 
 <img width="1353" height="717" alt="Screenshot 2025-10-06 105317" src="https://github.com/user-attachments/assets/d95fa818-b75d-4ba4-bd0d-187a95553cf3" />
-
 
 #
 
