@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -99,7 +100,7 @@ public class BookDetailsController {
 	private ApiResponse<Book> response;
 			
 	public void showBook(Book book) {
-		
+		initializeToolTip();
 		titleLabel.setText(book.getTitle());
 		authorLabel.setText(book.getAuthor());
 		if (book.getPublisher()!=null)
@@ -308,6 +309,11 @@ public class BookDetailsController {
 			updateButton.setDisable(false);	
 			addToCollectionButton.setDisable(false);
 		}
+	}
+	
+	private void initializeToolTip() {
+		backButton.setTooltip(new Tooltip(resources.getString("tooltip.back")));
+		refreshButton.setTooltip(new Tooltip(resources.getString("tooltip.refresh")));
 	}
 	
 	

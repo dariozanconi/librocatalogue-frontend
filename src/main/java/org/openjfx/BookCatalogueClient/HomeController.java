@@ -1,5 +1,6 @@
 package org.openjfx.BookCatalogueClient;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +30,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class HomeController {
@@ -128,6 +131,7 @@ public class HomeController {
 			
 		});
 		
+		initializeToolTip();
 		updateButtonStates();
 	}
 	
@@ -526,6 +530,13 @@ public class HomeController {
 	    removeBooksCollectionItem.setDisable(!loggedIn || actualCollection == null);
 	}
 	
+	private void initializeToolTip() {
+		updateButton.setTooltip(new Tooltip(resources.getString("tooltip.update")));
+		saveButton.setTooltip(new Tooltip(resources.getString("tooltip.export")));
+		addButton.setTooltip(new Tooltip(resources.getString("tooltip.add")));
+		updateButton.setTooltip(new Tooltip(resources.getString("tooltip.update")));
+		removeButton.setTooltip(new Tooltip(resources.getString("tooltip.delete")));
+	}
 	
 	public void addSelectedBooks (Book book) {
 		selectedBooks.add(book);	

@@ -6,6 +6,10 @@ AnchorPane {
 	-fx-background-color : white;
 }
 
+.tooltip {
+	-fx-font-size : 12;
+}
+
 .button {
 	-fx-background-color : #C9D6EB;
 	-fx-background-radius: 3 3 3 3;

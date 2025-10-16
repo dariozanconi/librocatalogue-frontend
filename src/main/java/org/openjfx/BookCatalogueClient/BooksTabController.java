@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -111,7 +112,9 @@ public class BooksTabController {
     }
     
 	@FXML
-    public void initialize() {}
+    public void initialize() {
+		initializeToolTip();
+	}
 	
 	
 	public void initNormal() {	
@@ -402,6 +405,14 @@ public class BooksTabController {
 	public void setPublisherAsSort() {
 		currentSort = "publisher";
 		loadBooks(currentPage, pageSize, currentSort);
+	}
+	
+	private void initializeToolTip() {
+		iconButton.setTooltip(new Tooltip(resources.getString("tooltip.icon")));
+		selectAllButton.setTooltip(new Tooltip(resources.getString("tooltip.select")));
+		refreshButton.setTooltip(new Tooltip(resources.getString("tooltip.refresh")));
+		allBooksButton.setTooltip(new Tooltip(resources.getString("tooltip.all")));
+
 	}
 	
 	public void disableButtons() {

@@ -7,6 +7,10 @@ FlowPane {
 	
 }
 
+.tooltip {
+	-fx-font-size : 12;
+}
+
 .button {
 	-fx-background-color : #FFFFFF;
 }
