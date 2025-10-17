@@ -221,8 +221,9 @@ public class BooksTabController {
 	}
 	
 	public void showBookDetails(Book book) {
+			booksViewContent = rootPane.getChildren().get(0);
 	        try {
-	        	booksViewContent = rootPane.getChildren().get(0);
+	        	//booksViewContent = rootPane.getChildren().get(0);
 	        	ResourceBundle bundle = ResourceBundle.getBundle("messages", Language.getLocale());
 	            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookDetailsTab.fxml"), bundle);
 	            Node detailsRoot = loader.load();
@@ -363,10 +364,11 @@ public class BooksTabController {
 	public void selectAllBooks() {
 		if (allSelected) {
 			deselectAllBooks();
+			homeController.deselectAllBooks();
 			allSelected=false;
 		} else if (controllerList!=null) {
 			for (int i=0; i<controllerList.size(); i++) {			
-			homeController.addSelectedBooks(controllerList.get(i).selectBook());			
+				homeController.addSelectedBooks(controllerList.get(i).selectBook());			
 			}
 			allSelected=true;
 		}
@@ -374,10 +376,11 @@ public class BooksTabController {
 	}
 	
 	public void deselectAllBooks() {
-		if (controllerList!=null)
-		for (int i=0; i<controllerList.size(); i++) {
-			controllerList.get(i).deselectBook();
-		}
+		if (controllerList!=null) {
+			for (int i=0; i<controllerList.size(); i++) {
+				controllerList.get(i).deselectBook();
+			}		
+		}		
 	}
 	
 	public void setHeader(String header) {
