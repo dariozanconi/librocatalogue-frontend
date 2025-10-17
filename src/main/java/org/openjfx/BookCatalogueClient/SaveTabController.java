@@ -216,7 +216,7 @@ public class SaveTabController {
 	    }
 	    
 	    
-	    for (int i = 0; i < 7; i++) {	
+	    for (int i = 0; i < Math.min(books.size(), 7); i++) {	
 	    	
 	    	Book b = books.get(i);
 	    	if (i>0) {
