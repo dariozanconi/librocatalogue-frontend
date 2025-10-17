@@ -26,10 +26,6 @@ HBox {
 	-fx-background-color : #EBEBEB;
 }
 
-.menu-button:focused {
-	-fx-background-color : #EBEBEB;
-}
-
 .menu-button:pressed {
 	-fx-background-color : #DEDEDE;
 }
