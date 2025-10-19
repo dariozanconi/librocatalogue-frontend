@@ -298,8 +298,8 @@ public class BooksTabController {
 			previousButton.setDisable(false); 
 			nextButton.setDisable(true);
 		} else {
-			pageLabel.setText((page.getNumber()*20+1) +
-					"-" + ((page.getNumber()*20)+page.getNumberOfElements()) +
+			pageLabel.setText((page.getNumber()*pageSize+1) +
+					"-" + ((page.getNumber()*pageSize)+page.getNumberOfElements()) +
 					" of "+ page.getTotalElements()); 
 			if (page.getNumber()==0) 
 				previousButton.setDisable(true); 
