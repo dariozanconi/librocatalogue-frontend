@@ -88,6 +88,9 @@ public class BooksTabController {
 	
 	@FXML
 	private MenuItem publisherItem;
+	
+	@FXML
+	private MenuItem dateItem;
 
 	private final ApiTask bookTasks = new ApiTask();
 	private ApiResponse<PageResponse<Book>> response;	
@@ -230,8 +233,7 @@ public class BooksTabController {
 
 	            BookDetailsController controller = loader.getController();
 	            
-	            controller.setBook(book, homeController);	            
-	            controller.setToken(token);
+	            controller.setBook(book, homeController, token);	            
 	            
 	            controller.setOnReturn(() -> {
 	            	backToBooks();
@@ -407,6 +409,12 @@ public class BooksTabController {
 	@FXML
 	public void setPublisherAsSort() {
 		currentSort = "publisher";
+		loadBooks(currentPage, pageSize, currentSort);
+	}
+	
+	@FXML
+	public void setDateAsSort() {
+		currentSort = "creationDate";
 		loadBooks(currentPage, pageSize, currentSort);
 	}
 	
