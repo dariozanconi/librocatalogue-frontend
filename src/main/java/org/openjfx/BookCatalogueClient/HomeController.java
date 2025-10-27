@@ -3,10 +3,12 @@ package org.openjfx.BookCatalogueClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import org.openjfx.BookCatalogueClient.model.ApiResponse;
@@ -31,11 +33,16 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.TreeCell;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Font;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class HomeController {
@@ -93,6 +100,11 @@ public class HomeController {
 	
 	@FXML
 	private Hyperlink switchLanguage;
+	
+	@FXML
+	private TreeView<String> treeView;
+	
+	TreeItem<String> accountItem;
 		
 	private String token;
 	private JwtUtils jwtUtils = new JwtUtils();
@@ -104,6 +116,7 @@ public class HomeController {
 	private ApiResponse<String> response;
 	private ApiResponse<?> collectionResponse;
 	private Collection actualCollection;
+	private Set<String> disabledItems = new HashSet<>();
 	
 	public TabPane getTabPane() {		
         return tabPane;   
@@ -130,7 +143,7 @@ public class HomeController {
 			}
 			
 		});
-		
+		initializeTree();
 		initializeToolTip();
 		updateButtonStates();
 	}
@@ -479,7 +492,7 @@ public class HomeController {
 				} 			
 			});
 			task.setOnFailed(e -> {
-				System.out.println(response.getData());
+				
 			});
 			new Thread(task).start();
 		}
@@ -489,6 +502,14 @@ public class HomeController {
 	@FXML
 	public void saveBooks() {	
 		openTab("SaveTab.fxml", resources.getString("label.header11"));
+		updateButtonStates();
+	}
+	
+	@FXML
+	public void openStatisticsTab() {	
+		StatisticsController controller = openTab("StatisticsTab.fxml", resources.getString("label.statistics"));
+		controller.setToken(token);
+		controller.initializeTab();
 		updateButtonStates();
 	}
 	
@@ -528,6 +549,14 @@ public class HomeController {
 	    removeButton.setDisable(!loggedIn || !hasSelection);
 	    addBooksCollectionItem.setDisable(!loggedIn || !hasSelection);
 	    removeBooksCollectionItem.setDisable(!loggedIn || actualCollection == null);
+	    
+	    setItemDisabled(resources.getString("tree.add"), !loggedIn || !hasSelection);
+	    setItemDisabled(resources.getString("tree.remove"), !loggedIn || actualCollection == null);
+	    setItemDisabled(resources.getString("item.logout"), !loggedIn);
+	    setItemDisabled(resources.getString("item.delete"), !loggedIn);
+	    setItemDisabled(resources.getString("item.addbooks"), !loggedIn);
+	    setItemDisabled(resources.getString("label.statistics"), !loggedIn);
+	    
 	}
 	
 	private void initializeToolTip() {
@@ -536,6 +565,110 @@ public class HomeController {
 		addButton.setTooltip(new Tooltip(resources.getString("tooltip.add")));
 		updateButton.setTooltip(new Tooltip(resources.getString("tooltip.update")));
 		removeButton.setTooltip(new Tooltip(resources.getString("tooltip.delete")));
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void initializeTree() {
+		TreeItem<String> menuItem = new TreeItem<>("Menu");
+		TreeItem<String> resourcesItem = new TreeItem<>(" Resources", 
+				new ImageView(new Image(getClass().getResource("icons/tree1.png").toExternalForm())));
+		TreeItem<String> showItem = new TreeItem<>(resources.getString("item.all"));
+		TreeItem<String> statisticsItem = new TreeItem<>(resources.getString("label.statistics"));
+		resourcesItem.getChildren().addAll(showItem, statisticsItem);
+		
+		TreeItem<String> actionsItem = new TreeItem<>("Actions", 
+				new ImageView(new Image(getClass().getResource("icons/tree2.png").toExternalForm())));
+		TreeItem<String> saveItem = new TreeItem<>(resources.getString("button.save"));
+		TreeItem<String> addItem = new TreeItem<>(resources.getString("item.addbooks"));
+		actionsItem.getChildren().addAll(addItem, saveItem);
+		
+		TreeItem<String> collectionsItem = new TreeItem<>(resources.getString("menu.collections"), 
+				new ImageView(new Image(getClass().getResource("icons/tree3.png").toExternalForm())));
+		TreeItem<String> showCollectionsItem = new TreeItem<>(resources.getString("item.show"));
+		TreeItem<String> addToCollectionsItem = new TreeItem<>(resources.getString("tree.add"));
+		TreeItem<String> removeFromCollectionsItem = new TreeItem<>(resources.getString("tree.remove"));
+		collectionsItem.getChildren().addAll(showCollectionsItem, addToCollectionsItem, removeFromCollectionsItem);
+		
+		TreeItem<String> accountItem = new TreeItem<>("Account", 
+				new ImageView(new Image(getClass().getResource("icons/tree4.png").toExternalForm())));
+		TreeItem<String> loginItem = new TreeItem<>(resources.getString("label.login"));
+		TreeItem<String> registerItem = new TreeItem<>(resources.getString("label.register"));
+		TreeItem<String> signoutItem = new TreeItem<>(resources.getString("item.logout"));
+		TreeItem<String> deleteAccountItem = new TreeItem<>(resources.getString("item.delete"));
+		accountItem.getChildren().addAll(loginItem, registerItem, signoutItem, deleteAccountItem);
+
+		menuItem.getChildren().addAll(resourcesItem, actionsItem, collectionsItem, accountItem);
+		treeView.setShowRoot(false);
+		treeView.setRoot(menuItem);
+		
+		treeView.setCellFactory(tv -> new TreeCell<>() {
+	        @Override
+	        protected void updateItem(String item, boolean empty) {
+	            super.updateItem(item, empty);
+	            if (empty || item == null) {
+	                setText(null);
+	                setStyle("");
+	                setGraphic(null);
+	            } else {
+	                setText(item);
+	                TreeItem<String> treeItem = getTreeItem();
+	                setGraphic(treeItem.getGraphic());
+	                if (disabledItems.contains(item)) {
+	                   setTextFill(Color.GRAY);
+	                   setStyle("-fx-text-fill: GRAY;");
+	                } else {
+	                    setTextFill(Color.BLACK);
+	                    setStyle("");
+	                }
+	            }
+	        }
+	    });
+
+	    treeView.setOnMouseClicked(event -> {
+	        TreeItem<String> selected = treeView.getSelectionModel().getSelectedItem();
+	        if (selected != null && !disabledItems.contains(selected.getValue())) {
+	            try {
+					selectTreeItem();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+	        } else {
+	            event.consume(); 
+	        }
+	    });
+	
+	}
+	
+	public void selectTreeItem() throws InterruptedException {
+		
+		TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
+		
+		if (item!=null) {
+			String selection = item.getValue();
+			
+			if (selection.equals(resources.getString("item.all"))) showAll(); 
+			if (selection.equals(resources.getString("label.statistics"))) openStatisticsTab();
+			if (selection.equals(resources.getString("item.addbooks"))) openAddBookTab();
+			if (selection.equals(resources.getString("button.save"))) saveBooks(); 
+			if (selection.equals(resources.getString("item.show"))) openCollectionsTab(); 
+			if (selection.equals(resources.getString("tree.add"))) addBooksToCollection(); 
+			if (selection.equals(resources.getString("tree.remove"))) removeBooksToCollection();
+			if (selection.equals(resources.getString("label.login"))) openLoginTab();
+			if (selection.equals(resources.getString("label.register"))) openRegisterTab();
+			if (selection.equals(resources.getString("item.logout"))) logout();
+			if (selection.equals(resources.getString("item.delete"))) deleteAccount();
+			
+			treeView.getSelectionModel().clearSelection();			
+		}
+	}
+	
+	public void setItemDisabled(String itemName, boolean disabled) {
+	    if (disabled) {
+	        disabledItems.add(itemName);
+	    } else {
+	        disabledItems.remove(itemName);
+	    }
+	    treeView.refresh();
 	}
 	
 	public void addSelectedBooks (Book book) {
