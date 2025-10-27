@@ -5,6 +5,8 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -34,14 +36,14 @@
                         <Region opacity="0.0" prefHeight="1100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
                         <AnchorPane prefHeight="500.0" prefWidth="797.0">
                            <children>
-                              <ListView fx:id="collectionList" layoutX="29.0" layoutY="138.0" prefHeight="260.0" prefWidth="580.0" />
+                              <ListView fx:id="collectionList" layoutX="38.0" layoutY="177.0" prefHeight="260.0" prefWidth="508.0" />
                               <Region layoutX="47.0" layoutY="596.0" prefHeight="200.0" prefWidth="596.0" />
-                              <Label fx:id="messageLabel" layoutX="29.0" layoutY="104.0" prefHeight="34.0" prefWidth="536.0" text="%label.open">
+                              <Label fx:id="messageLabel" alignment="CENTER" layoutY="44.0" prefHeight="39.0" prefWidth="432.0" style="-fx-background-color: gray; -fx-background-radius: 0 30 4 0;" text="%label.open" textFill="WHITE">
                                  <font>
-                                    <Font name="SansSerif Regular" size="13.0" />
+                                    <Font name="SansSerif Regular" size="16.0" />
                                  </font>
                               </Label>
-                              <StackPane alignment="BOTTOM_RIGHT" layoutX="29.0" layoutY="37.0" prefHeight="53.0" prefWidth="344.0">
+                              <StackPane alignment="BOTTOM_RIGHT" layoutX="38.0" layoutY="124.0" prefHeight="53.0" prefWidth="276.0">
                                  <children>
                                     <TextField fx:id="searchField" prefHeight="43.0" prefWidth="216.0" promptText="%field.searchcollections">
                                        <font>
@@ -51,21 +53,45 @@
                                     <Button fx:id="searchButton" alignment="CENTER" mnemonicParsing="false" onAction="#searchCollections" prefHeight="43.0" prefWidth="47.0" text="🔍" />
                                  </children>
                               </StackPane>
-                              <HBox layoutX="35.0" layoutY="411.0" prefHeight="89.0" prefWidth="494.0">
+                              <HBox layoutX="38.0" layoutY="452.0" prefHeight="89.0" prefWidth="574.0">
                                  <children>
                                     <Button fx:id="addButton" mnemonicParsing="false" onAction="#addCollection" prefHeight="36.0" text="%button.addcollection" textFill="WHITE">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Button>
-                                    <Region prefHeight="50.0" prefWidth="14.0" />
-                                    <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteCollection" prefHeight="36.0" text="%button.deletecollection" textFill="WHITE">
+                                    <Region prefHeight="89.0" prefWidth="128.0" />
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="335.0" layoutY="135.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="211.0">
+                                 <children>
+                                    <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteCollection" prefHeight="36.0" text="%button.delete">
                                        <font>
-                                          <Font name="SansSerif Regular" size="14.0" />
+                                          <Font size="11.0" />
+                                       </font>
+                                       <graphic>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@icons/delete.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="renameButton" mnemonicParsing="false" onAction="#renameCollection" prefHeight="36.0" text="%button.rename">
+                                       <graphic>
+                                          <ImageView fitHeight="22.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@icons/rename.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <font>
+                                          <Font size="11.0" />
                                        </font>
                                     </Button>
                                  </children>
                               </HBox>
+                              <Label fx:id="noCollectionsLabel" layoutX="250.0" layoutY="299.0" prefHeight="17.0" prefWidth="85.0" text="No collections" />
                            </children>
                         </AnchorPane>
                         <Region opacity="0.0" prefHeight="1100.0" prefWidth="316.0" HBox.hgrow="ALWAYS" />

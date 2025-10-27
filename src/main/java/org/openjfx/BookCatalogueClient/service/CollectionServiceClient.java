@@ -1,5 +1,6 @@
 package org.openjfx.BookCatalogueClient.service;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -8,11 +9,13 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.ParseException;
 import org.openjfx.BookCatalogueClient.model.ApiError;
 import org.openjfx.BookCatalogueClient.model.ApiResponse;
 import org.openjfx.BookCatalogueClient.model.Book;
@@ -25,7 +28,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class CollectionServiceClient {
 	
-	String urlDomain = DomainConstant.DOMAIN_PUBLIC;
+	String urlDomain = DomainConstant.DOMAIN_LOCAL;
 	
 	public ApiResponse<List<Collection>> getAllCollections() {
 		
@@ -168,6 +171,26 @@ public class CollectionServiceClient {
 		catch (Exception e) {
 			e.printStackTrace();
 			return new ApiResponse<> (new ApiError(500, e.getMessage()));
+		}
+	}
+	
+	public ApiResponse<String> renameCollection(int id, String name, String token) throws ParseException {
+		
+		String url = urlDomain + "/collections/id/" + id;
+		
+		try(CloseableHttpClient client = HttpClients.createDefault()) {
+			
+			HttpPut request = new HttpPut(url);
+			request.setEntity(new StringEntity(name, StandardCharsets.UTF_8));
+			request.addHeader("Authorization", "Bearer " + token);
+			
+			try (CloseableHttpResponse response = client.execute(request)) {
+	            String body = EntityUtils.toString(response.getEntity());
+	            return new ApiResponse<>(response.getCode(), body);
+	        }
+					
+		} catch (IOException e) {
+			return new ApiResponse<>(new ApiError(500, e.getMessage()));
 		}
 	}
 	

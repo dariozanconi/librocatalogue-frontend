@@ -48,6 +48,9 @@ public class CollectionsTabController {
 	private Button deleteButton;
 	
 	@FXML
+	private Button renameButton;
+	
+	@FXML
 	private Label messageLabel;
 	
 	@FXML
@@ -55,6 +58,10 @@ public class CollectionsTabController {
 	
 	@FXML
 	private Button searchButton;
+	
+	@FXML
+	private Label noCollectionsLabel;
+	
 	
 	private HomeController homeController;
 	private final ApiTask collectionTasks = new ApiTask();
@@ -70,8 +77,7 @@ public class CollectionsTabController {
 	
 	@FXML
     public void initialize() {		
-		addButton.setDisable(true);
-		deleteButton.setDisable(true);	
+		updateButtonStates();
 		showList();		
 	}
 	
@@ -84,6 +90,8 @@ public class CollectionsTabController {
 		loadCollections(
 			    collections -> {
 			       this.loadedCollections = collections;
+			       if (collections.size()==0) noCollectionsLabel.setVisible(true);
+			       else noCollectionsLabel.setVisible(false);
 			       for (Collection c : collections) {			            		      			            
 			        }
 			       ObservableList<Collection> observableCollection = FXCollections.observableList(loadedCollections);		
@@ -98,6 +106,7 @@ public class CollectionsTabController {
 		                {	
 		                	hbox.setAlignment(Pos.CENTER_LEFT);
 		                	hbox.setStyle("-fx-background-color: transparent");
+		                	hyperlink.setStyle("-fx-text-fill:#2DA4E5;");		                	
 		                    hyperlink.setOnAction(e -> {
 		                        Collection collection = getItem();
 		                        if (collection != null) {
@@ -116,8 +125,14 @@ public class CollectionsTabController {
 		                            } else {
 		                                selectedCollections.remove(collection);
 		                            }
+		                            updateButtonStates();
 		                        }
 		                    });
+		                    
+		                    this.setOnMouseClicked(e -> {
+		                    	hyperlink.setStyle("-fx-text-fill:#2DA4E5;");
+		                    	
+		                	});
 		                }
 
 		                @Override
@@ -251,6 +266,39 @@ public class CollectionsTabController {
 		}
 	}
 	
+	@FXML
+	public void renameCollection() {
+		
+		TextField inputField = new TextField(selectedCollections.get(0).getName());		
+		Alert alert = createAlert(AlertType.CONFIRMATION, "alert.collectionname", "alert.renamecollection");
+		alert.getDialogPane().setContent(inputField);
+		ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+		ButtonType cancelButton = new ButtonType("CANCEL", ButtonBar.ButtonData.CANCEL_CLOSE);
+		alert.getButtonTypes().setAll(okButton, cancelButton);
+		Optional<ButtonType> result = alert.showAndWait();
+		String userInput = null;
+		
+		if (result.isPresent() && result.get() == okButton) {
+		    userInput = inputField.getText();
+		    Task<ApiResponse<String>> task = collectionTasks.renameCollectionTask(selectedCollections.get(0).getId(), userInput, token);
+		    task.setOnSucceeded(e -> {
+		    	if (task.getValue().isSuccess()) {
+		    		createAlert(AlertType.INFORMATION, "alert.rename", "alert.renamecollectionsuccess").showAndWait();
+		    		Tab selected = homeController.getTabPane().getSelectionModel().getSelectedItem();
+					homeController.getTabPane().getTabs().remove(selected);
+					homeController.openCollectionsTab();	
+		    	}
+		    		
+		    	else createAlert(AlertType.ERROR, "alert.error", "alert.renamecollectionfail").showAndWait();
+		    });
+		    task.setOnFailed(e -> {
+				createAlert(AlertType.ERROR, "alert.error", "alert.error").showAndWait();
+			});		   
+		    new Thread(task).start();
+		    
+		}
+	}
+	
 	private Alert createAlert(AlertType type, String titleKey, String headerKey) {
 	    Alert alert = new Alert(type);
 	    alert.getDialogPane().getStylesheets().add(
@@ -259,6 +307,15 @@ public class CollectionsTabController {
 	    alert.setTitle(resources.getString(titleKey));
 	    alert.setHeaderText(resources.getString(headerKey));
 	    return alert;
+	}
+	
+	public void updateButtonStates() {
+		boolean loggedIn = token != null && !jwtUtils.isTokenExpired(token);
+	    boolean hasSelection = !selectedCollections.isEmpty();
+	    
+	    deleteButton.setDisable(!hasSelection || !loggedIn);
+	    renameButton.setDisable(!(selectedCollections.size()==1) || !loggedIn);
+	    addButton.setDisable(!loggedIn || !loggedIn);
 	}
 	
 	public void setOnCollectionOpened(Consumer<Collection> callback) {
@@ -275,9 +332,6 @@ public class CollectionsTabController {
 	
 	public void setToken(String token) {
 		this.token = token;
-		if (token!=null && !jwtUtils.isTokenExpired(token)) {
-			addButton.setDisable(false);
-			deleteButton.setDisable(false);
-		}
+		updateButtonStates();
 	}
 }
