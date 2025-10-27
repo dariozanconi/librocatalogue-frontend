@@ -90,6 +90,7 @@
                            <items>
                               <MenuItem fx:id="titleItem" mnemonicParsing="false" onAction="#setTitleAsSort" text="%item.title" />
                               <MenuItem fx:id="authorItem" mnemonicParsing="false" onAction="#setAuthorAsSort" text="%item.author" />
+                              <MenuItem fx:id="dateItem" mnemonicParsing="false" onAction="#setDateAsSort" text="%item.date" />
                               <MenuItem fx:id="publisherItem" mnemonicParsing="false" onAction="#setPublisherAsSort" text="%item.publisher" />
                            </items>
                            <graphic>
