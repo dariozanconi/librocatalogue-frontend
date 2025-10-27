@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -134,9 +137,9 @@
                                     </Label>
                                  </children>
                               </FlowPane>
-                              <Label fx:id="availableLabel" graphicTextGap="15.0" layoutX="58.0" layoutY="399.0" prefHeight="29.0" prefWidth="149.0" text="%label.available">
+                              <Label fx:id="availableLabel" graphicTextGap="10.0" layoutX="58.0" layoutY="384.0" prefHeight="29.0" prefWidth="204.0" text="%label.available">
                                  <font>
-                                    <Font size="13.0" />
+                                    <Font size="14.0" />
                                  </font>
                                  <graphic>
                                     <ImageView fx:id="availableImage" fitHeight="29.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
@@ -146,50 +149,129 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <VBox layoutX="315.0" layoutY="264.0" prefHeight="239.0" prefWidth="467.0">
+                              <VBox layoutX="59.0" layoutY="264.0" prefHeight="686.0" prefWidth="739.0">
                                  <children>
-                                    <FlowPane fx:id="collectionPane" prefHeight="151.0" prefWidth="404.0" VBox.vgrow="ALWAYS">
+                                    <AnchorPane style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="collectionLabel" prefHeight="24.0" style="-fx-background-insets: 1,1,1,1; -fx-background-radius: 3,3,3,3;" text="  Collections:  ">
-                                             <font>
-                                                <Font size="13.0" />
-                                             </font>
-                                          </Label>
+                                          <FlowPane fx:id="collectionPane" layoutX="256.0" prefHeight="39.0" prefWidth="467.0">
+                                             <children>
+                                                <Label fx:id="collectionLabel" prefHeight="24.0" style="-fx-background-insets: 1,1,1,1; -fx-background-radius: 3,3,3,3;" text="  Collections:  ">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </FlowPane>
                                        </children>
-                                    </FlowPane>
-                                    <AnchorPane minHeight="15.0" prefHeight="15.0" prefWidth="467.0" />
-                                    <FlowPane fx:id="tagPane" prefHeight="181.0" prefWidth="404.0" VBox.vgrow="ALWAYS">
+                                    </AnchorPane>
+                                    <AnchorPane minHeight="15.0" prefHeight="15.0" prefWidth="467.0" style="-fx-background-color: transparent;" />
+                                    <AnchorPane style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="tagLabel" alignment="CENTER" prefHeight="24.0" prefWidth="45.0" style="-fx-background-insets: 1,1,1,1; -fx-background-radius: 3,3,3,3;" text=" Tags: ">
-                                             <font>
-                                                <Font size="13.0" />
-                                             </font>
-                                          </Label>
+                                          <FlowPane fx:id="tagPane" layoutX="256.0" prefHeight="36.0" prefWidth="467.0">
+                                             <children>
+                                                <Label fx:id="tagLabel" alignment="CENTER" prefHeight="24.0" prefWidth="45.0" style="-fx-background-insets: 1,1,1,1; -fx-background-radius: 3,3,3,3;" text=" Tags: ">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </FlowPane>
                                        </children>
-                                    </FlowPane>
-                                    <Region minHeight="29.0" minWidth="467.0" prefHeight="29.0" prefWidth="467.0" />
-                                    <HBox minHeight="53.0" prefHeight="53.0" prefWidth="467.0" style="-fx-background-color: white;">
+                                    </AnchorPane>
+                                    <Region minHeight="29.0" minWidth="467.0" prefHeight="29.0" prefWidth="467.0" style="-fx-background-color: transparent;" />
+                                    <HBox minHeight="53.0" prefHeight="118.0" prefWidth="739.0" style="-fx-background-color: transparent;">
                                        <children>
-                                          <Button fx:id="removeButton" minWidth="100.0" mnemonicParsing="false" onAction="#deleteBook" prefHeight="36.0" prefWidth="109.0" text="%button.delete" textFill="WHITE">
+                                          <Region opacity="0.0" prefHeight="53.0" prefWidth="256.0" style="-fx-background-color: transparent;" />
+                                          <Button fx:id="removeButton" minWidth="100.0" mnemonicParsing="false" onAction="#deleteBook" prefHeight="36.0" text="%button.delete" textFill="WHITE">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </Button>
-                                          <Region prefHeight="53.0" prefWidth="11.0" HBox.hgrow="NEVER" />
+                                          <Region prefHeight="53.0" prefWidth="16.0" HBox.hgrow="NEVER" />
                                           <Button fx:id="updateButton" minWidth="100.0" mnemonicParsing="false" onAction="#updateBook" prefHeight="36.0" text="%button.update" textFill="WHITE">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </Button>
-                                          <Region prefHeight="53.0" prefWidth="45.0" HBox.hgrow="ALWAYS" />
+                                          <Region prefHeight="53.0" prefWidth="31.0" HBox.hgrow="ALWAYS" />
                                           <Button fx:id="addToCollectionButton" mnemonicParsing="false" onAction="#addToCollection" prefHeight="36.0" text="%button.collection" textFill="WHITE">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </Button>
+                                          <Region prefHeight="53.0" prefWidth="39.0" />
                                        </children>
                                     </HBox>
-                                    <Region minHeight="100.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" />
+                                    <Region minHeight="18.0" minWidth="200.0" prefHeight="192.0" prefWidth="739.0" style="-fx-background-color: transparent;" />
+                                    <StackPane fx:id="rootPane" prefWidth="739.0">
+                                       <children>
+                                          <AnchorPane fx:id="lendPane" prefHeight="500.0" prefWidth="739.0" style="-fx-background-color: transparent;">
+                                             <children>
+                                                <TextArea fx:id="descriptionArea" layoutX="273.0" layoutY="83.0" prefHeight="84.0" prefWidth="327.0" promptText="%area.description" wrapText="true">
+                                                   <font>
+                                                      <Font name="Microsoft Sans Serif" size="14.0" />
+                                                   </font>
+                                                </TextArea>
+                                                <TextField fx:id="firstNameField" layoutX="14.0" layoutY="83.0" prefHeight="35.0" prefWidth="180.0" promptText="%field.firstname" />
+                                                <TextField fx:id="lastNameField" layoutX="14.0" layoutY="118.0" prefHeight="36.0" prefWidth="180.0" promptText="%field.lastname" />
+                                                <Label fx:id="lendLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="-59.0" layoutY="5.0" minHeight="30.0" prefHeight="42.0" prefWidth="279.0" style="-fx-background-color: #7D7D7D; -fx-background-radius: 0 30 4 0;" text="%label.lend" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="17.0" />
+                                                   </font>
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                   <padding>
+                                                      <Insets left="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Button fx:id="lendButton" layoutX="26.0" layoutY="217.0" mnemonicParsing="false" onAction="#lendBook" prefHeight="40.0" prefWidth="165.0" text="%button.lend" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Button>
+                                                <TextField fx:id="emailField" layoutX="15.0" layoutY="160.0" prefHeight="36.0" prefWidth="205.0" promptText="E-Mail*" />
+                                                <Label layoutX="273.0" layoutY="61.0" prefHeight="20.0" prefWidth="150.0" text="Notes">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="patronLabel" layoutX="15.0" layoutY="60.0" prefHeight="21.0" prefWidth="138.0" text="%label.patron">
+                                                   <font>
+                                                      <Font size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane fx:id="returnPane" prefHeight="372.0" prefWidth="739.0" style="-fx-background-color: transparent;">
+                                             <children>
+                                                <Button fx:id="returnButton" layoutX="23.0" layoutY="142.0" mnemonicParsing="false" onAction="#returnBook" prefHeight="38.0" prefWidth="166.0" text="%button.return" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Button>
+                                                <Label fx:id="lendInformationLabel" alignment="TOP_LEFT" layoutX="23.0" layoutY="70.0" prefHeight="60.0" prefWidth="350.0" text="Label" wrapText="true">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="descriptionLabel" alignment="TOP_LEFT" layoutX="385.0" layoutY="65.0" prefHeight="77.0" prefWidth="314.0" style="-fx-background-color: #E9EDED;" text="Label" wrapText="true" />
+                                                <Label fx:id="lendLabel1" alignment="CENTER" contentDisplay="CENTER" layoutX="-64.0" layoutY="10.0" minHeight="30.0" prefHeight="42.0" prefWidth="294.0" style="-fx-background-color: #7D7D7D; -fx-background-radius: 0 30 4 0;" text="%label.return" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="17.0" />
+                                                   </font>
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                   <padding>
+                                                      <Insets left="5.0" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </StackPane>
+                                    <Region minHeight="80.0" prefHeight="59.0" prefWidth="552.0" VBox.vgrow="NEVER" />
                                  </children>
                               </VBox>
                            </children>

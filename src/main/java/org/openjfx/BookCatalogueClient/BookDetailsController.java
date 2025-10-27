@@ -1,5 +1,6 @@
 package org.openjfx.BookCatalogueClient;
 
+
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.function.Consumer;
 import org.openjfx.BookCatalogueClient.model.ApiResponse;
 import org.openjfx.BookCatalogueClient.model.Book;
 import org.openjfx.BookCatalogueClient.model.Collection;
+import org.openjfx.BookCatalogueClient.model.Patron;
 import org.openjfx.BookCatalogueClient.service.JwtUtils;
 import org.openjfx.BookCatalogueClient.task.ApiTask;
 import javafx.concurrent.Task;
@@ -16,15 +18,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
 
 public class BookDetailsController {
+	
+	@FXML
+	StackPane rootPane;
 	
 	@FXML 
 	private ResourceBundle resources;
@@ -69,6 +79,18 @@ public class BookDetailsController {
 	Button updateButton;
 	
 	@FXML
+	Button descriptionButton;
+	
+	@FXML
+	CheckBox checkAvailable;
+	
+	@FXML
+	TextArea descriptionArea;
+	
+	@FXML
+	Label descriptionLabel;
+		
+	@FXML
 	Button backButton;
 	
 	@FXML
@@ -86,6 +108,24 @@ public class BookDetailsController {
 	@FXML
 	Label collectionLabel = new Label();
 	
+	@FXML
+	AnchorPane lendPane;
+	
+	@FXML
+	AnchorPane returnPane;
+	
+	@FXML
+	TextField firstNameField;
+	
+	@FXML
+	TextField lastNameField;
+	
+	@FXML
+	TextField emailField;
+
+	@FXML
+	Label lendInformationLabel;
+	
 	private Book book;
 	private String token;
 	private List<Collection> collections;
@@ -98,27 +138,67 @@ public class BookDetailsController {
 	private ApiResponse<?> collectionResponse;
 	private ApiResponse<List<Collection>> responseCollection;
 	private ApiResponse<Book> response;
+	
+	public void setBook(Book book, HomeController homeController, String token) {
+		
+		removeButton.setDisable(true);
+		updateButton.setDisable(true);
+		addToCollectionButton.setDisable(true);
+		this.homeController = homeController;
+		this.book = book;
+		
+		setToken(token);
+		Task<ApiResponse<Book>> task;
+		if (token!=null && !jwtUtils.isTokenExpired(token)) {
+			 task = collectionsTasks.loadBookTask(book.getIsbn(), token);
+		} else task = collectionsTasks.loadBookTask(book.getIsbn());
+		
+		task.setOnSucceeded(e -> {
+			response = task.getValue();
+			if (response.isSuccess()) {
+				Book bookLoaded = response.getData();
+				this.book = response.getData();
+				showBook(bookLoaded);
+			} else showBook(book);
 			
+		});
+		
+		task.setOnFailed(e -> {
+			showBook(book);
+		});
+		new Thread(task).start();		
+	}
+	
 	public void showBook(Book book) {
+				
 		initializeToolTip();
+		setLendPane(book);
 		titleLabel.setText(book.getTitle());
 		authorLabel.setText(book.getAuthor());
-		if (book.getPublisher()!=null)
+		if (book.getPublisher()!=null) {
 			publisherLabel.setText(book.getPublisher());
-		if (book.getPublishPlace()!=null)
+		} else {
+			publisherLabel.setText(" - ");
+		}
+		if (book.getPublishPlace()!=null) {
 			publishPlaceLabel.setText(book.getPublishPlace());
-		
-		DateTimeFormatter uiFormatter = DateTimeFormatter.ofPattern("yyyy");
-		if (book.getPublishDate()!=null)
+		} else {
+			publishPlaceLabel.setText(" - ");
+		}		
+		if (book.getPublishDate()!=null) {
+			DateTimeFormatter uiFormatter = DateTimeFormatter.ofPattern("yyyy");
 			publishDateLabel.setText(book.getPublishDate().format(uiFormatter));
+		} else {
+			publishDateLabel.setText(" - ");
+		}
 		isbnLabel.setText(book.getIsbn());
 		pagesLabel.setText(String.valueOf(book.getPages()));
 		if (book.isAvailable()) {
-			availableLabel.setText("Available ");
+			availableLabel.setText(resources.getString("label.available"));
 			availableImage.setImage(new Image(getClass().getResource("icons/ready-stock.png").toExternalForm()));
 		}
 		else {
-			availableLabel.setText("Not available ");
+			availableLabel.setText(resources.getString("label.unavailable"));
 			availableImage.setImage(new Image(getClass().getResource("icons/out-of-stock.png").toExternalForm()));
 			
 		}
@@ -139,7 +219,7 @@ public class BookDetailsController {
 		Task<ApiResponse<List<Collection>>> task = collectionsTasks.loadCollectionsByBookIdTask(book.getId());
 		task.setOnSucceeded(e -> {
 			responseCollection = task.getValue();
-			if (responseCollection.isSuccess()) {
+			if (responseCollection.isSuccess() && responseCollection.getData()!=null) {
 				collections = responseCollection.getData();
 				for (int i=0; i<collections.size(); i++) {
 					Button button = new Button(collections.get(i).getName());
@@ -174,7 +254,6 @@ public class BookDetailsController {
 
 	    loadImageTask.setOnSucceeded(e -> coverImage.setImage(loadImageTask.getValue()));
 	    loadImageTask.setOnFailed(e -> {
-	        System.out.println("Failed to load image");
 	    });
 
 	    new Thread(loadImageTask).start();
@@ -188,32 +267,8 @@ public class BookDetailsController {
 		collectionPane.getChildren().clear();
 		collectionLabel.setText(" Collection: ");
 		collectionPane.getChildren().add(collectionLabel);
-		setBook(book,homeController);
+		setBook(book,homeController,token);
 	}
-	
-	public void setBook(Book book, HomeController homeController) {
-		this.homeController = homeController;
-		this.book = book;
-		removeButton.setDisable(true);
-		updateButton.setDisable(true);
-		addToCollectionButton.setDisable(true);
-				 
-		Task<ApiResponse<Book>> task = collectionsTasks.loadBookTask(book.getIsbn());
-		task.setOnSucceeded(e -> {
-			response = task.getValue();
-			if (response.isSuccess()) {
-				Book bookLoaded = response.getData();
-				this.book = response.getData();
-				showBook(bookLoaded);
-			} else showBook(book);
-			
-		});
-		task.setOnFailed(e -> {
-			showBook(book);
-		});
-		new Thread(task).start();		
-	}
-
 	
 	public void addToCollection() {
 	
@@ -266,9 +321,53 @@ public class BookDetailsController {
 			homeController.getTabPane().getSelectionModel().select(collectionsTab);
 			
 		
-	} catch (IOException e) {
-		e.printStackTrace();
-	}	
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	@FXML
+	private void returnBook() {
+		Task<ApiResponse<String>> task = collectionsTasks.returnBookTask(book.getId(), token);
+		task.setOnSucceeded(e -> {
+			ApiResponse<String> returnResponse = task.getValue();
+			if (returnResponse.isSuccess()) {
+				createAlert(AlertType.INFORMATION, "alert.return", "alert.returnsuccess").showAndWait();
+				refresh();
+			} else {
+				createAlert(AlertType.ERROR, "alert.return", "alert.returnfail").showAndWait();
+			}
+		});
+		new Thread(task).start();
+	}
+	
+	@FXML
+    private void lendBook() {
+        if (!firstNameField.getText().isEmpty() || !lastNameField.getText().isEmpty() || !emailField.getText().isEmpty()) {
+        	
+        	Patron patron = new Patron();
+        	String description;
+        	patron.setFirstName(firstNameField.getText().toLowerCase());
+        	patron.setLastName(lastNameField.getText().toLowerCase());
+        	patron.setEmail(emailField.getText().toLowerCase());
+        	if (!descriptionArea.getText().isEmpty()) {
+        		description = descriptionArea.getText();
+        	} else description = " ";
+        	      
+        	Task<ApiResponse<Patron>> task = collectionsTasks.lendBookTask(book.getId(), patron, description, token);
+    		task.setOnSucceeded(e -> {
+    			ApiResponse<Patron> lendResponse = task.getValue();
+    			if (lendResponse.isSuccess()) {
+    				createAlert(AlertType.INFORMATION, "alert.lend", "alert.lendsuccess").showAndWait();
+    				refresh();
+    			} else {
+    				System.out.println(lendResponse.getStatus() + " " + lendResponse.getError().getMessage());
+    				createAlert(AlertType.ERROR, "alert.lend", "alert.lendfail").showAndWait();
+    			}			
+    			
+    		});
+    		new Thread(task).start();	        	       	
+        }
 	}
 	
 	public void setOnBookUpdate(Consumer<Book> callback) {
@@ -307,8 +406,42 @@ public class BookDetailsController {
 		if (token!=null && !jwtUtils.isTokenExpired(token)) {
 			removeButton.setDisable(false);
 			updateButton.setDisable(false);	
-			addToCollectionButton.setDisable(false);
+			addToCollectionButton.setDisable(false);			
+		} 
+	}
+	
+	public void setLendPane(Book book) { 
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+		if (token!=null && !jwtUtils.isTokenExpired(token)) {
+			if (book.isAvailable()) {
+				if (!rootPane.getChildren().contains(lendPane)) rootPane.getChildren().add(lendPane);
+				rootPane.getChildren().remove(returnPane);
+			}				
+			else {
+				rootPane.getChildren().remove(lendPane);
+				if (!rootPane.getChildren().contains(returnPane)) rootPane.getChildren().add(returnPane);
+				if (book.getDescription().equals("")) descriptionLabel.setVisible(false);
+				else descriptionLabel.setText(book.getDescription());
+				System.out.println(book.getLendDate().format(formatter));
+				Task<ApiResponse<Patron>> task = collectionsTasks.getPatronByBookIdTask(book.getId(), token);
+				task.setOnSucceeded(e -> {
+					ApiResponse<Patron> patronResponse = task.getValue();
+					if (patronResponse.isSuccess() && patronResponse.getData() != null) {
+	                Patron p = patronResponse.getData();
+
+	               
+	                lendInformationLabel.setText(String.format("Borrowed by %s %s (%s) on %s",
+	                		p.getFirstName(), p.getLastName(), p.getEmail(), book.getLendDate()));
+					}
+					});
+				new Thread(task).start();
+			}	
+			
+		} else {
+			returnPane.getChildren().clear();
+			lendPane.getChildren().clear();
 		}
+			
 	}
 	
 	private void initializeToolTip() {
@@ -316,6 +449,14 @@ public class BookDetailsController {
 		refreshButton.setTooltip(new Tooltip(resources.getString("tooltip.refresh")));
 	}
 	
-	
+	private Alert createAlert(AlertType type, String titleKey, String headerKey) {
+	    Alert alert = new Alert(type);
+	    alert.getDialogPane().getStylesheets().add(
+	        getClass().getResource("AlertStyle.css").toExternalForm()
+	    );
+	    alert.setTitle(resources.getString(titleKey));
+	    alert.setHeaderText(resources.getString(headerKey));
+	    return alert;
+	}
 }
 

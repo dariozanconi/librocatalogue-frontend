@@ -8,6 +8,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -68,15 +69,8 @@ public class OpenBookService {
 		        book.setPublishPlace(bookData.has("publish_places") ? bookData.path("publish_places").get(0).path("name").asText() : null);
 		        book.setAvailable(true);
 		        
-		        List<Tag> tags = new ArrayList<>();
-		        if (bookData.has("subjects")) {
-		        	for (JsonNode publisher : bookData.path("subjects")) {
-		        		if (publisher.has("name")) {
-		        			tags.add(new Tag(publisher.path("name").asText()));
-		        		}
-		        	}
-		        	book.setTags(tags);
-		        }
+		        List<Tag> tags = Arrays.asList(); 
+		        book.setTags(tags);
 		        
 		        if (bookData.has("publish_date")) {
 		        	String date = bookData.path("publish_date").asText();		        

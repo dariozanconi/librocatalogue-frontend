@@ -20,13 +20,17 @@ public class Book {
 
     private String imageName;
     private String imageUrl;
-   
+    private String description;
     private List<Tag> tags;
+    
+    private LocalDate lendDate;
+    private LocalDate creationDate;
     
     public Book() {}
     
 	public Book(int id, String isbn, String title, String author, boolean available, LocalDate publishDate,
-			String publishPlace, String publisher, int pages, String imageName, String imageUrl, List<Tag> tags) {		
+			String publishPlace, String publisher, int pages, String imageName,
+			String imageUrl, String description, List<Tag> tags, LocalDate lendDate, LocalDate creationDate) {		
 		this.id = id;
 		this.isbn = isbn;
 		this.title = title;
@@ -38,7 +42,10 @@ public class Book {
 		this.pages = pages;
 		this.imageName = imageName;
 		this.imageUrl = imageUrl;
+		this.description = description;
 		this.tags = tags;
+		this.lendDate = lendDate;
+		this.creationDate = creationDate;
 	}
 
 	public int getId() {
@@ -136,6 +143,22 @@ public class Book {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public LocalDate getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(LocalDate creationDate) {
+		this.creationDate = creationDate;
+	}
 
 	public List<Tag> getTags() {
 		return tags;
@@ -144,7 +167,16 @@ public class Book {
 	public void setTags(List<Tag> tags) {
 		this.tags = tags;
 	}
-	
+
+	public LocalDate getLendDate() {
+		return lendDate;
+	}
+
+	public void setLendDate(LocalDate lendDate) {
+		this.lendDate = lendDate;
+	}
+
+
 	public static class Tag {
 		
 		private int id;

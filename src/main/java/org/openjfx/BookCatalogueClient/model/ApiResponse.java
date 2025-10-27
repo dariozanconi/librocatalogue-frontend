@@ -16,7 +16,7 @@ public class ApiResponse<T> {
     }
 
     public boolean isSuccess() {
-        return status == 200  || status == 201;
+        return status ==200 || status == 201 || status == 204;
     }
 
     public int getStatus() { return status; }

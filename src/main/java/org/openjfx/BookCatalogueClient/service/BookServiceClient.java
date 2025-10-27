@@ -21,24 +21,27 @@ import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.ContentType;
 
 import org.openjfx.BookCatalogueClient.model.ApiError;
 import org.openjfx.BookCatalogueClient.model.ApiResponse;
 import org.openjfx.BookCatalogueClient.model.Book;
 import org.openjfx.BookCatalogueClient.model.PageResponse;
+import org.openjfx.BookCatalogueClient.model.Patron;
 import org.openjfx.BookCatalogueClient.model.Collection;
+import org.openjfx.BookCatalogueClient.model.LendDto;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class BookServiceClient {
 	
 	private final File defaultImage;
-	String urlDomain = DomainConstant.DOMAIN_PUBLIC;
+	String urlDomain = DomainConstant.DOMAIN_LOCAL;
 
     public BookServiceClient() {
 
@@ -77,18 +80,46 @@ public class BookServiceClient {
         }		
 	}
 	
-	public ApiResponse<Book> getBookByIsbn(String isbn) throws ParseException {
+	public ApiResponse<Book> getBookByIsbn(String isbn, String token) throws ParseException {
 		
 		String url = urlDomain + "/books/isbn/" + isbn;
 		
 		try (CloseableHttpClient client = HttpClients.createDefault()) {
 			
 			HttpGet request = new HttpGet(url);			
-		
+			request.addHeader("Authorization", "Bearer " + token);
+			
 			try (CloseableHttpResponse response = client.execute(request)) {
 				int statusCode = response.getCode();
 				String body = EntityUtils.toString(response.getEntity());
+				
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.registerModule(new JavaTimeModule());
+				if (statusCode == 200 || statusCode == 201) {
+					return new ApiResponse<Book>(statusCode, mapper.readValue(body, Book.class));
+				} else {
+					return new ApiResponse<>(new ApiError(statusCode, body));
+				}
+			}
+		} catch (IOException e) {			
+			e.printStackTrace();
+			return new ApiResponse<>(new ApiError(500, e.getMessage()));
+		} 
+		
+	}
+	
+public ApiResponse<Book> getBookByIsbn(String isbn) throws ParseException {
+		
+		String url = urlDomain + "/books/isbn/" + isbn;
+		
+		try (CloseableHttpClient client = HttpClients.createDefault()) {
 			
+			HttpGet request = new HttpGet(url);						
+			
+			try (CloseableHttpResponse response = client.execute(request)) {
+				int statusCode = response.getCode();
+				String body = EntityUtils.toString(response.getEntity());
+				
 				ObjectMapper mapper = new ObjectMapper();
 				mapper.registerModule(new JavaTimeModule());
 				if (statusCode == 200 || statusCode == 201) {
@@ -247,6 +278,112 @@ public class BookServiceClient {
 			e.printStackTrace();
 			return new ApiResponse<>(new ApiError(500, e.getMessage()));
 		}			
+	}
+	
+	public ApiResponse<Patron> lendBook(int bookId, Patron patron, String description, String token) throws JsonProcessingException {
+		
+	    String url = urlDomain + "/books/" + bookId + "/lend";
+	    LendDto lendRequest = new LendDto(patron, description);
+	        ObjectMapper mapper = new ObjectMapper();
+	        ContentType jsonType = ContentType.create("application/json", StandardCharsets.UTF_8);
+	        mapper.registerModule(new JavaTimeModule());
+	        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+	        String json = mapper.writeValueAsString(lendRequest);
+	        
+	    try (CloseableHttpClient client = HttpClients.createDefault()) {
+	        HttpPost request = new HttpPost(url);
+	        request.setHeader("Authorization", "Bearer " + token);
+	        request.setHeader("Content-Type", "application/json");
+	                   
+	        request.setEntity(new StringEntity(json, jsonType));
+
+	        try (CloseableHttpResponse response = client.execute(request)) {
+	            String body = EntityUtils.toString(response.getEntity());
+	            return new ApiResponse<>(response.getCode(),
+	                mapper.readValue(body, Patron.class));
+	        }
+	        
+	    } catch (Exception e) {
+	        return new ApiResponse<>(new ApiError(500, e.getMessage()));
+	    }
+	}
+
+	public ApiResponse<String> returnBook(int bookId, String token) {
+		
+	    String url = urlDomain + "/books/" + bookId + "/return";
+	    
+	    try (CloseableHttpClient client = HttpClients.createDefault()) {
+	        HttpPost request = new HttpPost(url);
+	        request.setHeader("Authorization", "Bearer " + token);
+	        try (CloseableHttpResponse response = client.execute(request)) {
+	            String body = EntityUtils.toString(response.getEntity());
+	            return new ApiResponse<>(response.getCode(), body);
+	        }
+	        
+	    } catch (Exception e) {
+	        return new ApiResponse<>(new ApiError(500, e.getMessage()));
+	    }
+	}
+	
+	public ApiResponse<Patron> getPatronByBookId(int bookId, String token) throws ParseException {
+	    String url = urlDomain + "/book/" + bookId + "/patron";
+	    
+	    try (CloseableHttpClient client = HttpClients.createDefault()) {
+	        HttpGet request = new HttpGet(url);
+	        
+	        if (token != null && !token.isBlank()) {
+	            request.setHeader("Authorization", "Bearer " + token);
+	        }
+	        
+	        request.setHeader("Accept", "application/json");
+	        
+	        try (CloseableHttpResponse response = client.execute(request)) {
+	            int statusCode = response.getCode();
+	            String body = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+	            
+	            ObjectMapper mapper = new ObjectMapper();
+	            mapper.registerModule(new JavaTimeModule());
+	            
+	            if (statusCode >= 200 || statusCode <205) {
+	                Patron patron = mapper.readValue(body, Patron.class);
+	                return new ApiResponse<>(statusCode, patron);
+	            } else {
+	                return new ApiResponse<>(new ApiError(statusCode, body));
+	            }
+	        }
+	        
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return new ApiResponse<>(new ApiError(500, e.getMessage()));
+	    }
+	}
+	
+	public ApiResponse<List<Patron>> getAllPatrons(String token) {
+		
+		String url = urlDomain + "/patrons";
+		
+		try (CloseableHttpClient client = HttpClients.createDefault()) {
+			
+			HttpGet request = new HttpGet(url);
+			if (token != null && !token.isBlank()) {
+	            request.setHeader("Authorization", "Bearer " + token);
+	        }
+			
+			try(CloseableHttpResponse response = client.execute(request)) {
+				
+				int statusCode = response.getCode();
+				String body = EntityUtils.toString(response.getEntity());
+				
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.registerModule(new JavaTimeModule());
+				List<Patron> patrons = mapper.readValue(body, new TypeReference<List<Patron>>() {});
+				
+				return new ApiResponse<>(statusCode, patrons);
+			}
+		}
+		catch (Exception e) {
+			return new ApiResponse<> (new ApiError(500, e.getMessage()));
+		}
 	}
 	
 	public static ContentType getType(File image) {

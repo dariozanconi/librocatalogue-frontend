@@ -9,6 +9,7 @@ import org.openjfx.BookCatalogueClient.model.Book;
 import org.openjfx.BookCatalogueClient.model.BookDto;
 import org.openjfx.BookCatalogueClient.model.Collection;
 import org.openjfx.BookCatalogueClient.model.PageResponse;
+import org.openjfx.BookCatalogueClient.model.Patron;
 import org.openjfx.BookCatalogueClient.model.RegisterRequest;
 import org.openjfx.BookCatalogueClient.model.Users;
 import org.openjfx.BookCatalogueClient.service.BookServiceClient;
@@ -33,6 +34,15 @@ public class ApiTask {
             @Override
             protected ApiResponse<PageResponse<Book>> call() {
                 return bookClient.getBooks(page, size, sort);
+            }
+        };
+    }
+    
+    public Task<ApiResponse<Book>> loadBookTask(String isbn, String token) {
+    	return new Task<>() {
+            @Override
+            protected ApiResponse<Book> call() throws ParseException {
+                return bookClient.getBookByIsbn(isbn, token);
             }
         };
     }
@@ -87,6 +97,42 @@ public class ApiTask {
             @Override
             protected ApiResponse<PageResponse<Book>> call() {
                 return bookClient.searchBooks(keyword, page, size);
+            }
+        };
+    }
+    
+    public Task<ApiResponse<Patron>> lendBookTask(int bookId, Patron patron, String description, String token) {
+    	return new Task<>() {
+            @Override
+            protected ApiResponse<Patron> call() throws ParseException, JsonProcessingException {
+                return bookClient.lendBook(bookId, patron, description, token);
+            }
+        };
+    }
+    
+    public Task<ApiResponse<String>> returnBookTask(int id, String token) {
+    	return new Task<>() {
+            @Override
+            protected ApiResponse<String> call() throws ParseException, JsonProcessingException {
+                return bookClient.returnBook(id, token);
+            }
+        };
+    }
+    
+    public Task<ApiResponse<Patron>>getPatronByBookIdTask(int bookId, String token) {
+    	return new Task<>() {
+            @Override
+            protected ApiResponse<Patron> call() throws ParseException, JsonProcessingException {
+                return bookClient.getPatronByBookId(bookId, token);
+            }
+        };
+    }
+    
+    public Task<ApiResponse<List<Patron>>>getAllPatronsTask(String token) {
+    	return new Task<>() {
+            @Override
+            protected ApiResponse<List<Patron>> call() throws ParseException, JsonProcessingException {
+                return bookClient.getAllPatrons(token);
             }
         };
     }
@@ -187,6 +233,15 @@ public class ApiTask {
             @Override
             protected ApiResponse<String> call() {
                 return collectionClient.removeCollection(id, token);
+            }
+        };  	
+    } 
+    
+    public Task<ApiResponse<String>> renameCollectionTask(int id, String name, String token) {
+    	return new Task<>() {
+            @Override
+            protected ApiResponse<String> call() throws ParseException {
+                return collectionClient.renameCollection(id, name, token);
             }
         };  	
     } 
