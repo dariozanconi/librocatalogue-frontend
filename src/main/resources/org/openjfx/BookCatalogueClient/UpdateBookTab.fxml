@@ -2,7 +2,6 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -66,13 +65,6 @@
                               <Region prefHeight="13.0" prefWidth="602.0" />
                               <TextField fx:id="tagsField" prefHeight="37.0" prefWidth="563.0" promptText="%field.tags" />
                               <Region prefHeight="14.0" prefWidth="613.0" />
-                              <Region prefHeight="37.0" prefWidth="14.0" />
-                              <CheckBox fx:id="availableCheckBox" mnemonicParsing="false" text="%check.available">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="15.0" />
-                                 </font>
-                              </CheckBox>
-                              <Region prefHeight="37.0" prefWidth="14.0" />
                               <TextField fx:id="numberPagesField" prefHeight="37.0" prefWidth="160.0" promptText="%field.pages" />
                               <Region prefHeight="33.0" prefWidth="591.0" />
                               <Button fx:id="updateButton" mnemonicParsing="false" onAction="#update" prefHeight="32.0" prefWidth="142.0" text="%button.update" textFill="WHITE">

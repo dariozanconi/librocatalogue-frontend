@@ -6,6 +6,17 @@ AnchorPane {
 	-fx-background-color : white;
 }
 
+.text-area {
+
+	-fx-background-insets: 2, 0, 0, 0;
+	-fx-font-family: "SansSerif";
+    -fx-font-size: 14;
+}
+.text-area .content {
+	-fx-background-color : #E9EDED;
+
+}
+
 .tooltip {
 	-fx-font-size : 12;
 }
@@ -42,10 +53,20 @@ AnchorPane {
 #removeButton:pressed {
 	-fx-background-color : #135EF0;
 }
+
 #removeButton:disabled {
 	-fx-opacity: 0.5;
 }
-
+#descriptionButton {
+	-fx-background-color : #0465E0;
+	-fx-background-radius: 7 7 7 7;
+}
+#descriptionButton:hover {
+	-fx-background-color : #128FEB;
+}
+#descriptionButton:pressed {
+	-fx-background-color : #135EF0;
+}
 #addToCollectionButton {
 	-fx-background-color : #0465E0;
 	-fx-background-radius: 7 7 7 7;
@@ -72,6 +93,25 @@ AnchorPane {
 }
 #updateButton:disabled {
 	-fx-opacity: 0.5;
+}
+#lendButton {
+	-fx-background-color : #52DB51;
+}
+#lendButton:hover {
+	-fx-background-color : #337D35;
+}
+#lendButton:pressed {
+	-fx-background-color : #286129;
+}
+
+#returnButton {
+	-fx-background-color : #DB4141;
+}
+#returnButton:hover {
+	-fx-background-color : #8C0000;
+}
+#returnButton:pressed {
+	-fx-background-color : #61392D;
 }
 
 #backButton {

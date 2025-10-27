@@ -119,8 +119,33 @@ HBox {
 }
 
 
+.tree-view, .tree-cell {
+    -fx-background-color:  #424242;
+    -fx-text-fill: white ;
+    -fx-font-size: 14;
+}
 
+.tree-cell:hover {
+    -fx-background-color:  #3F4B57;
+}
 
+.tree-cell {
+    -fx-padding: 0.50em 0em 0.50em 0em ;
+}
+.tree-cell:sub-tree-item {
+    -fx-padding: 0.25em ;
+}
+
+.tree-cell > .tree-disclosure-node > .arrow  {
+    -fx-background-color: gray;
+}
+.tree-cell:expanded > .tree-disclosure-node > .arrow {
+    -fx-background-color: white;
+}
+
+.tree-view .scroll-bar:vertical {
+    -fx-scale-x: 0;
+}
 
 
 

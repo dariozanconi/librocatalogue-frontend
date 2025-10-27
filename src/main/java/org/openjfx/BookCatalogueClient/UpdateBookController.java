@@ -67,8 +67,6 @@ public class UpdateBookController {
 	@FXML
 	TextField numberPagesField;
 	
-	@FXML
-	CheckBox availableCheckBox;
 	
 	@FXML
 	Button addCoverButton;
@@ -141,7 +139,6 @@ public class UpdateBookController {
 			
 		}
 		tagsField.setText(tags);		
-		availableCheckBox.setSelected(book.isAvailable());
 		
 	}
 	
@@ -156,7 +153,6 @@ public class UpdateBookController {
 		updatedBook.setPublishPlace(publishPlaceField.getText());
 		updatedBook.setPublishDate(publishDateField.getValue());
 		updatedBook.setPages(Integer.parseInt(numberPagesField.getText()));
-		updatedBook.setAvailable(availableCheckBox.isSelected());
 		updatedBook.setTags(readTags(tagsField.getText()));
 		
 		

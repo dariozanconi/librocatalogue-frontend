@@ -113,7 +113,6 @@ public class SaveTabController {
 			
 			response = task.getValue();
 			totalElements = (int) response.getData().getTotalElements();
-			System.out.println(totalElements);
 			loadBooks();
 		});		
 		

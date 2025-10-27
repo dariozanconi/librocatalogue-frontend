@@ -5,8 +5,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.StringConverter;
@@ -74,9 +77,6 @@ public class AddBookController {
 	TextField numberPagesField;
 	
 	@FXML
-	CheckBox availableCheckBox;
-	
-	@FXML
 	Button addCoverButton;
 	
 	@FXML
@@ -99,6 +99,9 @@ public class AddBookController {
 	
 	@FXML 
 	ListView<String> bookListView;
+	
+	@FXML
+	FlowPane collectionPane;
 			
 	List<BookDto> books = new ArrayList<>();
 	private final ApiTask bookTasks = new ApiTask();
@@ -106,6 +109,7 @@ public class AddBookController {
 	private BookDto bookDto;
 	private ApiResponse<List<Collection>> collectionResponse;
 	private List<Collection> collectionList;
+	private List<Collection> selectedCollections = new ArrayList<>();
 	private ObservableList<String> titles = FXCollections.observableArrayList();
 	private File selectedFile = null;
 	private Book book;
@@ -154,7 +158,7 @@ public class AddBookController {
 		if (!numberPagesField.getText().isEmpty())
 			book.setPages(Integer.parseInt(numberPagesField.getText()));
 		else book.setPages(0);		
-		book.setAvailable(availableCheckBox.isSelected());
+		book.setAvailable(true);
 		book.setTags(readTags(tagsField.getText()));
 		
 		if(!book.getTitle().isBlank() && !book.getAuthor().isBlank() && !book.getIsbn().isBlank()) {
@@ -224,7 +228,7 @@ public class AddBookController {
 						result -> {
 							if (result.isSuccess()) {
 						        if (!collectionsBox.getValue().getName().equals("none")) {
-						            addBookToCollection(collectionsBox.getValue(), result.getData());
+						            addBookToCollection(result.getData());
 						        }
 						            messageLabel.setText(resources.getString("alert.booksaddtodatabase"));
 						        } else {
@@ -242,9 +246,10 @@ public class AddBookController {
 		}					
 	}
 	
-	public void addBookToCollection(Collection collection, Book book) {
-		runApiTask(
-			collectionTasks.addBookCollectionTask(collection.getId(), book, token),
+	public void addBookToCollection(Book book) {
+		for (int i=0; i<selectedCollections.size(); i++) {
+			runApiTask(
+			collectionTasks.addBookCollectionTask(selectedCollections.get(i).getId(), book, token),
 			   result -> {
 			   if (!result.isSuccess()) {
 			    	showError(resources.getString("alert.bookaddfail"), 
@@ -252,6 +257,8 @@ public class AddBookController {
 			   }
 			   }
 		);
+		}
+		
 	}
 	
 	private <T> void runApiTask(Task<ApiResponse<T>> task, Consumer<ApiResponse<T>> onSuccess) {
@@ -294,6 +301,32 @@ public class AddBookController {
 		
 	}
 	
+	@FXML
+	public void selectCollection() {
+		
+		collectionPane.getChildren().clear();
+		
+		if (collectionsBox.getValue().getName().equals("none"))
+			selectedCollections.clear();
+		else if (selectedCollections.stream().anyMatch(c -> c.getName().equals(collectionsBox.getValue().getName()))) {
+			selectedCollections.remove(collectionsBox.getValue());
+		}				
+		else {
+			selectedCollections.add(collectionsBox.getValue());
+		}
+		
+		if (!selectedCollections.isEmpty()) {
+			for (int i=0; i<selectedCollections.size(); i++) {
+				Label collectionLabel = new Label(" " + selectedCollections.get(i).getName() + "  ");
+				collectionLabel.setStyle("-fx-background-color: #FCFB7B;"
+						+ " -fx-background-radius: 5 5 5 5; "
+						+ "-fx-pref-height:33; -fx-background-insets: 3 3 3 3;");
+				collectionPane.getChildren().add(collectionLabel);
+			}				
+		} else {
+			collectionPane.getChildren().clear();
+		}
+	}
 	public void formatDatePicker() {
 		
 		DateTimeFormatter uiFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");

@@ -57,9 +57,9 @@
                                     </Button>
                                  </children>
                               </HBox>
-                              <Label layoutX="33.0" layoutY="28.0" prefHeight="52.0" prefWidth="444.0" text="%label.save">
+                              <Label alignment="CENTER" layoutX="-9.0" layoutY="28.0" prefHeight="44.0" prefWidth="402.0" style="-fx-background-color: #7D7D7D; -fx-background-radius: 0 35 4 0;" text="%label.save" textFill="WHITE">
                                  <font>
-                                    <Font name="SansSerif Regular" size="20.0" />
+                                    <Font name="SansSerif Regular" size="18.0" />
                                  </font>
                               </Label>
                               <TableView fx:id="previewTable" layoutX="33.0" layoutY="390.0" prefHeight="237.0" prefWidth="656.0">
@@ -111,7 +111,7 @@
                                     </ImageView>
                                  </graphic>
                               </Label>
-                              <Line endX="231.0" layoutX="135.0" layoutY="80.0" startX="-100.0" stroke="#868484" strokeLineCap="ROUND" strokeLineJoin="BEVEL" />
+                              <Line endX="231.0" layoutX="141.0" layoutY="90.0" startX="-151.0" stroke="#868484" strokeLineCap="ROUND" strokeLineJoin="BEVEL" />
                            </children>
                         </AnchorPane>
                         <Region opacity="0.0" prefHeight="1100.0" prefWidth="316.0" HBox.hgrow="ALWAYS" />
