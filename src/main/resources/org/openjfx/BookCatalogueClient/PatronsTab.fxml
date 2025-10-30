@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="rootPane" stylesheets="@stylesheets/PatronsTabStyle.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.BookCatalogueClient.PatronTabController">
+   <children>
+      <BorderPane>
+         <top>
+            <AnchorPane prefHeight="46.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="headerLabel" alignment="TOP_LEFT" layoutX="127.0" layoutY="15.0" prefHeight="31.0" prefWidth="281.0" text="%label.patron">
+                     <font>
+                        <Font name="SansSerif Regular" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </top>
+         <center>
+            <HBox fx:id="myHBox" prefHeight="259.0" prefWidth="1100.0">
+               <children>
+                  <Region opacity="0.0" prefHeight="1100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
+                  <AnchorPane prefHeight="319.0" prefWidth="712.0">
+                     <children>
+                        <TableView fx:id="patronTable" prefHeight="298.0" prefWidth="712.0">
+                          <columns>
+                            <TableColumn fx:id="firstNameColumn" prefWidth="120.0" text="%label.firstname" />
+                            <TableColumn fx:id="lastNameColumn" prefWidth="112.0" text="%label.lastname" />
+                              <TableColumn fx:id="emailColumn" prefWidth="234.0" text="E-Mail" />
+                              <TableColumn fx:id="creationDateColumn" prefWidth="128.0" text="%label.creationdate" />
+                              <TableColumn fx:id="detailsColumn" prefWidth="117.0" text="%label.showdetails" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+                  <Region opacity="0.0" prefHeight="1100.0" prefWidth="316.0" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+         </center>
+         <bottom>
+            <AnchorPane prefHeight="228.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label graphicTextGap="6.0" layoutX="55.0" layoutY="17.0" prefHeight="32.0" prefWidth="211.0" text="%label.patron">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/group.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label graphicTextGap="6.0" layoutX="400.0" layoutY="17.0" prefHeight="33.0" prefWidth="258.0" text="%label.lentbooks">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/library%20(1).png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <VBox layoutX="55.0" layoutY="56.0" prefHeight="104.0" prefWidth="285.0" style="-fx-border-width: 1; -fx-border-color: gray; -fx-border-radius: 3;">
+                     <children>
+                        <Label fx:id="firstNameLabel" prefHeight="25.0" prefWidth="291.0">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <padding>
+                              <Insets left="3.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="lastNameLabel" prefHeight="25.0" prefWidth="287.0">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <padding>
+                              <Insets left="3.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="emailLabel" prefHeight="25.0" prefWidth="320.0">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <padding>
+                              <Insets left="3.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="dateLabel" prefHeight="25.0" prefWidth="308.0">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <padding>
+                              <Insets left="3.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <TableView fx:id="bookTable" layoutX="400.0" layoutY="56.0" prefHeight="133.0" prefWidth="488.0">
+                    <columns>
+                      <TableColumn fx:id="titleColumn" prefWidth="217.0" text="%item.title" />
+                      <TableColumn fx:id="authorColumn" prefWidth="168.0" text="%item.author" />
+                        <TableColumn fx:id="returnColumn" minWidth="0.0" prefWidth="102.0" text="%button.return" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </bottom>
+      </BorderPane>
+   </children>
+</StackPane>

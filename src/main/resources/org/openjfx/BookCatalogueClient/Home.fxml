@@ -36,7 +36,7 @@
                         <Button fx:id="searchButton" alignment="CENTER" mnemonicParsing="false" onAction="#showSearchResult" prefHeight="43.0" prefWidth="47.0" text="🔍" />
                      </children>
                   </StackPane>
-                  <Region prefHeight="53.0" prefWidth="44.0" />
+                  <Region prefHeight="53.0" prefWidth="37.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="showButton" graphicTextGap="6.0" mnemonicParsing="false" onAction="#showAll" prefHeight="37.0" text="%button.show" HBox.hgrow="SOMETIMES">
                      <graphic>
                         <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -61,7 +61,30 @@
                         <Font name="SansSerif Regular" size="12.0" />
                      </font>
                   </Button>
-                  <AnchorPane minWidth="20.0" prefHeight="53.0" prefWidth="53.0" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="statisticsButton" graphicTextGap="6.0" layoutX="595.0" layoutY="26.0" mnemonicParsing="false" onAction="#openStatisticsTab" prefHeight="37.0" text="%label.statistics">
+                     <graphic>
+                        <ImageView fitHeight="21.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/chart.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="SansSerif Regular" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="patronsButton" graphicTextGap="6.0" mnemonicParsing="false" onAction="#openPatronTab" prefHeight="37.0" text="%button.patrons">
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/group.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="SansSerif Regular" size="12.0" />
+                     </font>
+                  </Button>
                   <Button fx:id="addButton" graphicTextGap="6.0" mnemonicParsing="false" onAction="#openAddBookTab" prefHeight="37.0" text="%button.add" HBox.hgrow="SOMETIMES">
                   	 <graphic>
         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -74,7 +97,8 @@
                         <Font name="SansSerif Regular" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="updateButton" graphicTextGap="6.0" mnemonicParsing="false" onAction="#updateSelectedBooks" prefHeight="37.0" text="%button.update" HBox.hgrow="SOMETIMES">
+                  <AnchorPane minWidth="20.0" prefHeight="53.0" prefWidth="53.0" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="updateButton" graphicTextGap="6.0" mnemonicParsing="false" onAction="#updateSelectedBooks" prefHeight="37.0" HBox.hgrow="SOMETIMES">
                      <font>
                         <Font name="SansSerif Regular" size="12.0" />
                      </font>
@@ -86,7 +110,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="removeButton" graphicTextGap="6.0" mnemonicParsing="false" onAction="#removeSelectedBooks" prefHeight="37.0" text="%button.delete" HBox.hgrow="SOMETIMES">
+                  <Button fx:id="removeButton" graphicTextGap="6.0" mnemonicParsing="false" onAction="#removeSelectedBooks" prefHeight="37.0" HBox.hgrow="SOMETIMES">
                      <font>
                         <Font name="SansSerif Regular" size="12.0" />
                      </font>

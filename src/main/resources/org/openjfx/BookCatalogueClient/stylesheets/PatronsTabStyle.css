@@ -1,0 +1,142 @@
+
+HBox {
+	-fx-background-color : white; 
+}
+
+#myHBox {
+	-fx-background-color : grey; 
+}
+AnchorPane {
+	-fx-background-color : white;
+}
+
+
+
+.button {
+	-fx-background-color : #FFFFFF;
+	-fx-border-width:3;
+	-fx-border-color:black;
+	-fx-pref-width:100;
+	-fx-pref-height:27;
+}
+.button:hover {
+	-fx-background-color : #EBEBEB;
+}
+.button:pressed {
+	-fx-background-color : #DEDEDE;
+}
+.button:disabled {
+	-fx-opacity: 0.5;
+}
+
+
+
+#searchButton {
+	-fx-background-color : #E9EDED;
+	-fx-background-radius : 30 30 30 30;
+	-fx-background-insets: 2, 0, 0, 0;	
+}
+
+#searchButton:hover{
+	-fx-background-color : #FFFFFF;
+	-fx-background-radius : 30 30 30 30;
+	-fx-background-insets: 2, 0, 0, 0;
+}
+
+#searchButton:pressed{
+	-fx-background-color : #FFFFFF;
+	-fx-background-radius : 30 30 30 30;
+	-fx-background-insets: 2, 0, 0, 0;
+}
+
+.scroll-pane .scroll-bar {
+	-fx-background-radius: 6 6 6 6;
+	-fx-background-color: white;
+}
+
+.scroll-pane .scroll-bar .thumb{
+	-fx-background-radius: 6 6 6 6;
+	-fx-background-color: #CCCCCC;
+}
+
+.scroll-pane .scroll-bar .thumb{
+	-fx-background-radius: 6 6 6 6;
+	-fx-background-color: #A8A8A8;
+}
+
+.scroll-pane .scroll-bar .increment-button {
+	-fx-background-color: white;
+	-fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+
+.scroll-pane .scroll-bar .decrement-button {
+	-fx-background-color: white;
+	-fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+
+
+.table-view {
+	-fx-background-color: white, 
+	-fx-control-inner-background;
+    -fx-background-insets: 0, 1;
+    -fx-padding: 1;
+    -fx-border-width:1;
+    -fx-border-color:gray;
+}
+
+.table-view .column-header-background{
+    -fx-background-color:#f3f3f3;
+    
+    }
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+
+
+}
+.table-view .column-header {
+    -fx-background-color: transparent;
+      -fx-border-color: #e6e6e6;
+    -fx-border-width: 0 1 1 0; 
+    -fx-font-family: "Sans Serif";
+    -fx-font-size: 12px;
+    -fx-alignment: center;
+    -fx-text-fill: black;
+}
+
+.table-cell.row-header-cell {
+    -fx-background-color: #f3f3f3; 
+    -fx-font-weight: bold;
+    -fx-font-family: "Arial";
+    -fx-font-size: 15px;
+    -fx-alignment: center;
+    -fx-text-fill: black;
+
+}
+
+.table-view .scroll-bar * {
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+}
+
+.table-cell {
+    -fx-background-color: white;
+    -fx-font-family: "Sans Serif";
+     -fx-font-size: 13px;
+    -fx-border-color: #e6e6e6;
+    -fx-border-width: 0 1 1 0;
+    -fx-padding: 2px 2px;
+}
+
+.table-row-cell:selected .table-cell {
+     -fx-background-color: white;
+    -fx-text-fill: black;
+}
+

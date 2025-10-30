@@ -69,6 +69,12 @@ public class HomeController {
 	private Button saveButton;
 	
 	@FXML
+	private Button patronsButton;
+	
+	@FXML
+	private Button statisticsButton;
+	
+	@FXML
 	private Button addButton;
 	
 	@FXML
@@ -508,8 +514,15 @@ public class HomeController {
 	@FXML
 	public void openStatisticsTab() {	
 		StatisticsController controller = openTab("StatisticsTab.fxml", resources.getString("label.statistics"));
-		controller.setToken(token);
+		controller.setToken(token, this);
 		controller.initializeTab();
+		updateButtonStates();
+	}
+	
+	@FXML
+	public void openPatronTab() {
+		PatronTabController controller = openTab("PatronsTab.fxml", resources.getString("label.header12"));
+		controller.initialize(token);
 		updateButtonStates();
 	}
 	
@@ -544,6 +557,8 @@ public class HomeController {
 	    boolean hasSelection = !selectedBooks.isEmpty();
 
 	    addButton.setDisable(!loggedIn);
+	    patronsButton.setDisable(!loggedIn);
+	    statisticsButton.setDisable(!loggedIn);
 	    profileMenu.setDisable(!loggedIn);
 	    updateButton.setDisable(!loggedIn || !hasSelection);
 	    removeButton.setDisable(!loggedIn || !hasSelection);
@@ -556,6 +571,7 @@ public class HomeController {
 	    setItemDisabled(resources.getString("item.delete"), !loggedIn);
 	    setItemDisabled(resources.getString("item.addbooks"), !loggedIn);
 	    setItemDisabled(resources.getString("label.statistics"), !loggedIn);
+	    setItemDisabled(resources.getString("tree.patron"), !loggedIn);
 	    
 	}
 	
@@ -574,7 +590,8 @@ public class HomeController {
 				new ImageView(new Image(getClass().getResource("icons/tree1.png").toExternalForm())));
 		TreeItem<String> showItem = new TreeItem<>(resources.getString("item.all"));
 		TreeItem<String> statisticsItem = new TreeItem<>(resources.getString("label.statistics"));
-		resourcesItem.getChildren().addAll(showItem, statisticsItem);
+		TreeItem<String> patronsItem = new TreeItem<>(resources.getString("tree.patron"));
+		resourcesItem.getChildren().addAll(showItem, patronsItem, statisticsItem);
 		
 		TreeItem<String> actionsItem = new TreeItem<>("Actions", 
 				new ImageView(new Image(getClass().getResource("icons/tree2.png").toExternalForm())));
@@ -648,6 +665,7 @@ public class HomeController {
 			
 			if (selection.equals(resources.getString("item.all"))) showAll(); 
 			if (selection.equals(resources.getString("label.statistics"))) openStatisticsTab();
+			if (selection.equals(resources.getString("tree.patron"))) openPatronTab();
 			if (selection.equals(resources.getString("item.addbooks"))) openAddBookTab();
 			if (selection.equals(resources.getString("button.save"))) saveBooks(); 
 			if (selection.equals(resources.getString("item.show"))) openCollectionsTab(); 
