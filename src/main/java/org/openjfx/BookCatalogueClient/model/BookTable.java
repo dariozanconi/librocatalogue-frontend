@@ -5,8 +5,18 @@ import javafx.beans.property.StringProperty;
 
 public class BookTable {
 	
+	private Book book;
+	
+	public BookTable() {}
+	
+	public BookTable(String title, String author, Book book) {
+		this.title = new SimpleStringProperty(title);
+        this.author = new SimpleStringProperty(author);
+        this.book = book;
+	}
+	
 	private StringProperty index;
-    public void setIndex(String value) { indexProperty().set(value); }
+	public void setIndex(String value) { indexProperty().set(value); }
     public String getIndex() { return indexProperty().get(); }
     public StringProperty indexProperty() { 
         if (index == null) index = new SimpleStringProperty(this, "index");
@@ -68,4 +78,14 @@ public class BookTable {
         if (available == null) available = new SimpleStringProperty(this, "available");
         return available; 
     }
+
+	public Book getBook() {
+		return book;
+	}
+
+	public void setBook(Book book) {
+		this.book = book;
+	}
+    
+    
 }

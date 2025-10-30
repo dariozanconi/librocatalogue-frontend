@@ -12,6 +12,9 @@ import org.openjfx.BookCatalogueClient.model.Collection;
 import org.openjfx.BookCatalogueClient.model.Patron;
 import org.openjfx.BookCatalogueClient.service.JwtUtils;
 import org.openjfx.BookCatalogueClient.task.ApiTask;
+
+import com.sanctionco.jmail.JMail;
+
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,6 +53,9 @@ public class BookDetailsController {
 	
 	@FXML
 	Label authorLabel;
+	
+	@FXML
+	Label errorLabel;
 	
 	@FXML
 	Label publisherLabel;
@@ -343,8 +349,12 @@ public class BookDetailsController {
 	
 	@FXML
     private void lendBook() {
-        if (!firstNameField.getText().isEmpty() || !lastNameField.getText().isEmpty() || !emailField.getText().isEmpty()) {
-        	
+		errorLabel.setText("");
+        if ((!firstNameField.getText().isEmpty() 
+        		|| !lastNameField.getText().isEmpty() 
+        		|| !emailField.getText().isEmpty())
+        		&& JMail.isValid(emailField.getText())) {
+        	errorLabel.setText("");
         	Patron patron = new Patron();
         	String description;
         	patron.setFirstName(firstNameField.getText().toLowerCase());
@@ -367,6 +377,8 @@ public class BookDetailsController {
     			
     		});
     		new Thread(task).start();	        	       	
+        } else if (!JMail.isValid(emailField.getText())) {
+        	errorLabel.setText("insert a valid email");
         }
 	}
 	

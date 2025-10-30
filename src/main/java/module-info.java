@@ -15,8 +15,9 @@ module org.openjfx.BookCatalogueClient {
 
 	requires com.fasterxml.jackson.annotation;
 	requires org.apache.poi.ooxml;
+	requires com.sanctionco.jmail;
 
-	
+	opens org.openjfx.BookCatalogueClient.model to javafx.base;
     opens org.openjfx.BookCatalogueClient to javafx.fxml;
     exports org.openjfx.BookCatalogueClient;
     

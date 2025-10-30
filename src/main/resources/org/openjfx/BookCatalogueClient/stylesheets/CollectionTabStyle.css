@@ -205,10 +205,6 @@ AnchorPane {
 .chart-plot-background {
     -fx-background-color: transparent;
 }
-.axis {
-    -fx-font-size: 11;    
-    -fx-font-family: Tahoma;
-}
  
 .axis-label {
    -fx-text-fill: #462300; 
@@ -255,6 +251,79 @@ AnchorPane {
 	-fx-background-color : #DEDEDE;
 }
 
+#booksLabel:hover {
+	-fx-background-color : #F2C18D;
+}
+
+#patronsLabel:hover {
+	-fx-background-color : #E57A6C;
+}
+
+#collectionsLabel:hover {
+	-fx-background-color : #75BD6F;
+}
 
 
+
+
+.table-view {
+	-fx-background-color: white, 
+	-fx-control-inner-background;
+    -fx-background-insets: 0, 1;
+    -fx-padding: 1;
+}
+
+.table-view .column-header-background{
+    -fx-background-color:#f3f3f3;
+    
+    }
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+
+
+}
+.table-view .column-header {
+    -fx-background-color: transparent;
+      -fx-border-color: #e6e6e6;
+    -fx-border-width: 0 1 1 0; 
+    -fx-font-family: "Calibri";
+    -fx-font-size: 12px;
+    -fx-alignment: center;
+    -fx-text-fill: black;
+}
+
+.table-cell.row-header-cell {
+    -fx-background-color: #f3f3f3; 
+    -fx-font-weight: bold;
+    -fx-font-family: "Arial";
+    -fx-font-size: 15px;
+    -fx-alignment: center;
+    -fx-text-fill: black;
+
+}
+
+.table-view .scroll-bar * {
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+}
+
+.table-cell {
+    -fx-background-color: white;
+    -fx-font-family: "Calibri";
+     -fx-font-size: 13px;
+    -fx-border-color: #e6e6e6;
+    -fx-border-width: 0 1 1 0;
+    -fx-padding: 4px 6px;
+}
+
+.table-row-cell:selected .table-cell {
+     -fx-background-color: white;
+    -fx-text-fill: black;
+}
 

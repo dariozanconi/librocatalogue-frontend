@@ -214,6 +214,17 @@
                                                 </TextArea>
                                                 <TextField fx:id="firstNameField" layoutX="14.0" layoutY="83.0" prefHeight="35.0" prefWidth="180.0" promptText="%field.firstname" />
                                                 <TextField fx:id="lastNameField" layoutX="14.0" layoutY="118.0" prefHeight="36.0" prefWidth="180.0" promptText="%field.lastname" />
+                                                <TextField fx:id="emailField" layoutX="15.0" layoutY="160.0" prefHeight="36.0" prefWidth="205.0" promptText="E-Mail*" />
+                                                <Label fx:id="errorLabel" layoutX="18.0" layoutY="194.0" prefHeight="25.0" prefWidth="229.0" textFill="RED">
+                                                   <font>
+                                                      <Font size="11.0" />
+                                                   </font>
+                                                </Label>
+                                                <Button fx:id="lendButton" layoutX="26.0" layoutY="217.0" mnemonicParsing="false" onAction="#lendBook" prefHeight="40.0" prefWidth="165.0" text="%button.lend" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Button>
                                                 <Label fx:id="lendLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="-59.0" layoutY="5.0" minHeight="30.0" prefHeight="42.0" prefWidth="279.0" style="-fx-background-color: #7D7D7D; -fx-background-radius: 0 30 4 0;" text="%label.lend" textFill="WHITE">
                                                    <font>
                                                       <Font size="17.0" />
@@ -225,12 +236,6 @@
                                                       <Insets left="5.0" />
                                                    </padding>
                                                 </Label>
-                                                <Button fx:id="lendButton" layoutX="26.0" layoutY="217.0" mnemonicParsing="false" onAction="#lendBook" prefHeight="40.0" prefWidth="165.0" text="%button.lend" textFill="WHITE">
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font>
-                                                </Button>
-                                                <TextField fx:id="emailField" layoutX="15.0" layoutY="160.0" prefHeight="36.0" prefWidth="205.0" promptText="E-Mail*" />
                                                 <Label layoutX="273.0" layoutY="61.0" prefHeight="20.0" prefWidth="150.0" text="Notes">
                                                    <font>
                                                       <Font size="13.0" />

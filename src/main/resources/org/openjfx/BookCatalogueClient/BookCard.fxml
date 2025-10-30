@@ -24,12 +24,12 @@
             <ImageView fx:id="coverImage" accessibleRole="BUTTON" fitHeight="185.0" fitWidth="127.0" layoutY="1.0" onMouseClicked="#onCardClicked" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="titleLabel" alignment="TOP_LEFT" layoutY="193.0" prefHeight="21.0" prefWidth="127.0" text="Title">
                <font>
-                  <Font size="15.0" />
+                  <Font name="Calibri Light" size="16.0" />
                </font>
             </Label>
-            <Label fx:id="authorLabel" layoutY="210.0" prefHeight="22.0" prefWidth="126.0" text="Author">
+            <Label fx:id="authorLabel" layoutY="210.0" prefHeight="23.0" prefWidth="126.0" text="Author">
                <font>
-                  <Font size="13.0" />
+                  <Font name="Calibri Light" size="15.0" />
                </font>
             </Label>
             <CheckBox fx:id="selectBox" layoutY="-1.0" mnemonicParsing="false" onAction="#onCardSelected" prefHeight="26.0" prefWidth="25.0" />
