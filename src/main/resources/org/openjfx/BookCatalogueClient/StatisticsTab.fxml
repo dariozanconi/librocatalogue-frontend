@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -14,13 +17,13 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="rootPane" stylesheets="@stylesheets/CollectionTabStyle.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.BookCatalogueClient.StatisticsController">
+<StackPane fx:id="rootPane" stylesheets="@stylesheets/StatisticsTabStyle.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.BookCatalogueClient.StatisticsController">
    <children>
       <BorderPane>
          <top>
             <AnchorPane prefHeight="46.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="headerLabel" alignment="TOP_LEFT" layoutX="127.0" layoutY="15.0" prefHeight="31.0" prefWidth="281.0" text="%label.header4">
+                  <Label fx:id="headerLabel" alignment="TOP_LEFT" layoutX="127.0" layoutY="15.0" prefHeight="31.0" prefWidth="281.0" text="%label.statistics">
                      <font>
                         <Font name="SansSerif Regular" size="18.0" />
                      </font>
@@ -33,39 +36,32 @@
                <content>
                   <HBox fx:id="myHBox" prefHeight="1100.0" prefWidth="500.0">
                      <children>
-                        <Region opacity="0.0" prefHeight="1100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
-                        <AnchorPane prefHeight="500.0" prefWidth="797.0">
+                        <Region opacity="0.0" prefHeight="1100.0" prefWidth="79.0" HBox.hgrow="ALWAYS" />
+                        <AnchorPane prefHeight="1100.0" prefWidth="853.0">
                            <children>
-                              <Label fx:id="messageLabel" alignment="CENTER" layoutY="44.0" prefHeight="42.0" prefWidth="432.0" style="-fx-background-color: gray; -fx-background-radius: 0 30 4 0;" text="%label.statistics" textFill="WHITE">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="16.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="booksLabel" alignment="CENTER" layoutX="33.0" layoutY="126.0" prefHeight="132.0" prefWidth="216.0" style="-fx-background-color: #F29E31; -fx-background-radius: 10;" text="loading..." textFill="WHITE" wrapText="true">
-                                 <font>
-                                    <Font name="SansSerif Bold" size="18.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                 </padding>
-                              </Label>
-                              <Label fx:id="patronsLabel" alignment="CENTER" layoutX="258.0" layoutY="126.0" prefHeight="132.0" prefWidth="220.0" style="-fx-background-color: #E53636; -fx-background-radius: 10;" text="loading..." textFill="WHITE" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                 </padding>
-                              </Label>
-                              <Label fx:id="collectionsLabel" alignment="CENTER" layoutX="488.0" layoutY="126.0" prefHeight="132.0" prefWidth="242.0" style="-fx-background-color: #5FBD39; -fx-background-radius: 10;" text="loading..." textFill="WHITE" wrapText="true">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                 </padding>
-                              </Label>
-                              <LineChart fx:id="booksChart" horizontalGridLinesVisible="false" layoutX="14.0" layoutY="364.0" prefHeight="317.0" prefWidth="626.0" style="-fx-background-color: transparent;">
+                              <AnchorPane fx:id="anchorBooks" layoutX="17.0" layoutY="36.0" onMouseClicked="#openBooks" prefHeight="128.0" prefWidth="225.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.3, 0.0, 0.0); -fx-background-color: #94A5D9;">
+                                 <children>
+                                    <Label fx:id="booksLabel" alignment="CENTER_RIGHT" graphicTextGap="100.0" layoutX="1.0" prefHeight="53.0" prefWidth="224.0" text="0" textFill="WHITE" wrapText="true">
+                                       <font>
+                                          <Font name="Calibri Light" size="29.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets right="20.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label fx:id="booksLabel2" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="7.0" layoutY="99.0" prefHeight="31.0" prefWidth="213.0" text="%label.totalbooks" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri Light" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="1.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@icons/icons8-books-48.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                              <LineChart fx:id="booksChart" horizontalGridLinesVisible="false" layoutY="404.0" legendVisible="false" prefHeight="293.0" prefWidth="504.0" style="-fx-background-color: transparent;">
                                 <xAxis>
                                   <CategoryAxis side="BOTTOM" fx:id="xAxis" />
                                 </xAxis>
@@ -73,16 +69,126 @@
                                   <NumberAxis fx:id="yAxis" minorTickVisible="false" side="LEFT" style="-fx-background-color: transparent;" />
                                 </yAxis>
                               </LineChart>
-                              <ComboBox fx:id="comboBox" layoutX="452.0" layoutY="320.0" prefHeight="33.0" prefWidth="123.0" promptText="Change Range" />
-                              <Label layoutX="29.0" layoutY="323.0" prefHeight="27.0" prefWidth="349.0" text="Bücher Wachstum">
+                              <ComboBox fx:id="comboBox" layoutX="286.0" layoutY="364.0" prefHeight="33.0" promptText="%label.changerange" />
+                              <Label layoutX="28.0" layoutY="363.0" prefHeight="35.0" style="-fx-background-color: #E3E4E6; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.3, 0.0, 0.0);" text="%label.booksgrowth">
                                  <font>
-                                    <Font size="15.0" />
+                                    <Font name="Arial" size="17.0" />
                                  </font>
+                                 <padding>
+                                    <Insets left="7.0" right="7.0" />
+                                 </padding>
+                              </Label>
+                              <BarChart fx:id="authorChart" horizontalGridLinesVisible="false" layoutX="23.0" layoutY="752.0" legendVisible="false" prefHeight="262.0" prefWidth="451.0" verticalGridLinesVisible="false" verticalZeroLineVisible="false">
+                                <xAxis>
+                                  <NumberAxis forceZeroInRange="false" minorTickVisible="false" tickLabelGap="8.0" tickMarkVisible="false" />
+                                </xAxis>
+                                <yAxis>
+                               	   <CategoryAxis fx:id="authorAxis" autoRanging="false" side="LEFT" tickLabelGap="1.0">
+                                       <tickLabelFont>
+                                          <Font name="Calibri Light" size="13.0" />
+                                       </tickLabelFont></CategoryAxis>
+                                </yAxis>
+                              </BarChart>
+                              <AnchorPane fx:id="anchorPatrons" layoutX="248.0" layoutY="36.0" onMouseClicked="#openPatrons" prefHeight="128.0" prefWidth="225.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.3, 0.0, 0.0); -fx-background-color: #5FCAE3;">
+                                 <children>
+                                    <Label fx:id="patronsLabel" alignment="CENTER_RIGHT" graphicTextGap="100.0" layoutX="1.0" prefHeight="53.0" prefWidth="224.0" text="0" textFill="WHITE" wrapText="true">
+                                       <font>
+                                          <Font name="Calibri Light" size="29.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets right="20.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label fx:id="patronsLabel2" alignment="CENTER_RIGHT" layoutX="1.0" layoutY="99.0" prefHeight="31.0" prefWidth="216.0" text="%label.totalpatrons" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri Light" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="53.0" fitWidth="51.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@icons/icons8-users-48.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="anchorCollections" layoutX="481.0" layoutY="36.0" onMouseClicked="#openCollections" prefHeight="130.0" prefWidth="240.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.3, 0.0, 0.0); -fx-background-color: #F29E31;">
+                                 <children>
+                                    <Label fx:id="collectionsLabel" alignment="CENTER_RIGHT" graphicTextGap="100.0" layoutX="1.0" prefHeight="53.0" prefWidth="239.0" text="0" textFill="WHITE" wrapText="true">
+                                       <font>
+                                          <Font name="Calibri Light" size="29.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets right="20.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label fx:id="collectionsLabel2" alignment="CENTER_RIGHT" layoutY="99.0" prefHeight="31.0" prefWidth="237.0" text="%label.totalcollections" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri Light" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="53.0" fitWidth="76.0" layoutX="1.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@icons/icons8-collection-64.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="17.0" layoutY="174.0" prefHeight="128.0" prefWidth="276.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.3, 0.0, 0.0); -fx-background-color: #E53636;">
+                                 <children>
+                                    <Label fx:id="booksOutLabel" alignment="CENTER_RIGHT" graphicTextGap="0.0" layoutX="1.0" prefHeight="53.0" prefWidth="275.0" text="0" textFill="WHITE" wrapText="true">
+                                       <font>
+                                          <Font name="Calibri Light" size="29.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets right="20.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label fx:id="booksOutLabel2" alignment="CENTER_RIGHT" layoutY="99.0" prefHeight="31.0" prefWidth="270.0" text="%label.outbooks" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri Light" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="37.0" fitWidth="37.0" layoutX="7.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@icons/icons8-up-left-50.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="300.0" layoutY="175.0" prefHeight="128.0" prefWidth="355.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.3, 0.0, 0.0); -fx-background-color: #3AB824;">
+                                 <children>
+                                    <Label fx:id="booksFreeLabel" alignment="CENTER_RIGHT" graphicTextGap="0.0" layoutX="1.0" prefHeight="53.0" prefWidth="354.0" text="0" textFill="WHITE" wrapText="true">
+                                       <font>
+                                          <Font name="Calibri Light" size="29.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets right="20.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label fx:id="booksFreeLabel2" alignment="CENTER_RIGHT" layoutY="99.0" prefHeight="31.0" prefWidth="351.0" text="%label.freebooks" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri Light" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="44.0" fitWidth="43.0" layoutX="1.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@icons/icons8-borrow-book-50.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                              <Label layoutX="28.0" layoutY="710.0" prefHeight="35.0" style="-fx-background-color: #E3E4E6; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.3, 0.0, 0.0);" text="%label.topauthor">
+                                 <font>
+                                    <Font name="Arial" size="17.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="7.0" right="7.0" />
+                                 </padding>
                               </Label>
                               
                            </children>
                         </AnchorPane>
-                        <Region opacity="0.0" prefHeight="1100.0" prefWidth="316.0" HBox.hgrow="ALWAYS" />
+                        <Region opacity="0.0" prefHeight="1100.0" prefWidth="217.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </content>
